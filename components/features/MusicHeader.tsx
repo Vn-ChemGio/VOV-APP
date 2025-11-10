@@ -22,15 +22,15 @@ export const MusicHeader: React.FC<Props> = ({ scrollY, title = "Library" }) => 
   
   // Transition background
   const bgColor = scrollY.interpolate({
-    inputRange: [0, 100],
+    inputRange: [0, 60],
     outputRange: ["rgba(255,255,255,0)", red],
     extrapolate: "clamp",
   });
   
   // Border opacity
   const borderOpacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 1],
+    inputRange: [0, 20, 60],
+    outputRange: [0, 0.9, 1],
     extrapolate: "clamp",
   });
   
