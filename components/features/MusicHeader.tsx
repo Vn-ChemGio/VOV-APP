@@ -1,36 +1,22 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Animated,
-  StyleSheet,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { Animated, Platform, StatusBar, StyleSheet, } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useColor } from '@/hooks/useColor';
+import { BlurView } from 'expo-blur';
+
 type Props = {
   scrollY: Animated.Value;
   title?: string;
 };
 
-export const MusicHeader: React.FC<Props> = ({ scrollY, title = "Library" }) => {
+export const MusicHeader: React.FC<Props> = ({scrollY, title = "Library"}) => {
   const insets = useSafeAreaInsets();
-  const red = useColor('red')
   const statusHeight =
     Platform.OS === "ios" ? insets.top : StatusBar.currentHeight || 0;
-  
-  // Transition background
-  const bgColor = scrollY.interpolate({
-    inputRange: [0, 60],
-    outputRange: ["rgba(255,255,255,0)", red],
-    extrapolate: "clamp",
-  });
   
   // Border opacity
   const borderOpacity = scrollY.interpolate({
     inputRange: [0, 20, 60],
-    outputRange: [0, 0.9, 1],
+    outputRange: [0, 0.5, 1],
     extrapolate: "clamp",
   });
   
@@ -40,11 +26,18 @@ export const MusicHeader: React.FC<Props> = ({ scrollY, title = "Library" }) => 
         styles.container,
         {
           paddingTop: statusHeight,
-          backgroundColor: bgColor,
+          opacity: borderOpacity,
         },
       ]}
     >
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      <StatusBar translucent backgroundColor="black" barStyle="default"/>
+      <BlurView tint="systemChromeMaterial"
+                intensity={70}
+                style={{
+                  ...StyleSheet.absoluteFillObject,
+                  overflow: 'hidden',
+                }}
+      />
       <Animated.View
         style={[
           styles.borderBottom,
@@ -66,15 +59,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     alignItems: "center",
     justifyContent: "flex-end",
-    height: 0, // adjust for your header height
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 10,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   borderBottom: {
     position: "absolute",

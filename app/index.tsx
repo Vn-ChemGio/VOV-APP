@@ -18,12 +18,11 @@ const HomeScreen = () => {
   const bg = useColor('background');
   const bgCard = useColor('card');
   const border = useColor('border');
-  const muted = useColor('muted');
   const foreground = useColor('foreground');
   const primary = useColor('primary');
   
   const scrollY = useRef(new Animated.Value(0)).current;
-  const {top} = useSafeAreaInsets();
+  const {top, bottom} = useSafeAreaInsets();
   const menuItems = [
     {key: 'radio', label: 'Radio', icon: Radio},
     {key: 'news', label: 'News', icon: Newspaper},
