@@ -9,6 +9,16 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <Stack>
+          <Stack.Screen name='index' options={{ headerShown: false }}/>
+          <Stack.Screen name='profile' options={{
+            presentation: 'card',
+            gestureEnabled: true,
+            gestureDirection: 'vertical',
+            animationDuration: 400,
+            headerShown: false,
+            headerBackButtonDisplayMode: 'generic',
+            headerTitle: 'Profile',
+          }}/>
           <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
           <Stack.Screen name='+not-found' />
         </Stack>

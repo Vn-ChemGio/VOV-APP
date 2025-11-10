@@ -5,14 +5,14 @@ import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { View } from '@/components/ui/view';
 import { useColor } from '@/hooks/useColor';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BookOpen, Stars, Terminal } from 'lucide-react-native';
 import { Dimensions, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
-  const bottom = useBottomTabBarHeight();
+  const {bottom} = useSafeAreaInsets();
 
   const cardColor = useColor('card');
   const borderColor = useColor('border');
