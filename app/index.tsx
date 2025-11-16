@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { View } from '@/components/ui/view';
 import { Text } from '@/components/ui/text';
@@ -14,6 +14,8 @@ import {
   MessageCircleMoreIcon,
   Music,
   Newspaper,
+  PauseIcon,
+  PlayIcon,
   Podcast,
   Radio
 } from 'lucide-react-native';
@@ -23,6 +25,7 @@ import { BORDER_RADIUS } from '@/theme/globals';
 import AppHeader from '@/components/features/AppHeader';
 import { ShareButton } from '@/components/ui/share';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'expo-router';
 
 const HomeScreen = () => {
   const bg = useColor('background');
@@ -35,6 +38,9 @@ const HomeScreen = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const {top, bottom} = useSafeAreaInsets();
   
+  // State to track which podcast item is being played (for blur view)
+  const [playingPodcastIndex, setPlayingPodcastIndex] = useState<number | null>(null);
+  
   const scrollHeaderOpacity = scrollY.interpolate({
     inputRange: [0, 28, 32],
     outputRange: [1, 0, 0],
@@ -42,9 +48,9 @@ const HomeScreen = () => {
   });
   
   const menuItems = [
-    {key: 'radio', label: 'Radio', icon: Radio},
+    {key: 'radios', label: 'Radio', icon: Radio},
     {key: 'news', label: 'News', icon: Newspaper},
-    {key: 'music', label: 'Music', icon: Music},
+    {key: '(musics)', label: 'Music', icon: Music},
     {key: 'podcast', label: 'Podcast', icon: Podcast},
   ];
   const {width: screenWidth} = Dimensions.get('window');
@@ -124,7 +130,7 @@ const HomeScreen = () => {
     message: 'Check out this amazing content!',
     url: 'https://example.com',
   };
-  
+  const router = useRouter();
   return (
     <View style={{flex: 1}}>
       <AppHeader scrollY={scrollY}/>
@@ -296,6 +302,7 @@ const HomeScreen = () => {
                     backgroundColor: 'transparent',
                     gap: 6,
                   }}
+                  onPress={()=> router.navigate(item.key as any)}
                 >
                   <Icon name={item.icon} color={primary} size={24}/>
                   <Text style={{color: foreground}}>{item.label}</Text>
@@ -510,24 +517,63 @@ const HomeScreen = () => {
                     paddingVertical: 0,
                   }}
                 >
-                  <Image source={{uri: item.cover}}
-                         contentFit="cover"
-                         variant="default"
-                         containerStyle={{
-                           width: '100%',
-                           height: screenWidth * 2 / 3 * 9 / 16,
-                           borderTopLeftRadius: 12,
-                           borderTopRightRadius: 12,
-                           borderBottomLeftRadius: 0,
-                           borderBottomRightRadius: 0,
-                         }}
-                         style={{
-                           borderTopLeftRadius: 12,
-                           borderTopRightRadius: 12,
-                           borderBottomLeftRadius: 0,
-                           borderBottomRightRadius: 0,
-                         }}
-                  />
+                  <View
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: screenWidth * 2 / 3 * 9 / 16,
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <Image source={{uri: item.cover}}
+                           contentFit="cover"
+                           variant="default"
+                           containerStyle={{
+                             width: '100%',
+                             height: '100%',
+                             borderTopLeftRadius: 12,
+                             borderTopRightRadius: 12,
+                             borderBottomLeftRadius: 0,
+                             borderBottomRightRadius: 0,
+                           }}
+                           style={{
+                             borderTopLeftRadius: 12,
+                             borderTopRightRadius: 12,
+                             borderBottomLeftRadius: 0,
+                             borderBottomRightRadius: 0,
+                           }}
+                    />
+                    {/* Play button centered on image */}
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        icon={playingPodcastIndex === i ? () => <PauseIcon color={bg} size={32} strokeWidth={2}/> : () => <PlayIcon color={bg} size={32} strokeWidth={2}/>}
+                        onPress={() => {
+                          setPlayingPodcastIndex(playingPodcastIndex === i ? null : i);
+                        }}
+                        style={{
+                          width: 72,
+                          height: 72,
+                          borderWidth: 4,
+                          borderColor: bg,
+                        }}
+                      />
+                    </View>
+                  
+                  </View>
                   <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingVertical: 0}}>
                     <CardTitle style={{fontSize: 14}}>{item.title}</CardTitle>
                     <CardDescription style={{fontSize: 12}}>

@@ -19,7 +19,7 @@ export default function RootLayout() {
             headerBackButtonDisplayMode: 'generic',
             headerTitle: 'Profile',
           }}/>
-          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+          <Stack.Screen name='(musics)' options={{ headerShown: false }} />
           <Stack.Screen name='+not-found' />
         </Stack>
         <StatusBar style='auto' />
