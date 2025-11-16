@@ -32,7 +32,7 @@ interface ShareButtonProps {
   options?: ShareButtonOptions;
   children?: React.ReactNode;
   variant?: ButtonVariant;
-  size?: 'default' | 'sm' | 'lg' | 'icon';
+  size?: 'default' | 'sm' | 'lg' | 'icon' |'ghost-icon';
   disabled?: boolean;
   loading?: boolean;
   onShareStart?: () => void;
