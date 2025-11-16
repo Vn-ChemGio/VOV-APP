@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { Animated, Dimensions, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { View } from '@/components/ui/view';
 import { Text } from '@/components/ui/text';
 import { Image } from '@/components/ui/image';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { Icon } from '@/components/ui/icon';
 import { useColor } from '@/hooks/useColor';
@@ -13,6 +13,8 @@ import { ModeToggle } from '@/components/ui/mode-toggle';
 import { MusicHeader } from '@/components/features/MusicHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BORDER_RADIUS } from '@/theme/globals';
+import { BlurView } from 'expo-blur';
+import AppHeader from '@/components/features/AppHeader';
 
 const HomeScreen = () => {
   const bg = useColor('background');
@@ -23,6 +25,13 @@ const HomeScreen = () => {
   
   const scrollY = useRef(new Animated.Value(0)).current;
   const {top, bottom} = useSafeAreaInsets();
+  
+  const scrollHeaderOpacity = scrollY.interpolate({
+    inputRange: [0, 28, 32],
+    outputRange: [1, 0, 0],
+    extrapolate: 'clamp',
+  });
+  
   const menuItems = [
     {key: 'radio', label: 'Radio', icon: Radio},
     {key: 'news', label: 'News', icon: Newspaper},
@@ -64,27 +73,27 @@ const HomeScreen = () => {
   ];
   
   const radioGridItems = [
-    require('../assets/images/momo/deposit.png'),
-    require('../assets/images/momo/withdraw.png'),
-    require('../assets/images/momo/qr.png'),
-    require('../assets/images/momo/scan.png'),
-    require('../assets/images/momo/deposit-circle.png'),
-    require('../assets/images/momo/withdraw-circle.png'),
+    require('@/assets/images/vov-channels/vov-1.png'),
+    require('@/assets/images/vov-channels/vov-2.png'),
+    require('@/assets/images/vov-channels/vov-3.png'),
+    require('@/assets/images/vov-channels/vov-4.png'),
+    require('@/assets/images/vov-channels/vov-5.png'),
+    require('@/assets/images/vov-channels/vov-6.png'),
   ];
   
   return (
     <View style={{flex: 1}}>
-      <MusicHeader scrollY={scrollY} title="Library"/>
+      <AppHeader scrollY={scrollY}/>
       <Animated.ScrollView
         scrollEventThrottle={16}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {useNativeDriver: false}
         )}
-        contentContainerStyle={{paddingTop: top + 32}}
         style={{
           width: '100%',
           backgroundColor: bg,
+          paddingBottom: 120,
         }}
       >
         <View style={{
@@ -92,13 +101,16 @@ const HomeScreen = () => {
           backgroundColor: bgCard,
         }}>
           {/* Section 1: Heading (logo + welcome bar) */}
-          <View style={{
-            paddingVertical: 8,
+          <Animated.View style={[{
+            paddingBottom: 8,
             paddingHorizontal: 16,
             borderBottomWidth: 1,
             borderBottomColor: border,
             backgroundColor: bg,
-          }}
+            paddingTop: top + 32,
+          }, {
+            opacity: scrollHeaderOpacity,
+          }]}
           >
             <View style={{
               flexDirection: 'row',
@@ -113,11 +125,11 @@ const HomeScreen = () => {
                 gap: 12
               }}>
                 <Image
-                  source={require('../assets/images/icon.png')}
+                  source={require('../assets/images/logo-square.png')}
                   width={40}
                   height={40}
                   variant="rounded"
-                  containerStyle={{borderWidth: 1, borderColor: border}}
+                  containerStyle={{borderWidth: 1, borderColor: border, padding: 4}}
                 />
                 <View style={{gap: 2}}>
                   <Text style={{fontSize: 16}}>
@@ -130,7 +142,7 @@ const HomeScreen = () => {
               </View>
               <ModeToggle/>
             </View>
-          </View>
+          </Animated.View>
           
           {/* Section 2: Carousel + Menu */}
           <View style={{padding: 16, gap: 16, backgroundColor: bg}}>
@@ -244,7 +256,7 @@ const HomeScreen = () => {
               showsHorizontalScrollIndicator={false}
             >
               {recommendItems.map((item, i) => (
-                <View
+                <Card
                   key={i}
                   style={{
                     width: screenWidth * 2 / 3,
@@ -265,41 +277,26 @@ const HomeScreen = () => {
                            borderRadius: 12,
                          }}
                   />
-                  <View style={{
-                    width: '100%',
-                    gap: 4,
-                  }}>
-                    <Text variant="body" style={{fontSize: 16}}>
-                      {item.title}
+                  <CardHeader>
+                    <CardTitle>{item.title}</CardTitle>
+                    <CardDescription>
+                      A stunning view captured in the mountains during golden hour.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Text>
+                      This image showcases the beauty of nature with its vibrant colors and
+                      serene atmosphere.
                     </Text>
-                    <View style={{
-                      width: '100%',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: 4,
-                    }}>
-                      <Text variant="caption" style={{fontSize: 12}}>
-                        Đang phát
-                      </Text>
-                      <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center'
-                      }}>
-                      
-                      </View>
-                    </View>
-                  </View>
-                </View>
+                  </CardContent>
+                </Card>
               ))}
             </ScrollView>
           </View>
           
           {/* Section 4: Radio list (3x2 grid) */}
           <View style={{paddingHorizontal: 16, paddingTop: 24, gap: 12, backgroundColor: bg,}}>
-            <Text variant="title">Popular Radio</Text>
+            <Text variant="subtitle" style={{fontSize: 18}}>Popular Radio</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -312,14 +309,18 @@ const HomeScreen = () => {
                 <Card
                   key={`radio-${idx}`}
                   style={{
-                    width: '32%',
+                    width: (screenWidth- 16 * 2  - 8 * 2)/3,
+                    height: (screenWidth- 16 * 2  - 8 * 2)/3,
                     padding: 0,
                     overflow: 'hidden',
                     borderWidth: 1,
                     borderColor: border,
+                    aspectRatio: 1
                   }}
                 >
-                  <Image source={src} height={90} contentFit="cover"/>
+                  <Image source={src} height={(screenWidth- 16 * 2  - 8 * 2)/3} contentFit="cover" style={{
+                    aspectRatio: 1
+                  }}/>
                 </Card>
               ))}
             </View>
