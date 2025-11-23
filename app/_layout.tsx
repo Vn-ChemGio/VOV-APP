@@ -19,7 +19,11 @@ export default function RootLayout() {
             headerBackButtonDisplayMode: 'generic',
             headerTitle: 'Profile',
           }}/>
+          
           <Stack.Screen name='(musics)' options={{ headerShown: false }} />
+          <Stack.Screen name='podcast/index' options={{
+            headerShown: false
+          }}/>
           <Stack.Screen name='+not-found' />
         </Stack>
         <StatusBar style='auto' />

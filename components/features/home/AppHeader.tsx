@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, Platform, StatusBar, StyleSheet, } from "react-native";
+import { Animated, StatusBar, StyleSheet, } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BlurView } from 'expo-blur';
 import { useColor } from '@/hooks/useColor';
@@ -13,18 +13,28 @@ type Props = {
   title?: string;
 };
 
+const LOGO_HEADER_HEIGHT = 40;
+const HEADER_PADDING_VERTICAL = 4;
+const HEADER_PADDING_TOP = 12;
+const HEADER_HEIGHT = LOGO_HEADER_HEIGHT + HEADER_PADDING_VERTICAL * 2;
 
-const AppHeader: React.FC<Props> = ({scrollY}) => {
+const AppHeaderStickyAnimation: React.FC<Props> = ({scrollY}) => {
+  
   const insets = useSafeAreaInsets();
   const borderColor = useColor('border');
   
   // Header opacity
   const opacity = scrollY.interpolate({
-    inputRange: [0, 24, 32],
-    outputRange: [0, 0.05, 1],
+    inputRange: [0, HEADER_PADDING_TOP + HEADER_HEIGHT, HEADER_PADDING_TOP + HEADER_HEIGHT * 3/2],
+    outputRange: [0, 0, 1],
     extrapolate: "clamp",
   });
   
+  const translateY = scrollY.interpolate({
+    inputRange: [0, HEADER_PADDING_TOP + HEADER_HEIGHT, HEADER_PADDING_TOP + HEADER_HEIGHT * 3/2],
+    outputRange: [-HEADER_HEIGHT, -HEADER_HEIGHT, 0],
+    extrapolate: "clamp",
+  });
   return (
     <>
       <Animated.View
@@ -34,6 +44,7 @@ const AppHeader: React.FC<Props> = ({scrollY}) => {
           {
             paddingTop: insets.top,
             opacity,
+            transform: [{translateY}],
           },
         ]}
       >
@@ -89,6 +100,64 @@ const AppHeader: React.FC<Props> = ({scrollY}) => {
   );
 };
 
+
+const AppHeaderScrollAnimation: React.FC<Props> = ({scrollY}) => {
+  const mainBackgroundColor = useColor('background');
+  const borderColor = useColor('border');
+  
+  const {top} = useSafeAreaInsets();
+  
+  const scrollHeaderOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_PADDING_TOP, HEADER_PADDING_TOP + HEADER_HEIGHT/2,  HEADER_PADDING_TOP + HEADER_HEIGHT],
+    outputRange: [1, 1, 0.8, 0],
+    extrapolate: 'clamp',
+  });
+  return (
+    <Animated.View style={[{
+      paddingBottom: HEADER_PADDING_VERTICAL,
+      paddingTop: top + HEADER_PADDING_TOP,
+      paddingHorizontal: 16,
+      backgroundColor: mainBackgroundColor,
+      borderBottomWidth: 1,
+      borderBottomColor: borderColor,
+    }, {
+      opacity: scrollHeaderOpacity,
+    }]}
+    >
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 8,
+      }}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: 12
+        }}>
+          <Image
+            source={require('@/assets/images/logo-square.png')}
+            width={40}
+            height={40}
+            variant="rounded"
+            containerStyle={{borderWidth: 1, borderColor: borderColor, padding: 4}}
+          />
+          <View style={{gap: 2}}>
+            <Text style={{fontSize: 16}}>
+              VOV - Đài Tiếng nói Việt Nam
+            </Text>
+            <Text variant="caption" style={{fontSize: 12}}>
+              Welcome, Wind Blade!
+            </Text>
+          </View>
+        </View>
+        <ModeToggle/>
+      </View>
+    </Animated.View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
@@ -100,4 +169,4 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
-export default AppHeader;
+export {AppHeaderStickyAnimation, AppHeaderScrollAnimation};
