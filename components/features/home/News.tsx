@@ -10,47 +10,19 @@ import { ShareButton } from '@/components/ui/share';
 import { useColor } from '@/hooks/useColor';
 import { Dimensions } from 'react-native';
 
-const news = [
-  {
-    key: 'rec1',
-    src: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=300&fit=crop',
-    title: 'Chill Vibes',
-    description: 'This image showcases the beauty of nature with its vibrant colors and serene atmosphere.',
-    is_liked: false,
-    likes: 0,
-    comments: 10,
-  },
-  {
-    key: 'rec2',
-    src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop',
-    title: 'Daily Mix',
-    description: 'This image showcases the beauty of nature with its vibrant colors and serene atmosphere, of nature with its vibrant colors and serene atmosphere. ',
-    is_liked: true,
-    likes: 20,
-    comments: 10,
-  },
-  {
-    key: 'rec3',
-    src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop',
-    title: 'Focus Beats',
-    description: 'This image showcases the beauty of nature with its vibrant colors and serene atmosphere.',
-    is_liked: false,
-    likes: 100,
-    comments: 10,
-  },
-  {
-    key: 'rec4', src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop',
-    title: 'Top Hits',
-    description: 'This image showcases the beauty of nature with its vibrant colors and serene atmosphere.',
-    is_liked: false,
-    likes: 100,
-    comments: 10,
-  },
-];
+export interface NewsItem {
+    key: string;
+    title: string;
+    description: string;
+    image_url: string;
+    is_liked: boolean;
+    likes: number;
+    comments: number;
+}
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const News = ({data = news}: {data?: typeof news}) => {
+const News = ({data = []}: {data?: NewsItem[]}) => {
   const backgroundColor = useColor('background');
   const colorText = useColor('text');
   
@@ -79,7 +51,7 @@ const News = ({data = news}: {data?: typeof news}) => {
               paddingVertical: 0,
             }}
           >
-            <Image source={{uri: item.src}}
+            <Image source={{uri: item.image_url}}
                    contentFit="cover"
                    variant="default"
                    containerStyle={{

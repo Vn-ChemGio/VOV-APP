@@ -9,32 +9,16 @@ import { PauseIcon, PlayIcon } from 'lucide-react-native';
 import { useColor } from '@/hooks/useColor';
 import { Dimensions } from 'react-native';
 
-export const podcasts = [
-  {
-    cover: 'https://vov2.vov.vn/sites/default/files/styles/front_medium/public/2025-11/481467353_3827583790719028_7129256577207251207_n.jpg',
-    title: 'Phụ nữ hơn nhau cách sống, không phải may mắn',
-    description: '[VOV2] - Cuộc sống không ai giống ai, người có điều kiện, người khó khăn, người được yêu chiều, người phải tự lập. Nhưng chính cách chúng ta chọn đối diện với mọi việc mới tạo nên giá trị của bản thân.',
-    source: 'https://vov2.vov.vn/sites/default/files/2025-11/1211_linh_linh.mp3'
-  }, {
-    cover: 'https://vov2.vov.vn/sites/default/files/styles/front_medium/public/2025-10/thac-sy-Nguyen-Ba-Manh.jpg',
-    title: 'Biết chấp nhận thất bại khi nghiên cứu khoa học mới có thể vươn tới thành công',
-    description: 'VOV2] - ThS. Nguyễn Bá Mạnh, Viện Hóa học – người vừa nhận được Giải thưởng Quả Cầu Vàng 2025 cho rằng tinh thần vượt khó, chấp nhận thất bại chính là tinh thần của nghiên cứu khoa học.',
-    source: 'https://vov2.vov.vn/sites/default/files/2025-10/v2_23.10_gddt.mp3',
-  }, {
-    cover: 'https://vov2.vov.vn/sites/default/files/styles/front_medium/public/2025-11/ngoai-binh-bong-chuyen.png',
-    title: 'Ngoại binh bóng chuyền: Cú hích chuyên nghiệp hay con dao hai lưỡi?',
-    description: '[VOV2] - Thuê ngoại binh là xu thế tất yếu trong quá trình chuyên nghiệp hóa bóng chuyền Việt Nam. Tuy nhiên, nếu không có chiến lược rõ ràng, sự phát triển này có thể trở thành con dao hai lưỡi, làm tổn thương chính nền tảng nội địa.',
-    source: 'https://vov2.vov.vn/sites/default/files/2025-11/15-11_chill_the_thao.mp3'
-  }, {
-    cover: 'https://vov2.vov.vn/sites/default/files/styles/front_medium/public/2025-11/Hanh-phuc-trong-tam-tay.jpg',
-    title: 'Hạnh phúc trong tầm tay',
-    description: '[VOV2] - Để có được tình yêu, chúng ta cần tỉnh táo, suy xét mọi khía cạnh. Đừng chỉ vì chạy theo một hình bóng để rồi vuột mất hạnh phúc trong tay. Đó là gợi ý của chuyên gia tâm lý Vũ Thu Hà dành cho người đàn ông không biết chọn con tim hay theo lý trí',
-    source: 'https://vov2.vov.vn/sites/default/files/2025-11/tram_sac_cam_xuc.mp3'
-  }
-];
+export interface PodcastItem {
+    id: number;
+    title: string;
+    description: string;
+    image_url: string;
+    source_url: string;
+}
 const {width: screenWidth} = Dimensions.get('window');
 
-const PodCasts = ({data = podcasts}: {data?: typeof podcasts}) => {
+const PodCasts = ({data = []}: {data?: PodcastItem[]}) => {
   const backgroundColor = useColor('background');
   const borderColor = useColor('border');
   
@@ -77,7 +61,7 @@ const PodCasts = ({data = podcasts}: {data?: typeof podcasts}) => {
                 overflow: 'hidden',
               }}
             >
-              <Image source={{uri: item.cover}}
+              <Image source={{uri: item.image_url}}
                      contentFit="cover"
                      variant="default"
                      containerStyle={{

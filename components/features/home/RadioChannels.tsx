@@ -6,18 +6,14 @@ import { Card } from '@/components/ui/card';
 import { Image } from '@/components/ui/image';
 import { useColor } from '@/hooks/useColor';
 
-const radioChannels = [
-  require('@/assets/images/vov-channels/vov-1.png'),
-  require('@/assets/images/vov-channels/vov-2.png'),
-  require('@/assets/images/vov-channels/vov-3.png'),
-  require('@/assets/images/vov-channels/vov-4.png'),
-  require('@/assets/images/vov-channels/vov-5.png'),
-  require('@/assets/images/vov-channels/vov-6.png'),
-];
+export interface RadioChannel {
+    image_url: string;
+    source_url: string;
+}
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const RadioChannels = ({data = radioChannels}: {data?: typeof radioChannels}) => {
+const RadioChannels = ({data = []}: {data?: RadioChannel[]}) => {
   const backgroundColor = useColor('background');
   const borderColor = useColor('border');
   return (
@@ -31,7 +27,7 @@ const RadioChannels = ({data = radioChannels}: {data?: typeof radioChannels}) =>
           rowGap: 12,
         }}
       >
-        {data.map((src, idx) => (
+        {data.map((item, idx) => (
           <Card
             key={`radio-${idx}`}
             style={{
@@ -44,7 +40,7 @@ const RadioChannels = ({data = radioChannels}: {data?: typeof radioChannels}) =>
               aspectRatio: 1
             }}
           >
-            <Image source={src} height={(screenWidth - 16 * 2 - 8 * 2) / 3} contentFit="cover" style={{
+            <Image source={{uri: `https://vov-api-production.up.railway.app${item.image_url}`}} height={(screenWidth - 16 * 2 - 8 * 2) / 3} contentFit="cover" style={{
               aspectRatio: 1
             }}/>
           </Card>
