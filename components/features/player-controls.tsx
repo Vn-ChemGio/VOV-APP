@@ -1,6 +1,7 @@
-import { FontAwesome6 } from '@expo/vector-icons';
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { useColor } from '@/hooks/useColor';
+import { FontAwesome6 } from '@expo/vector-icons'
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
+import {useColor} from "@/hooks/useColor";
 
 type PlayerControlsProps = {
   style?: ViewStyle
@@ -11,53 +12,54 @@ type PlayerButtonProps = {
   iconSize?: number
 }
 
-export const PlayerControls = ({style}: PlayerControlsProps) => {
+export const PlayerControls = ({ style }: PlayerControlsProps) => {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.row}>
-        <SkipToPreviousButton/>
+        <SkipToPreviousButton />
         
-        <PlayPauseButton/>
+        <PlayPauseButton />
         
-        <SkipToNextButton/>
+        <SkipToNextButton />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export const PlayPauseButton = ({style, iconSize = 48}: PlayerButtonProps) => {
-  const {playing} = {playing: true};
-  const text = useColor('text');
+export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
+  const { playing } = useIsPlaying()
+  const  textColor= useColor('text')
   return (
-    <View style={[{height: iconSize}, style]}>
+    <View style={[{ height: iconSize }, style]}>
       <TouchableOpacity
         activeOpacity={0.85}
-        onPress={() => {
-        }}
+        onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
       >
-        <FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={text}/>
+        <FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={textColor} />
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export const SkipToNextButton = ({iconSize = 30}: PlayerButtonProps) => {
-  const text = useColor('text');
+export const SkipToNextButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+  const  textColor= useColor('text')
+  
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
-      <FontAwesome6 name="forward" size={iconSize} color={text}/>
+    <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+      <FontAwesome6 name="forward" size={iconSize} color={textColor} />
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-export const SkipToPreviousButton = ({iconSize = 30}: PlayerButtonProps) => {
-  const text = useColor('text');
+export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+  const  textColor= useColor('text')
+  
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
-      <FontAwesome6 name={'backward'} size={iconSize} color={text}/>
+    <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+      <FontAwesome6 name={'backward'} size={iconSize} color={textColor} />
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -68,4 +70,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
-});
+})
