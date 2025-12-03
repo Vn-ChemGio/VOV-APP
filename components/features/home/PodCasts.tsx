@@ -10,18 +10,11 @@ import {useColor} from '@/hooks/useColor';
 import {Dimensions} from 'react-native';
 import TrackPlayer, {Track, useActiveTrack, useIsPlaying} from "react-native-track-player";
 import {useQueue} from "@/stores/queue";
-
-export interface PodcastItem {
-    id: number;
-    title: string;
-    description: string;
-    image_url: string;
-    source_url: string;
-}
+import {Podcast} from "@/types";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const PodCasts = ({data = [], id = 'all'}: { data?: PodcastItem[], id?: string }) => {
+const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: string }) => {
     const backgroundColor = useColor('background');
     const borderColor = useColor('border');
     

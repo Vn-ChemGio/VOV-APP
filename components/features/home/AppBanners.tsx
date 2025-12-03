@@ -4,15 +4,9 @@ import {View} from '@/components/ui/view';
 import {Image} from '@/components/ui/image';
 import {BORDER_RADIUS} from '@/theme/globals';
 import {Text} from '@/components/ui/text';
+import {Banner} from "@/types";
 
-export interface BannerItem {
-    id: number;
-    image_url: string;
-    title?: string;
-    description?: string;
-}
-
-const AppBanners = ({data = []}: { data?: BannerItem[] }) => {
+const AppBanners = ({data = []}: { data?: Banner[] }) => {
     return (
         <Carousel autoPlay autoPlayInterval={5000} showIndicators showArrows={false} loop>
             {data.map((image, idx) => (

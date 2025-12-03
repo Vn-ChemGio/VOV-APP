@@ -10,20 +10,11 @@ import {ShareButton} from '@/components/ui/share';
 import {ScrollView} from '@/components/ui/scroll-view';
 import {Dimensions} from 'react-native';
 import {useColor} from '@/hooks/useColor';
-
-export interface RecommendItem {
-    key: string;
-    image_url: string;
-    title: string;
-    description: string;
-    is_liked: boolean;
-    likes: number;
-    comments: number;
-}
+import {Recommend} from "@/types";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const AppRecommendsSection = ({data = []}: { data?: RecommendItem[] }) => {
+const AppRecommendsSection = ({data = []}: { data?: Recommend[] }) => {
     const colorText = useColor('text');
     const backgroundColor = useColor('background');
     const shareContent = {

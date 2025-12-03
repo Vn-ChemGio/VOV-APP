@@ -6,16 +6,17 @@ import { View } from '@/components/ui/view';
 import { Music, Newspaper, Podcast, Radio } from 'lucide-react-native';
 import { useColor } from '@/hooks/useColor';
 import { useRouter } from 'expo-router';
+import {Menu} from "@/types";
 
 
-const dataMenuItems = [
+const dataMenuItems: Menu[] = [
   {key: 'radios', label: 'Radio', icon: Radio},
   {key: 'news', label: 'News', icon: Newspaper},
   {key: '(musics)', label: 'Music', icon: Music},
   {key: 'podcast', label: 'Podcast', icon: Podcast},
 ];
 
-const AppMenu = ({data = dataMenuItems} : {data?: typeof dataMenuItems}) => {
+const AppMenu = ({data = dataMenuItems} : {data?: Menu[]}) => {
   const borderColor = useColor('border');
   const foregroundColor = useColor('foreground');
   const primaryColor = useColor('primary');

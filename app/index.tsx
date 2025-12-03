@@ -1,54 +1,26 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {Animated} from 'react-native';
 import {View} from '@/components/ui/view';
 import {useColor} from '@/hooks/useColor';
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from '@/components/features/home/AppHeader';
-import AppBanners, {BannerItem} from '@/components/features/home/AppBanners';
+import AppBanners from '@/components/features/home/AppBanners';
 import AppMenu from '@/components/features/home/AppMenu';
-import AppRecommendsSection, {RecommendItem} from '@/components/features/home/AppRecommendsSection';
-import RadioChannels, {RadioChannel} from '@/components/features/home/RadioChannels';
-import News, {NewsItem} from '@/components/features/home/News';
-import PodCasts, {PodcastItem} from '@/components/features/home/PodCasts';
+import AppRecommendsSection from '@/components/features/home/AppRecommendsSection';
+import RadioChannels from '@/components/features/home/RadioChannels';
+import LatestNews from '@/components/features/home/News';
+import PodCasts from '@/components/features/home/PodCasts';
 import {LoadingOverlay} from "@/components/ui/spinner";
+import {useHomePage} from "@/hooks/useHomePage";
 
 const HomeScreen = () => {
     const backgroundColor = useColor('background');
     const bgCard = useColor('card');
-
+    
     const scrollY = useRef(new Animated.Value(0)).current;
-
-    const [data, setData] = useState<{
-        banners: BannerItem[],
-        recommends: RecommendItem[],
-        radios: RadioChannel[],
-        news: NewsItem[],
-        podcasts: PodcastItem[],
-    }>({news: [], banners: [], recommends: [], radios: [], podcasts: []});
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const response = await fetch('https://vov-api-production.up.railway.app');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const jsonData = await response.json();
-                setData(jsonData);
-            } catch (err: any) {
-                setError(err.message || 'An error occurred while fetching data');
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    return loading ? <LoadingOverlay visible={true}/> : (
+    
+    const {isLoading, data} = useHomePage();
+    
+    return isLoading ? <LoadingOverlay visible={true}/> : (
         <View style={{flex: 1}}>
             <AppHeaderStickyAnimation scrollY={scrollY}/>
             <Animated.ScrollView
@@ -69,25 +41,25 @@ const HomeScreen = () => {
                 }}>
                     {/* Section 1: Heading (logo + welcome bar) */}
                     <AppHeaderScrollAnimation scrollY={scrollY}/>
-
+                    
                     {/* Section 2: Carousel Image + Menu */}
                     <View style={{padding: 16, gap: 16, backgroundColor}}>
-                        <AppBanners data={data.banners}/>
+                        <AppBanners data={data?.banners}/>
                         <AppMenu/>
                     </View>
-
+                    
                     {/* Section 3: Carousel Content */}
-                    <AppRecommendsSection data={data.recommends}/>
-
+                    <AppRecommendsSection data={data?.recommends}/>
+                    
                     {/* Section 4: Radio list (3x2 grid) */}
-                    <RadioChannels data={data.radios}/>
-
+                    <RadioChannels data={data?.radios}/>
+                    
                     {/* Section 4: News */}
-                    <News data={data.news}/>
-
+                    <LatestNews data={data?.news}/>
+                    
                     {/* Section 4: PodCasts */}
-                    <PodCasts data={data.podcasts}/>
-
+                    <PodCasts data={data?.podcasts}/>
+                
                 </View>
             </Animated.ScrollView>
         </View>

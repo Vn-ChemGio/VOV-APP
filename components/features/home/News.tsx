@@ -9,20 +9,11 @@ import { Button } from '@/components/ui/button';
 import { ShareButton } from '@/components/ui/share';
 import { useColor } from '@/hooks/useColor';
 import { Dimensions } from 'react-native';
-
-export interface NewsItem {
-    key: string;
-    title: string;
-    description: string;
-    image_url: string;
-    is_liked: boolean;
-    likes: number;
-    comments: number;
-}
+import {News} from "@/types";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const News = ({data = []}: {data?: NewsItem[]}) => {
+const LatestNews = ({data = []}: {data?: News[]}) => {
   const backgroundColor = useColor('background');
   const colorText = useColor('text');
   
@@ -104,4 +95,4 @@ const News = ({data = []}: {data?: NewsItem[]}) => {
   );
 };
 
-export default News;
+export default LatestNews;
