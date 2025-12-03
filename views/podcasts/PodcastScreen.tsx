@@ -8,12 +8,14 @@ import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card
 import {Image} from "@/components/ui/image";
 import {Button} from "@/components/ui/button";
 import {Text} from "@/components/ui/text";
-import {CircleArrowLeftIcon, SquareMenu} from "lucide-react-native";
+import {CircleArrowLeftIcon, PauseIcon, PlayIcon, SquareMenu} from "lucide-react-native";
 import {BottomSheet, useBottomSheet} from "@/components/ui/bottom-sheet";
 import {useNavigation} from "expo-router";
 import {usePodcast, usePodcastCategories} from "@/views/podcasts/hooks/usePodCasts";
 import {PodcastCategory} from "@/types";
 import {usePodcastCategoriesStore} from "@/views/podcasts/stores";
+import TrackPlayer, {Track, useActiveTrack, useIsPlaying} from "react-native-track-player";
+import {useQueue} from "@/stores/queue";
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -36,13 +38,14 @@ export const PodcastScreen = () => {
             )}
             style={{
                 width: '100%',
-                backgroundColor,
+                backgroundColor: bgCard,
+                paddingTop: 16,
                 paddingBottom: 120,
             }}
         >
             <View style={{
                 gap: 8,
-                backgroundColor: bgCard,
+                backgroundColor: backgroundColor,
             }}>
                 {/* Section 1: Heading (logo + welcome bar) */}
                 <AppHeaderScrollAnimation scrollY={scrollY}/>
@@ -129,10 +132,53 @@ const PodcastsMenu = ({isVisible, close}: { isVisible: boolean; close: () => voi
 const PodcastListItem = ({category_id}: { category_id: number }) => {
     const {isLoading, options} = usePodcast(category_id);
     const borderColor = useColor('border');
+    const backgroundColor = useColor('background');
+    
+    
+    const {activeQueueId, setActiveQueueId} = useQueue()
+    const queueOffset = useRef(0)
+    const tracks: Track[] = options.map(item => ({...item, url: item.source_url, artwork: item.image_url}));
+    
+    const {playing} = useIsPlaying()
+    
+    const activeTrackUrl = useActiveTrack()?.url;
+    
+    const handleTrackSelect = async (selectedTrack: Track) => {
+        const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.source_url)
+        
+        if (trackIndex === -1) return
+        
+        const isChangingQueue = `podcast-${category_id}` !== activeQueueId
+        
+        if (isChangingQueue) {
+            const beforeTracks: Track[] = tracks.slice(0, trackIndex)
+            const afterTracks: Track[] = tracks.slice(trackIndex + 1)
+            
+            await TrackPlayer.reset()
+            
+            // we construct the new queue
+            await TrackPlayer.add(selectedTrack)
+            await TrackPlayer.add(afterTracks)
+            await TrackPlayer.add(beforeTracks)
+            
+            await TrackPlayer.play()
+            
+            queueOffset.current = trackIndex
+            setActiveQueueId(`podcast-${category_id}`)
+        } else {
+            const nextTrackIndex =
+                trackIndex - queueOffset.current < 0
+                    ? tracks.length + trackIndex - queueOffset.current
+                    : trackIndex - queueOffset.current
+            
+            await TrackPlayer.skip(nextTrackIndex)
+            TrackPlayer.play()
+        }
+    }
     
     return isLoading ? <LoadingOverlay visible={true}/> : (
         <View style={{paddingHorizontal: 16, paddingBottom: 120, gap: 16}}>
-            {(options || [])?.map((item, i) => (
+            {(tracks || [])?.map((item, i) => (
                 <Card
                     key={i}
                     style={{
@@ -197,6 +243,14 @@ const PodcastListItem = ({category_id}: { category_id: number }) => {
                                     borderWidth: 4,
                                     borderColor: borderColor,
                                 }}
+                                icon={
+                                    ((activeTrackUrl === item.url) && playing) ? () => <PauseIcon
+                                            color={backgroundColor} size={32}
+                                            strokeWidth={2}/>
+                                        : () => <PlayIcon color={backgroundColor} size={32} strokeWidth={2}/>
+                                }
+                                onPress={() => handleTrackSelect(item)}
+                                disabled={activeTrackUrl === item.url && playing}
                             />
                         </View>
                     
