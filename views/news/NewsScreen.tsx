@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BottomSheet, useBottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
 import { useColor } from "@/hooks/useColor";
+import {HEIGHT} from "@/theme/globals";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
         opacity: 0.3,
     },
     progressBar: {
-        height: 3,
+        height: HEIGHT,
         backgroundColor: "#1877F2",
         zIndex: 20,
     },
