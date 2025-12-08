@@ -48,7 +48,10 @@ export type News = {
     title: string;
     description: string;
     image_url: string;
+    published_at: string;
+    source_url: string;
     is_liked: boolean;
+    read: number;
     likes: number;
     comments: number;
 }

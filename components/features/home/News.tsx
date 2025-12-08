@@ -1,19 +1,20 @@
 import React from 'react';
-import { Text } from '@/components/ui/text';
-import { View } from '@/components/ui/view';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Image } from '@/components/ui/image';
-import { Icon } from '@/components/ui/icon';
-import { ArrowRightIcon, HeartIcon, MessageCircleMoreIcon } from 'lucide-react-native';
-import { Button } from '@/components/ui/button';
-import { ShareButton } from '@/components/ui/share';
-import { useColor } from '@/hooks/useColor';
-import { Dimensions } from 'react-native';
+import {Text} from '@/components/ui/text';
+import {View} from '@/components/ui/view';
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
+import {Image} from '@/components/ui/image';
+import {Icon} from '@/components/ui/icon';
+import {ArrowRightIcon, HeartIcon, MessageCircleMoreIcon} from 'lucide-react-native';
+import {Button} from '@/components/ui/button';
+import {ShareButton} from '@/components/ui/share';
+import {useColor} from '@/hooks/useColor';
+import {Dimensions} from 'react-native';
 import {News} from "@/types";
+import {useWebView} from "@/contexts/webviews";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const LatestNews = ({data = []}: {data?: News[]}) => {
+const LatestNews = ({data = []}: { data?: News[] }) => {
   const backgroundColor = useColor('background');
   const colorText = useColor('text');
   
@@ -22,6 +23,7 @@ const LatestNews = ({data = []}: {data?: News[]}) => {
     url: 'https://example.com',
   };
   
+  const {openWebView} = useWebView()
   return (
     <View style={{paddingHorizontal: 16, paddingVertical: 16, gap: 12, backgroundColor}}>
       <Text variant="subtitle" style={{fontSize: 18}}>Tin mới cập nhật</Text>
@@ -60,11 +62,16 @@ const LatestNews = ({data = []}: {data?: News[]}) => {
                      borderBottomRightRadius: 0,
                    }}
             />
-            <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingVertical: 0}}>
-              <CardTitle style={{fontSize: 14}}>{item.title}</CardTitle>
-              <CardDescription style={{fontSize: 12}}>
-                {item.description}
-              </CardDescription>
+            <CardHeader style={{display: 'flex', paddingHorizontal: 12, flex: 1, paddingVertical: 0, gap: 6}}>
+              <View style={{display: 'flex', gap: 3}}>
+                <CardTitle style={{fontSize: 14}}>{item.title}</CardTitle>
+                
+                <CardDescription style={{fontSize: 10}}>
+                  {item.published_at}
+                </CardDescription>
+              </View>
+              <Text variant="body" style={{fontSize: 12}}>{item.description}</Text>
+            
             </CardHeader>
             <CardFooter style={{
               paddingHorizontal: 12,
@@ -75,7 +82,7 @@ const LatestNews = ({data = []}: {data?: News[]}) => {
               alignItems: 'center'
             }}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-                <Text>Read more</Text>
+                <Text onPress={() => openWebView(item.source_url)} style={{fontSize: 12}}>Đọc thêm</Text>
                 <Icon name={ArrowRightIcon} size={18} color={colorText}/>
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
