@@ -10,7 +10,7 @@ import RadioChannels from '@/components/features/home/RadioChannels';
 import LatestNews from '@/components/features/home/News';
 import PodCasts from '@/components/features/home/PodCasts';
 import {LoadingOverlay} from "@/components/ui/spinner";
-import {useHomePage} from "@/hooks/useHomePage";
+import {useHomePage} from "@/views/home/hooks/useHomePage";
 
 const HomeScreen = () => {
     const backgroundColor = useColor('background');

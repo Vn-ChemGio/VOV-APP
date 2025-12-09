@@ -33,6 +33,7 @@ export type Recommend = {
     image_url: string;
     title: string;
     description: string;
+    source_url: string;
     is_liked: boolean;
     likes: number;
     comments: number;
