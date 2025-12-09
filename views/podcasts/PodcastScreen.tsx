@@ -3,7 +3,7 @@ import {View} from '@/components/ui/view';
 import {Animated, Dimensions, TouchableOpacity} from "react-native";
 import {useColor} from "@/hooks/useColor";
 import {LoadingOverlay} from "@/components/ui/spinner";
-import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from "@/components/features/home/AppHeader";
+import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from "@/components/features/AppHeader";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Image} from "@/components/ui/image";
 import {Button} from "@/components/ui/button";

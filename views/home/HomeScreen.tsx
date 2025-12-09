@@ -4,12 +4,11 @@ import {useColor} from "@/hooks/useColor";
 import {PADDING_BOTTOM, PADDING_HORIZONTAL} from "@/theme/globals";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {View} from "@/components/ui/view";
-import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from "@/components/features/home/AppHeader";
-
+import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from '@/components/features/AppHeader';
 import {AppBanners, AppMenu, AppRecommends, News, PodCasts, RadioChannels} from "./components";
 import {useHomePage} from "./hooks";
 
-const HomeScreen = () => {
+export const HomeScreen = () => {
   const backgroundColor = useColor('background');
   const bgCard = useColor('card');
   
@@ -72,4 +71,3 @@ const styles = StyleSheet.create({
     gap: 16,
   }
 })
-export default HomeScreen;

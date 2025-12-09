@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableHighlight} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 import {useRouter} from "expo-router";
 import {Music, Newspaper, Podcast, Radio} from "lucide-react-native";
 import {useColor} from "@/hooks/useColor";
@@ -25,7 +25,7 @@ export const AppMenu = ({data = menus}: { data?: Menu[] }) => {
   return (
     <View style={styles.container}>
       {data.map((item) => (
-        <TouchableHighlight
+        <TouchableOpacity
           key={item.key}
           activeOpacity={0.8}
           style={[styles.itemContainer, {borderColor}]}
@@ -33,7 +33,7 @@ export const AppMenu = ({data = menus}: { data?: Menu[] }) => {
         >
           <Icon name={item.icon} color={primaryColor} size={24} style={styles.itemIcon}/>
           <Text style={[styles.itemLabel, {color: foregroundColor}]}>{item.label}</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       ))}
     </View>
   );
