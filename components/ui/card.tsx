@@ -2,7 +2,7 @@ import { Text } from '@/components/ui/text';
 import { View } from '@/components/ui/view';
 import { useColor } from '@/hooks/useColor';
 import { BORDER_RADIUS } from '@/theme/globals';
-import { TextStyle, ViewStyle } from 'react-native';
+import {TextProps, TextStyle, ViewStyle} from 'react-native';
 
 interface CardProps {
   children: React.ReactNode;
@@ -44,14 +44,15 @@ export function CardHeader({ children, style }: CardHeaderProps) {
   return <View style={[{ marginBottom: 8 }, style]}>{children}</View>;
 }
 
-interface CardTitleProps {
+interface CardTitleProps extends TextProps{
   children: React.ReactNode;
   style?: TextStyle;
 }
 
-export function CardTitle({ children, style }: CardTitleProps) {
+export function CardTitle({ children, style, ...rest}: CardTitleProps) {
   return (
     <Text
+      {...rest}
       variant='title'
       style={[
         {

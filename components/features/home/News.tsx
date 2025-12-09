@@ -3,32 +3,24 @@ import {Text} from '@/components/ui/text';
 import {View} from '@/components/ui/view';
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {Image} from '@/components/ui/image';
-import {Icon} from '@/components/ui/icon';
-import {ArrowRightIcon, HeartIcon, MessageCircleMoreIcon} from 'lucide-react-native';
-import {Button} from '@/components/ui/button';
 import {ShareButton} from '@/components/ui/share';
 import {useColor} from '@/hooks/useColor';
 import {Dimensions} from 'react-native';
 import {News} from "@/types";
 import {useWebView} from "@/contexts/webviews";
+import {Badge} from "@/components/ui/badge";
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const LatestNews = ({data = []}: { data?: News[] }) => {
   const backgroundColor = useColor('background');
-  const colorText = useColor('text');
-  
-  const shareContent = {
-    message: 'Check out this amazing content!',
-    url: 'https://example.com',
-  };
   
   const {openWebView} = useWebView()
   return (
     <View style={{paddingHorizontal: 16, paddingVertical: 16, gap: 12, backgroundColor}}>
       <Text variant="subtitle" style={{fontSize: 18}}>Tin mới cập nhật</Text>
       <View style={{rowGap: 12}}>
-        {data.map((item, i) => (
+        {data.slice(0, 5).map((item, i) => (
           <Card
             key={`news-${i}`}
             style={{
@@ -63,13 +55,7 @@ const LatestNews = ({data = []}: { data?: News[] }) => {
                    }}
             />
             <CardHeader style={{display: 'flex', paddingHorizontal: 12, flex: 1, paddingVertical: 0, gap: 6}}>
-              <View style={{display: 'flex', gap: 3}}>
-                <CardTitle style={{fontSize: 14}}>{item.title}</CardTitle>
-                
-                <CardDescription style={{fontSize: 10}}>
-                  {item.published_at}
-                </CardDescription>
-              </View>
+              <CardTitle style={{fontSize: 14}} onPress={() => openWebView(item.source_url)}>{item.title}</CardTitle>
               <Text variant="body" style={{fontSize: 12}}>{item.description}</Text>
             
             </CardHeader>
@@ -81,20 +67,28 @@ const LatestNews = ({data = []}: { data?: News[] }) => {
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
-              <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-                <Text onPress={() => openWebView(item.source_url)} style={{fontSize: 12}}>Đọc thêm</Text>
-                <Icon name={ArrowRightIcon} size={18} color={colorText}/>
-              </View>
+              <CardDescription style={{fontSize: 10}}>{item.published_at}</CardDescription>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Button size="ghost-icon" variant="ghost" icon={HeartIcon}/>
-                <Button size="ghost-icon" variant="ghost" icon={MessageCircleMoreIcon}/>
                 <ShareButton
-                  content={shareContent}
-                  size="ghost-icon"
-                  variant="ghost"
+                  content={{
+                    url: item.source_url,
+                    title: item.title,
+                    subject: item.description,
+                    message: item.description
+                  }}
+                  variant="link"
                 />
               </View>
             </CardFooter>
+            <View style={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+            }}>
+              <Badge>
+                {item.category?.name}
+              </Badge>
+            </View>
           </Card>
         ))}
       </View>

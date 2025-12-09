@@ -43,6 +43,12 @@ export type RadioChannel = {
     source_url: string;
 }
 
+export type NewsCategory = {
+  id: number;
+  name?: string;
+  is_active?: boolean;
+  order?: number;
+}
 export type News = {
     key: string;
     title: string;
@@ -54,6 +60,7 @@ export type News = {
     read: number;
     likes: number;
     comments: number;
+    category?: NewsCategory;
 }
 
 export type PodcastCategory = {
