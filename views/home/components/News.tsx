@@ -4,6 +4,7 @@ import {Text} from '@/components/ui/text';
 import {View} from '@/components/ui/view';
 import {useColor} from '@/hooks/useColor';
 import CardNews from "@/components/features/CardNews";
+import {HoveredProvider} from "@/contexts/hover/HoveredContext";
 import {News as NewsItem} from "@/types";
 
 export const News = ({data = []}: { data?: NewsItem[] }) => {
@@ -13,9 +14,11 @@ export const News = ({data = []}: { data?: NewsItem[] }) => {
     <View style={[styles.container, {backgroundColor}]}>
       <Text variant="subtitle" style={styles.title}>Tin mới cập nhật</Text>
       <View style={styles.contentContainer}>
-        {data.slice(0, 5).map((item, i) => (
-          <CardNews {...item} key={`news-${i}`}/>
-        ))}
+        <HoveredProvider>
+          {data.slice(0, 5).map((item, idx) => (
+            <CardNews {...{...item, idx}} key={`news-${idx}`}/>
+          ))}
+        </HoveredProvider>
       </View>
     </View>);
 };
