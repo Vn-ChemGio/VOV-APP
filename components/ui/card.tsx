@@ -66,14 +66,14 @@ export function CardTitle({ children, style, ...rest}: CardTitleProps) {
   );
 }
 
-interface CardDescriptionProps {
+interface CardDescriptionProps extends TextProps {
   children: React.ReactNode;
   style?: StyleProp<TextStyle>;
 }
 
-export function CardDescription({ children, style }: CardDescriptionProps) {
+export function CardDescription({ children, style, ...rest }: CardDescriptionProps) {
   return (
-    <Text variant='caption' style={[style]}>
+    <Text variant='caption' style={[style]} {...rest}>
       {children}
     </Text>
   );

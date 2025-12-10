@@ -64,7 +64,10 @@ const CardPodCast = (item: Podcast & Track & {
                       />
                     </View>
                     <View style={styles.contentContainerHovered}>
-                      <Pressable onPress={() => item.handleTrackSelect(item)} style={styles.onPress}>
+                      <Pressable
+                        onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
+                        disabled={activeTrackUrl === item.url && playing}
+                      >
                         <Ionicons name={(activeTrackUrl === item.url) && playing ? "pause-circle" : "play-circle"}
                                   size={48} color="#fff" style={{opacity: 0.9}}/>
                       </Pressable>
@@ -73,9 +76,9 @@ const CardPodCast = (item: Podcast & Track & {
                 )}
               </Pressable>
             </View>
-            <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingVertical: 0}}>
-              <CardTitle style={{fontSize: 14}}>{item.title}</CardTitle>
-              <CardDescription style={{fontSize: 12}}>
+            <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingTop: 0, paddingBottom: 12}}>
+              <CardTitle style={{fontSize: 14}} numberOfLines={2}>{item.title}</CardTitle>
+              <CardDescription style={{fontSize: 12}} numberOfLines={2}>
                 {item.description}
               </CardDescription>
             </CardHeader>
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
   cardImageWrapper: {
     position: 'relative',
     width: '100%',
-    height: screenWidth * 2 / 3 * 9 / 16,
+    aspectRatio: 16 / 9,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     overflow: 'hidden',

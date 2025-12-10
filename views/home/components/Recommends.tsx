@@ -25,16 +25,24 @@ export const Recommends = ({data = []}: { data?: Recommend[] }) => {
       >
         {data.map((item, i) => (
           <Card key={i} style={styles.card}>
-            <Image source={{uri: item.image_url}}
-                   contentFit="cover"
-                   variant="default"
-                   containerStyle={styles.cardImageContainer}
-                   style={styles.cardImage}
-            />
+            <View style={styles.cardImageWrapper}>
+              <Image source={{uri: item.image_url}}
+                     contentFit="cover"
+                     variant="default"
+                     containerStyle={styles.cardImageContainer}
+                     style={styles.cardImage}
+              />
+            </View>
             <View style={{flex: 1, gap: 4, justifyContent: 'space-between'}}>
               <CardHeader style={styles.cardHeader}>
                 <CardTitle style={styles.cardTitle}>{item.title}</CardTitle>
-                <CardDescription style={styles.cardDescription}>{item.description}</CardDescription>
+                <CardDescription
+                  style={styles.cardDescription}
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                >
+                  {item.description}
+                </CardDescription>
               </CardHeader>
               
               <CardFooter style={styles.cardFooter}>
@@ -80,9 +88,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingVertical: 0,
   },
+  cardImageWrapper: {
+    position: 'relative',
+    width: '100%',
+    aspectRatio: 16 / 9,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: 'hidden',
+  },
   cardImageContainer: {
     width: '100%',
-    height: screenWidth * 2 / 3 * 9 / 16,
+    height: '100%',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     borderBottomLeftRadius: 0,

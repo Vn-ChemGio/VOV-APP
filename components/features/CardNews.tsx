@@ -12,8 +12,6 @@ import {useWebView} from "@/contexts/webviews";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
 import {News} from "@/types";
 
-const {width: screenWidth} = Dimensions.get('window');
-
 const CardNews = (item: News & { idx: number }) => {
   const {openWebView} = useWebView()
   const onPress = () => {
@@ -72,11 +70,11 @@ const CardNews = (item: News & { idx: number }) => {
             </Pressable>
             
             <CardHeader style={styles.cardHeader}>
-              <CardTitle style={styles.cardTitle} onPress={() => {
+              <CardTitle style={styles.cardTitle}   numberOfLines={2}onPress={() => {
                 setHovered(true);
                 onPress();
               }}>{item.title}</CardTitle>
-              <Text variant="body" style={styles.cardDescription}>{item.description}</Text>
+              <Text variant="body" style={styles.cardDescription}   numberOfLines={3} ellipsizeMode="tail">{item.description}</Text>
             
             </CardHeader>
             <CardFooter style={styles.cardFooter}>
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
   },
   cardImageContainer: {
     width: '100%',
-    height: screenWidth * 2 / 3 * 9 / 16,
+    aspectRatio: 16/9,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     borderBottomLeftRadius: 0,
