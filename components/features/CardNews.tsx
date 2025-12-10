@@ -27,10 +27,10 @@ const CardNews = (item: News & { idx: number }) => {
             {/* Overlay to dismiss hover when isHovered */}
             {isHovered && (
               <Pressable
-                onPress={() => setHovered(false)}
-                style={{position: 'absolute', inset: 0, zIndex: 10}}
-                pointerEvents="auto"
-              >
+              onPress={() => setHovered(false)}
+              style={{position: 'absolute', inset: 0, zIndex: 10}}
+              pointerEvents="box-none"   // <-- change this line
+            >
                 {/* empty overlay */}
               </Pressable>
             )}
