@@ -9,6 +9,7 @@ import {useColor} from '@/hooks/useColor';
 import {useQueue} from "@/stores/queue";
 import {Podcast} from "@/types";
 import {PADDING_BOTTOM} from "@/theme/globals";
+import {HoveredProvider} from "@/contexts/hover/HoveredContext";
 
 export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: string }) => {
   const backgroundColor = useColor('background');
@@ -62,12 +63,15 @@ export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: strin
         contentContainerStyle={styles.contentContainer}
         showsHorizontalScrollIndicator={false}
       >
-        {tracks.map((item, i) => (
-          <CardPodCast {...{
-            ...item,
-            handleTrackSelect
-          }} key={`podcast-${i}`}/>
-        ))}
+        <HoveredProvider>
+          {tracks.map((item, idx) => (
+            <CardPodCast {...{
+              ...item,
+              idx,
+              handleTrackSelect
+            }} key={`podcast-${idx}`}/>
+          ))}
+        </HoveredProvider>
       </ScrollView>
     </View>
   );

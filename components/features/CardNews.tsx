@@ -46,14 +46,22 @@ const CardNews = (item: News & { idx: number }) => {
               />
               {isHovered && (
                 <View style={styles.contentContainerHoveredWrapper}>
-                  <BlurView style={{
+                  <View style={{
                     position: 'absolute',
                     zIndex: 1,
                     borderTopLeftRadius: 12,
                     borderTopRightRadius: 12,
                     borderBottomLeftRadius: 0,
                     borderBottomRightRadius: 0,
-                  }} intensity={25} tint="dark"/>
+                    overflow: 'hidden',
+                    inset: 0,
+                  }}>
+                    <BlurView
+                      style={{flex: 1}}
+                      intensity={5}
+                      tint="dark"
+                    />
+                  </View>
                   <View style={styles.contentContainerHovered}>
                     <Pressable onPress={()=> {openWebView(item.source_url)}} style={styles.onPress}>
                       <Ionicons name="play-circle" size={48} color="#fff" style={{opacity: 0.9}}/>

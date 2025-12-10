@@ -1,11 +1,11 @@
 import React, {useRef} from 'react';
 import {Animated, StyleSheet} from "react-native";
 import {useColor} from "@/hooks/useColor";
-import {PADDING_BOTTOM, PADDING_HORIZONTAL} from "@/theme/globals";
+import {PADDING_HORIZONTAL} from "@/theme/globals";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {View} from "@/components/ui/view";
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from '@/components/features/AppHeader';
-import {AppBanners, AppMenu, Recommends, News, PodCasts, RadioChannels} from "./components";
+import {AppBanners, AppMenu, News, PodCasts, RadioChannels, Recommends} from "./components";
 import {useHomePage} from "./hooks";
 
 export const HomeScreen = () => {
