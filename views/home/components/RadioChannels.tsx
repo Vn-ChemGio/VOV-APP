@@ -15,7 +15,10 @@ export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
   
   const {activeQueueId, setActiveQueueId} = useQueue()
   const queueOffset = useRef(0)
-  const tracks: Track[] = data.map(item => ({...item, url: item.source_url, artwork: `${appConfig.apiPrefix}${item.image_url}`, title: item.name}));
+  const tracks: Track[] = data.map((item, index) => ({
+    ...item, url: item.source_url, artwork: `${appConfig.apiPrefix}${item.image_url}`, title: item.name,
+    isOnline: index !== 4
+  }));
   
   const handleTrackSelect = async (selectedTrack: Track) => {
     const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.source_url)

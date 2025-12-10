@@ -5,6 +5,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {Card} from "@/components/ui/card";
 import {View} from "@/components/ui/view";
 import {Image} from "@/components/ui/image";
+import {Text} from "@/components/ui/text";
 import {useColor} from "@/hooks/useColor";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
 import {RadioChannel} from "@/types";
@@ -42,19 +43,46 @@ const CardRadioChannel = (item: RadioChannel & Track & {
               style={{flex: 1, width: '100%', height: '100%'}}
               onPress={() => setHovered(true)}
             >
-              <Image
-                source={{uri: `${appConfig.apiPrefix}${item.image_url}`}}
-                height={(screenWidth - 16 * 2 - 8 * 2) / 3}
-                contentFit="cover"
-                style={styles.contentContainer}
-              />
+              <View style={{position: 'relative', width: '100%', height: '100%'}}>
+                <Image
+                  source={{uri: `${appConfig.apiPrefix}${item.image_url}`}}
+                  height={(screenWidth - 16 * 2 - 8 * 2) / 3}
+                  contentFit="cover"
+                  style={styles.contentContainer}
+                />
+                <View style={{
+                  position: 'absolute',
+                  top: 4,
+                  right: 4,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.70)',
+                  borderRadius: 12,
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  zIndex: 20,
+                }}>
+                  <View style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    marginRight: 5,
+                    backgroundColor: item.isOnline ? '#2ecc40' : '#bbb' // green for online, gray for offline
+                  }} />
+                  <View>
+                    <Text style={{color: '#fff', fontSize: 10, fontWeight: '500'}}>
+                      {item.isOnline ? 'Online' : 'Offline'}
+                    </Text>
+                  </View>
+                </View>
+              </View>
               {isHovered && (
                 <View style={styles.contentContainerHoveredWrapper}>
                   <BlurView style={{...StyleSheet.absoluteFillObject, zIndex: 1,}} intensity={25} tint="dark"/>
                   <View style={styles.contentContainerHovered}>
                     <Pressable
                       onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
-                      disabled={activeTrackUrl === item.url && playing}
+                      disabled={activeTrackUrl === item.url && playing || !item.isOnline}
                     >
                       <Ionicons name={(activeTrackUrl === item.url) && playing ? "pause-circle" : "play-circle"}
                                 size={48} color="#fff" style={{opacity: 0.9}}/>
