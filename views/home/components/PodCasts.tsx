@@ -8,6 +8,7 @@ import CardPodCast from "@/components/features/CardPodCast";
 import {useColor} from '@/hooks/useColor';
 import {useQueue} from "@/stores/queue";
 import {Podcast} from "@/types";
+import {PADDING_BOTTOM} from "@/theme/globals";
 
 export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: string }) => {
   const backgroundColor = useColor('background');
@@ -73,12 +74,13 @@ export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: strin
 };
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 16, gap: 12
+    paddingVertical: 16, gap: 12,
+    paddingBottom: PADDING_BOTTOM,
   },
   title: {
     fontSize: 18, paddingHorizontal: 16
   },
   contentContainer: {
-    gap: 16, paddingHorizontal: 16
+    gap: 16, paddingHorizontal: 16, paddingBottom: 12
   },
 })

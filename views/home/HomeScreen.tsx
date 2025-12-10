@@ -28,7 +28,7 @@ export const HomeScreen = () => {
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {useNativeDriver: false}
         )}
-        style={[styles.containerWraper, {backgroundColor}]}
+        style={[styles.containerWrapper, {backgroundColor}]}
       >
         <View style={[styles.container, {backgroundColor: bgCard}]}>
           {/* Section 1: Heading (logo + welcome bar) */}
@@ -51,7 +51,6 @@ export const HomeScreen = () => {
           
           {/* Section 5: PodCasts */}
           <PodCasts data={data?.podcasts}/>
-        
         </View>
       </Animated.ScrollView>
     </View>
@@ -59,12 +58,11 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  containerWraper: {
+  containerWrapper: {
     width: '100%',
-    paddingBottom: PADDING_BOTTOM,
   },
   container: {
-    gap: 8
+    gap: 8,
   },
   bannerContainer: {
     padding: PADDING_HORIZONTAL,

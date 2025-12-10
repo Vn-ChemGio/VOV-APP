@@ -35,7 +35,7 @@ const CardNews = (item: News & { key: string }) => {
             url: item.source_url,
             title: item.title,
             subject: item.description,
-            message: item.description
+            message: item.title
           }}
           variant="link"
         />

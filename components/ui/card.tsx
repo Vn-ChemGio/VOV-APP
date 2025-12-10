@@ -2,11 +2,11 @@ import { Text } from '@/components/ui/text';
 import { View } from '@/components/ui/view';
 import { useColor } from '@/hooks/useColor';
 import { BORDER_RADIUS } from '@/theme/globals';
-import {TextProps, TextStyle, ViewStyle} from 'react-native';
+import {TextProps, TextStyle, ViewStyle, StyleProp} from 'react-native';
 
 interface CardProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>; // Accepts ViewStyle or an array of ViewStyle
 }
 
 export function Card({ children, style }: CardProps) {
@@ -37,7 +37,7 @@ export function Card({ children, style }: CardProps) {
 
 interface CardHeaderProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function CardHeader({ children, style }: CardHeaderProps) {
@@ -46,7 +46,7 @@ export function CardHeader({ children, style }: CardHeaderProps) {
 
 interface CardTitleProps extends TextProps{
   children: React.ReactNode;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
 export function CardTitle({ children, style, ...rest}: CardTitleProps) {
@@ -68,7 +68,7 @@ export function CardTitle({ children, style, ...rest}: CardTitleProps) {
 
 interface CardDescriptionProps {
   children: React.ReactNode;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
 export function CardDescription({ children, style }: CardDescriptionProps) {
@@ -81,7 +81,7 @@ export function CardDescription({ children, style }: CardDescriptionProps) {
 
 interface CardContentProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function CardContent({ children, style }: CardContentProps) {
@@ -90,7 +90,7 @@ export function CardContent({ children, style }: CardContentProps) {
 
 interface CardFooterProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function CardFooter({ children, style }: CardFooterProps) {

@@ -1,19 +1,18 @@
 import React from 'react';
 import {Dimensions, StyleSheet} from "react-native";
-import {Recommend} from "@/types";
-import {useColor} from "@/hooks/useColor";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 import {ScrollView} from "@/components/ui/scroll-view";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Image} from "@/components/ui/image";
 import {ShareButton} from "@/components/ui/share";
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {useColor} from "@/hooks/useColor";
+import {Recommend} from "@/types";
 
 const {width: screenWidth} = Dimensions.get('window');
 
 export const Recommends = ({data = []}: { data?: Recommend[] }) => {
   const backgroundColor = useColor('background');
-  const colorText = useColor('text');
   
   return (
     <View style={[styles.container, {backgroundColor}]}>
@@ -32,24 +31,26 @@ export const Recommends = ({data = []}: { data?: Recommend[] }) => {
                    containerStyle={styles.cardImageContainer}
                    style={styles.cardImage}
             />
-            <CardHeader style={styles.cardHeader}>
-              <CardTitle style={styles.cardTitle}>{item.title}</CardTitle>
-              <CardDescription style={styles.cardDescription}>{item.description}</CardDescription>
-            </CardHeader>
-            
-            <CardFooter style={styles.cardFooter}>
-              <CardDescription
-                style={styles.cardDescription}>{item.published_at || new Date().toLocaleDateString()}</CardDescription>
-              <ShareButton
-                content={{
-                  url: item.source_url,
-                  title: item.title,
-                  subject: item.description,
-                  message: item.title
-                }}
-                variant="link"
-              />
-            </CardFooter>
+            <View style={{flex: 1, gap: 4, justifyContent: 'space-between'}}>
+              <CardHeader style={styles.cardHeader}>
+                <CardTitle style={styles.cardTitle}>{item.title}</CardTitle>
+                <CardDescription style={styles.cardDescription}>{item.description}</CardDescription>
+              </CardHeader>
+              
+              <CardFooter style={styles.cardFooter}>
+                <CardDescription
+                  style={styles.cardDescription}>{item.published_at || new Date().toLocaleDateString()}</CardDescription>
+                <ShareButton
+                  content={{
+                    url: item.source_url,
+                    title: item.title,
+                    subject: item.description,
+                    message: item.title,
+                  }}
+                  variant="link"
+                />
+              </CardFooter>
+            </View>
           </Card>
         ))}
       </ScrollView>
