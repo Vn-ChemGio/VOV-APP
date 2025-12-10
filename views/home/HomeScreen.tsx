@@ -5,7 +5,7 @@ import {PADDING_BOTTOM, PADDING_HORIZONTAL} from "@/theme/globals";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {View} from "@/components/ui/view";
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from '@/components/features/AppHeader';
-import {AppBanners, AppMenu, AppRecommends, News, PodCasts, RadioChannels} from "./components";
+import {AppBanners, AppMenu, Recommends, News, PodCasts, RadioChannels} from "./components";
 import {useHomePage} from "./hooks";
 
 export const HomeScreen = () => {
@@ -41,7 +41,7 @@ export const HomeScreen = () => {
           </View>
           
           {/* Section 3: Carousel Content */}
-          <AppRecommends data={data?.recommends}/>
+          <Recommends data={data?.recommends}/>
           
           {/* Section 4: Radio list (3x2 grid) */}
           <RadioChannels data={data?.radios}/>

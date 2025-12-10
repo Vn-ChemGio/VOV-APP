@@ -52,7 +52,7 @@ const CardNews = (item: News & { key: string }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: screenWidth * 2 / 3,
+    width: '100%',
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

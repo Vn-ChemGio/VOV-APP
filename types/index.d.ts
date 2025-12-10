@@ -37,6 +37,7 @@ export type Recommend = {
     is_liked: boolean;
     likes: number;
     comments: number;
+    published_at: string;
 }
 
 export type RadioChannel = {

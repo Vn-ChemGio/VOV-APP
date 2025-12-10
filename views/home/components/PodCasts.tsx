@@ -55,6 +55,7 @@ export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: strin
   return (
     <View style={[styles.container, {backgroundColor}]}>
       <Text variant="subtitle" style={styles.title}>Podcast mới</Text>
+      
       <ScrollView
         horizontal={true}
         contentContainerStyle={styles.contentContainer}
@@ -72,12 +73,12 @@ export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: strin
 };
 const styles = StyleSheet.create({
   container: {
-    padding: 16, gap: 12
+    paddingVertical: 16, gap: 12
   },
   title: {
-    fontSize: 18
+    fontSize: 18, paddingHorizontal: 16
   },
   contentContainer: {
-    rowGap: 12
-  }
+    gap: 16, paddingHorizontal: 16
+  },
 })
