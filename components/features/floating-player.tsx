@@ -15,7 +15,6 @@ export const FloatingPlayer = ({style}: ViewProps) => {
   //const displayedTrack = {title: 'La la la'};
   const text = useColor('text');
   const theme = useColorScheme() ?? 'light';
-  const backgroundColor = useColor('background');
   
   const activeTrack = useActiveTrack()
   const lastActiveTrack = useLastActiveTrack()

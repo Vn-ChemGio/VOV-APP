@@ -8,16 +8,20 @@ import {Image} from "@/components/ui/image";
 import {useColor} from "@/hooks/useColor";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
 import {RadioChannel} from "@/types";
+import {Track, useActiveTrack, useIsPlaying} from "react-native-track-player";
+import appConfig from "@/configs/app.config";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const CardRadioChannel = (item: RadioChannel & {idx: number}) => {
+const CardRadioChannel = (item: RadioChannel & Track & {
+  handleTrackSelect: (selectedTrack: Track) => void,
+  idx: number
+}) => {
   const borderColor = useColor('border');
   
-  const onPress = ()=> {
-    // TODO: play music at this Radio; optionally close hover
-    // setHovered(false);
-  }
+  const {playing} = useIsPlaying()
+  
+  const activeTrackUrl = useActiveTrack()?.url;
   
   return (
     <Card style={[styles.card, {borderColor}]}>
@@ -29,7 +33,7 @@ const CardRadioChannel = (item: RadioChannel & {idx: number}) => {
               <Pressable
                 onPress={() => setHovered(false)}
                 style={{position: 'absolute', inset: 0, zIndex: 10}}
-                pointerEvents="auto"
+                pointerEvents="box-none"   // <-- change this line
               >
                 {/* empty overlay */}
               </Pressable>
@@ -39,7 +43,7 @@ const CardRadioChannel = (item: RadioChannel & {idx: number}) => {
               onPress={() => setHovered(true)}
             >
               <Image
-                source={{uri: `https://vov-api-production.up.railway.app${item.image_url}`}}
+                source={{uri: `${appConfig.apiPrefix}${item.image_url}`}}
                 height={(screenWidth - 16 * 2 - 8 * 2) / 3}
                 contentFit="cover"
                 style={styles.contentContainer}
@@ -48,8 +52,12 @@ const CardRadioChannel = (item: RadioChannel & {idx: number}) => {
                 <View style={styles.contentContainerHoveredWrapper}>
                   <BlurView style={{...StyleSheet.absoluteFillObject, zIndex: 1,}} intensity={25} tint="dark"/>
                   <View style={styles.contentContainerHovered}>
-                    <Pressable onPress={onPress} style={styles.onPress}>
-                      <Ionicons name="play-circle" size={48} color="#fff" style={{opacity: 0.9}}/>
+                    <Pressable
+                      onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
+                      disabled={activeTrackUrl === item.url && playing}
+                    >
+                      <Ionicons name={(activeTrackUrl === item.url) && playing ? "pause-circle" : "play-circle"}
+                                size={48} color="#fff" style={{opacity: 0.9}}/>
                     </Pressable>
                   </View>
                 </View>
