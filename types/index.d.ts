@@ -3,6 +3,7 @@ import {LucideIcon} from "lucide-react-native";
 declare module '*.png'
 declare module '*.jpg'
 
+
 export type TableQueries = {
   total?: number
   pageIndex?: number

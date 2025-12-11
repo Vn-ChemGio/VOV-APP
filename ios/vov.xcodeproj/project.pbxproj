@@ -355,6 +355,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = vov/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "VOV Giải trí";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -368,7 +369,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vn.chemgio.vov;
-				PRODUCT_NAME = vov;
+				PRODUCT_NAME = VOVGiitr;
 				SWIFT_OBJC_BRIDGING_HEADER = "vov/vov-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -387,6 +388,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AXJC6ST4XC;
 				INFOPLIST_FILE = vov/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "VOV Giải trí";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -400,7 +402,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vn.chemgio.vov;
-				PRODUCT_NAME = vov;
+				PRODUCT_NAME = VOVGiitr;
 				SWIFT_OBJC_BRIDGING_HEADER = "vov/vov-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
