@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, View, ViewProps } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import TrackPlayer, { Track } from 'react-native-track-player'
+import {Music} from "@/types";
 
 type QueueControlsProps = {
-	tracks: Track[]
+	tracks: (Music & Track)[]
 } & ViewProps
 
 export const QueueControls = ({ tracks, style, ...viewProps }: QueueControlsProps) => {

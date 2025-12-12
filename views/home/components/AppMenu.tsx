@@ -11,7 +11,7 @@ import {Menu} from "@/types";
 const menus: Menu[] = [
   {key: 'radios', label: 'Radio', icon: Radio},
   {key: 'news', label: 'News', icon: Newspaper},
-  {key: '(musics)', label: 'Music', icon: Music},
+  {key: 'musics', label: 'Music', icon: Music},
   {key: 'podcast', label: 'Podcast', icon: Podcast},
 ];
 

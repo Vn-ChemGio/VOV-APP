@@ -33,3 +33,20 @@ export async function apiGetPodcasts<T,  U extends Record<string, unknown> = Rec
         }
     });
 }
+
+
+export async function apiGetMusicArtists<T>(
+  [_]: [string],
+) {
+  console.log('apiGetMusicArtists',_);
+  return ApiService.fetchDataWithAxios<T>({
+    url: _,
+    method: 'get',
+    params: {
+      relations: ['songs'],
+      order: {
+        id: 'ASC'
+      }
+    }
+  });
+}

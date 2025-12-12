@@ -1,12 +1,13 @@
 import {Stack} from 'expo-router'
 import {useColor} from "@/hooks/useColor";
+import {colors} from "@/constants/tokens";
 
 const MusicNavigation = () => {
   const backgroundColor = useColor('background');
   const textColor = useColor('text');
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       
       <Stack.Screen
         name="player"
@@ -19,19 +20,19 @@ const MusicNavigation = () => {
         }}
       />
       
-      {/*<Stack.Screen
+      <Stack.Screen
         name="(modals)/addToPlaylist"
         options={{
           presentation: 'modal',
           headerStyle: {
-            backgroundColor,
+            backgroundColor: colors.background,
           },
           headerTitle: 'Add to playlist',
           headerTitleStyle: {
-            color: textColor,
+            color: colors.text,
           },
         }}
-      />*/}
+      />
     </Stack>
   )
 }

@@ -42,7 +42,7 @@ export default function RootLayout() {
               headerTitle: 'Profile',
             }}/>
             
-            <Stack.Screen name='(musics)' options={{headerShown: false}}/>
+            <Stack.Screen name='musics' options={{headerShown: false}}/>
             <Stack.Screen name='podcast/index' options={{
               headerShown: false
             }}/>

@@ -82,3 +82,21 @@ export type Podcast = {
   image_url: string;
   source_url: string;
 }
+
+export type MusicCategory = {
+}
+export type Artist = {
+  id: number;
+  name: string;
+  description: string;
+  avatar_url?: string;
+  is_active: boolean;
+  songs: Music[];
+}
+export type Music = {
+  id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  source_url: string;
+}
