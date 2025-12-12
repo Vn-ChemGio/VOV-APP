@@ -4,13 +4,14 @@ import {useCategories} from './hooks'
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Link} from 'expo-router'
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native'
+import {FlatList, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Image} from "@/components/ui/image";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 import {categoryNameFilter} from "@/helpers/filter";
 import appConfig from "@/configs/app.config";
+import {useColor} from "@/hooks/useColor";
 
 
 export const CategoriesScreen = () => {
@@ -21,6 +22,8 @@ export const CategoriesScreen = () => {
   })
   
   const {categories, isLoading} = useCategories()
+  const backgroundColor = useColor('background')
+  const textColor = useColor('text')
   
   const filteredCategories = useMemo(() => {
     if (!search) return categories
@@ -29,7 +32,7 @@ export const CategoriesScreen = () => {
   }, [categories, search])
   
   return (
-    <View style={defaultStyles.container}>
+    <View style={[defaultStyles.container, { backgroundColor }]}>
       <ScrollView
         style={{paddingHorizontal: screenPadding.horizontal}}
         contentInsetAdjustmentBehavior="automatic"
@@ -65,7 +68,7 @@ export const CategoriesScreen = () => {
             data={filteredCategories}
             renderItem={({item: category}) => (
               <Link href={`/musics/(tabs)/categories/${category.id}`} asChild>
-                <TouchableHighlight activeOpacity={0.8}>
+                <TouchableWithoutFeedback>
                   <View style={styles.categoryContainer}>
                     <View>
                       <Image
@@ -85,12 +88,12 @@ export const CategoriesScreen = () => {
                         width: '100%',
                       }}
                     >
-                      <Text numberOfLines={1} style={styles.categoryNameText}>
+                      <Text numberOfLines={1} style={[styles.categoryNameText, {color: textColor}]}>
                         {category.name}
                       </Text>
                     </View>
                   </View>
-                </TouchableHighlight>
+                </TouchableWithoutFeedback>
               </Link>
             )}
             scrollEnabled={false}

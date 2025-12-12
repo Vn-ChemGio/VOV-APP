@@ -8,6 +8,7 @@ import LoaderKit from 'react-native-loader-kit'
 import {Track, useActiveTrack, useIsPlaying} from 'react-native-track-player'
 import {MusicSong} from "@/types";
 import appConfig from "@/configs/app.config";
+import {useColor} from "@/hooks/useColor";
 
 export type TracksListItemProps = {
   track: MusicSong & Track
@@ -18,6 +19,7 @@ export const TracksListItem = ({
                                  track,
                                  onTrackSelect: handleTrackSelect,
                                }: TracksListItemProps) => {
+  const textColor = useColor('text')
   const {playing} = useIsPlaying()
   
   const isActiveTrack = useActiveTrack()?.url === track.url;
@@ -69,14 +71,14 @@ export const TracksListItem = ({
               numberOfLines={1}
               style={{
                 ...styles.trackTitleText,
-                color: isActiveTrack ? colors.primary : colors.text,
+                color: isActiveTrack ? colors.primary : textColor,
               }}
             >
               {track.title}
             </Text>
             
             {track.artist && (
-              <Text numberOfLines={1} style={styles.trackArtistText}>
+              <Text numberOfLines={1} style={[styles.trackArtistText, {color: textColor}]}>
                 {track.artist}
               </Text>
             )}

@@ -5,8 +5,10 @@ import {Redirect, useLocalSearchParams} from 'expo-router'
 import {View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {CategoryTracksList} from "@/components/CategoryTracksList";
+import {useColor} from "@/hooks/useColor";
 
 export const CategoryDetailScreen = () => {
+  const backgroundColor = useColor('background')
   const {id: categoryId} = useLocalSearchParams<{ id: string }>()
   
   const {categories} = useCategories()
@@ -20,7 +22,7 @@ export const CategoryDetailScreen = () => {
   }
   
   return (
-    <View style={defaultStyles.container}>
+    <View style={[defaultStyles.container, { backgroundColor }]}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={{paddingHorizontal: screenPadding.horizontal}}

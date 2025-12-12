@@ -1,10 +1,14 @@
-import { StackScreenWithSearchBar } from '@/constants/layout'
-import { colors } from '@/constants/tokens'
-import { defaultStyles } from '@/styles'
-import { Stack } from 'expo-router'
-import { View } from 'react-native'
+import {StackScreenWithSearchBar} from '@/constants/layout'
+import {defaultStyles} from '@/styles'
+import {Stack} from 'expo-router'
+import {View} from 'react-native'
+import {useColor} from "@/hooks/useColor";
 
 const ArtistsScreenLayout = () => {
+  const backgroundColor = useColor('card');
+  const textColor = useColor('text');
+  const primaryColor = useColor('primary');
+  
   return (
     <View style={defaultStyles.container}>
       <Stack>
@@ -12,6 +16,13 @@ const ArtistsScreenLayout = () => {
           name="index"
           options={{
             ...StackScreenWithSearchBar,
+            headerLargeStyle: {
+              backgroundColor,
+            },
+            headerLargeTitleStyle: {
+              color: textColor,
+            },
+            headerTintColor: textColor,
             headerTitle: 'Artists',
           }}
         />
@@ -22,9 +33,9 @@ const ArtistsScreenLayout = () => {
             headerTitle: '',
             headerBackVisible: true,
             headerStyle: {
-              backgroundColor: colors.background,
+              backgroundColor,
             },
-            headerTintColor: colors.primary,
+            headerTintColor: primaryColor,
           }}
         />
       </Stack>

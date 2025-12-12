@@ -4,7 +4,7 @@ import {useArtists} from './hooks'
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Link} from 'expo-router'
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, TouchableHighlight, View} from 'react-native'
+import {FlatList, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
@@ -12,6 +12,7 @@ import {LoadingOverlay} from "@/components/ui/spinner";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 import {artistNameFilter} from "@/helpers/filter";
 import appConfig from "@/configs/app.config";
+import {useColor} from "@/hooks/useColor";
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -19,7 +20,8 @@ export const ArtistsScreen = () => {
       placeholder: 'Find in artists',
     },
   })
-  
+  const backgroundColor = useColor('background')
+  const textColor = useColor('text')
   const {artists, isLoading} = useArtists()
   
   const filteredArtists = useMemo(() => {
@@ -29,7 +31,7 @@ export const ArtistsScreen = () => {
   }, [artists, search])
   
   return (
-    <View style={defaultStyles.container}>
+    <View style={[defaultStyles.container, { backgroundColor }]}>
       <ScrollView
         style={{paddingHorizontal: screenPadding.horizontal}}
         contentInsetAdjustmentBehavior="automatic"
@@ -68,7 +70,7 @@ export const ArtistsScreen = () => {
             renderItem={({item: artist}) => {
               return (
                 <Link href={`/musics/(tabs)/artists/${artist.id}`} asChild>
-                  <TouchableHighlight activeOpacity={0.8}>
+                  <TouchableWithoutFeedback>
                     <View style={styles.artistItemContainer}>
                       <View>
                         <Image
@@ -81,12 +83,12 @@ export const ArtistsScreen = () => {
                       </View>
                       
                       <View style={{width: '100%'}}>
-                        <Text numberOfLines={1} style={styles.artistNameText}>
+                        <Text numberOfLines={1} style={[styles.artistNameText, {color: textColor}]}>
                           {artist.name}
                         </Text>
                       </View>
                     </View>
-                  </TouchableHighlight>
+                  </TouchableWithoutFeedback>
                 </Link>
               )
             }}
