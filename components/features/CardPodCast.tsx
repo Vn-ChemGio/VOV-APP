@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Pressable, StyleSheet} from "react-native";
+import {Dimensions, Pressable, StyleProp, StyleSheet, ViewStyle} from "react-native";
 import {Track, useActiveTrack, useIsPlaying} from "react-native-track-player";
 import {BlurView} from "expo-blur";
 import {Ionicons} from "@expo/vector-icons";
@@ -14,13 +14,13 @@ const {width: screenWidth} = Dimensions.get('window');
 const CardPodCast = (item: Podcast & Track & {
   handleTrackSelect: (selectedTrack: Track) => void;
   idx: number;
-}) => {
+} & { style?: StyleProp<ViewStyle> }) => {
   const {playing} = useIsPlaying()
   
   const activeTrackUrl = useActiveTrack()?.url;
   
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, item.style]}>
       <Hoverable hoveredValue={item.idx}>
         {(isHovered, setHovered) => (
           <>

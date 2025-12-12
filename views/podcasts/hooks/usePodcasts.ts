@@ -29,7 +29,7 @@ export const usePodcastCategories = () => {
     }
 }
 
-export const usePodcast = (category_id: number) => {
+export const usePodcasts = (category_id: number) => {
     const customizableOptionStore = React.useMemo(
         () => getPodcastsStoreById(category_id),
         [category_id],
