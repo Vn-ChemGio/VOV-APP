@@ -7,11 +7,11 @@ import { FlatList, FlatListProps, Text, View } from 'react-native'
 import TrackPlayer, { Track } from 'react-native-track-player'
 import { QueueControls } from './QueueControls'
 import {Image} from "expo-image";
-import {Music} from "@/types";
+import {MusicSong} from "@/types";
 
 export type TracksListProps = Partial<FlatListProps<Track>> & {
   id: string
-  tracks: (Music & Track)[]
+  tracks: (MusicSong & Track)[]
   hideQueueControls?: boolean
 }
 

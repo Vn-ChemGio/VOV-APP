@@ -6,12 +6,12 @@ import {StyleSheet, Text, TouchableHighlight, View} from 'react-native'
 import {Image} from "@/components/ui/image";
 import LoaderKit from 'react-native-loader-kit'
 import {Track, useActiveTrack, useIsPlaying} from 'react-native-track-player'
-import {Music} from "@/types";
+import {MusicSong} from "@/types";
 import appConfig from "@/configs/app.config";
 
 export type TracksListItemProps = {
-  track: Music & Track
-  onTrackSelect: (track: Music & Track) => void
+  track: MusicSong & Track
+  onTrackSelect: (track: MusicSong & Track) => void
 }
 
 export const TracksListItem = ({
@@ -29,7 +29,7 @@ export const TracksListItem = ({
           
           <Image
             source={{
-              uri: track.image_url ? `https://picsum.photos/200` : unknownTrackImageUri,
+              uri: track.image_url ? `${appConfig.mediaHost}${track.image_url}` : unknownTrackImageUri,
             }}
             priority={'normal'}
             style={{

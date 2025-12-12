@@ -1,18 +1,18 @@
-import { unknownArtistImageUri } from '@/constants/images'
-import { fontSize } from '@/constants/tokens'
-import { trackTitleFilter } from '@/helpers/filter'
-import { generateTracksListId } from '@/helpers/miscellaneous'
-import { useNavigationSearch } from '@/hooks/useNavigationSearch'
-import { defaultStyles } from '@/styles'
-import { useMemo } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { QueueControls } from './QueueControls'
-import { TracksList } from './TracksList'
+import {unknownArtistImageUri} from '@/constants/images'
+import {fontSize} from '@/constants/tokens'
+import {trackTitleFilter} from '@/helpers/filter'
+import {generateTracksListId} from '@/helpers/miscellaneous'
+import {useNavigationSearch} from '@/hooks/useNavigationSearch'
+import {defaultStyles} from '@/styles'
+import {useMemo} from 'react'
+import {StyleSheet, Text, View} from 'react-native'
+import {QueueControls} from './QueueControls'
+import {TracksList} from './TracksList'
 import {Image} from "@/components/ui/image";
 import {Artist} from "@/types";
 import appConfig from "@/configs/app.config";
 
-export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
+export const ArtistTracksList = ({artist}: { artist: Artist }) => {
   const search = useNavigationSearch({
     searchBarOptions: {
       hideWhenScrolling: true,
@@ -23,7 +23,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
   const filteredArtistTracks = useMemo(() => {
     return artist.songs.filter(trackTitleFilter(search)).map(song => ({
       ...song,
-      url: song.source_url
+      url: `${appConfig.mediaHost}${song.source_url}`
     }))
   }, [artist.songs, search])
   
@@ -38,7 +38,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
           <View style={styles.artworkImageContainer}>
             <Image
               source={{
-                uri: artist.avatar_url ? `https://picsum.photos/200`: unknownArtistImageUri,
+                uri: artist.avatar_url ? `https://picsum.photos/200` : unknownArtistImageUri,
               }}
               containerStyle={styles.artistImage}
               priority={'high'}
@@ -50,7 +50,10 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
           </Text>
           
           {search.length === 0 && (
-            <QueueControls tracks={filteredArtistTracks} style={{ paddingTop: 24 }} />
+            <QueueControls tracks={artist.songs.map(song => ({
+              ...song,
+              url: `${appConfig.mediaHost}${song.source_url}`
+            }))} style={{paddingTop: 24}}/>
           )}
         </View>
       }

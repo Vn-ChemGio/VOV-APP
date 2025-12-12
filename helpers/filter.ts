@@ -1,5 +1,5 @@
 import { Playlist } from './types'
-import {Artist} from "@/types";
+import {Artist, MusicCategory} from "@/types";
 
 export const trackTitleFilter = (title: string) => (track: any) =>
 	track.title?.toLowerCase().includes(title.toLowerCase())
@@ -9,3 +9,6 @@ export const artistNameFilter = (name: string) => (artist: Artist) =>
 
 export const playlistNameFilter = (name: string) => (playlist: Playlist) =>
 	playlist.name.toLowerCase().includes(name.toLowerCase())
+
+export const categoryNameFilter = (name: string) => (category: MusicCategory) =>
+	category.name.toLowerCase().includes(name.toLowerCase())

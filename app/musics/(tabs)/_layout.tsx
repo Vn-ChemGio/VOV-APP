@@ -35,16 +35,9 @@ const TabsNavigation = () => {
       }}
     >
       <Tabs.Screen
-        name="favorites"
+        name="categories"
         options={{
-          title: 'Favorites',
-          tabBarIcon: ({color}) => <FontAwesome name="heart" size={20} color={color}/>,
-        }}
-      />
-      <Tabs.Screen
-        name="playlists"
-        options={{
-          title: 'Playlists',
+          title: 'Danh mục',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="playlist-play" size={28} color={color}/>
           ),
@@ -53,7 +46,7 @@ const TabsNavigation = () => {
       <Tabs.Screen
         name="(songs)"
         options={{
-          title: 'Songs',
+          title: 'Bài hát',
           tabBarIcon: ({color}) => (
             <Ionicons name="musical-notes-sharp" size={24} color={color}/>
           ),
@@ -62,7 +55,7 @@ const TabsNavigation = () => {
       <Tabs.Screen
         name="artists"
         options={{
-          title: 'Artists',
+          title: 'Ca sĩ',
           tabBarIcon: ({color}) => <FontAwesome6 name="users-line" size={20} color={color}/>,
         }}
       />

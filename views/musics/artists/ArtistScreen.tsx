@@ -4,17 +4,14 @@ import {useArtists} from './hooks'
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Link} from 'expo-router'
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, Text, TouchableHighlight, View} from 'react-native'
+import {FlatList, StyleSheet, TouchableHighlight, View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Image} from "@/components/ui/image";
+import {Text} from "@/components/ui/text";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 import {artistNameFilter} from "@/helpers/filter";
 import appConfig from "@/configs/app.config";
-
-const ItemSeparatorComponent = () => {
-  return <View style={[utilsStyles.itemSeparator, {marginLeft: 50, marginVertical: 12}]}/>
-}
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -25,11 +22,11 @@ export const ArtistsScreen = () => {
   
   const {artists, isLoading} = useArtists()
   
-    const filteredArtists = useMemo(() => {
-      if (!search) return artists
-      
-      return artists.filter(artistNameFilter(search))
-    }, [artists, search])
+  const filteredArtists = useMemo(() => {
+    if (!search) return artists
+    
+    return artists.filter(artistNameFilter(search))
+  }, [artists, search])
   
   return (
     <View style={defaultStyles.container}>
@@ -41,18 +38,29 @@ export const ArtistsScreen = () => {
           <FlatList
             contentContainerStyle={{paddingTop: 10, paddingBottom: 120}}
             scrollEnabled={false}
-            ItemSeparatorComponent={ItemSeparatorComponent}
-            ListFooterComponent={ItemSeparatorComponent}
+            ItemSeparatorComponent={() => <View
+              style={{
+                ...utilsStyles.itemSeparator,
+                marginLeft: filteredArtists.length ? 50 : 0,
+                marginVertical: 12
+              }}/>
+            }
+            ListFooterComponent={() => <View
+              style={{
+                ...utilsStyles.itemSeparator,
+                marginLeft: filteredArtists.length ? 50 : 0,
+                marginVertical: 12
+              }}/>}
             ListEmptyComponent={
               <View>
-                <Text>No artist found</Text>
+                <Text style={utilsStyles.emptyContentText}>Không tìm thấy dữ liệu</Text>
                 
                 <Image
                   source={{
                     uri: unknownArtistImageUri,
                   }}
                   priority={'normal'}
-                  style={utilsStyles.emptyContentImage}
+                  containerStyle={utilsStyles.emptyContentImage}
                 />
               </View>
             }
@@ -65,10 +73,10 @@ export const ArtistsScreen = () => {
                       <View>
                         <Image
                           source={{
-                            uri: artist.avatar_url ? `${appConfig.apiPrefix}${artist.avatar_url}`: unknownArtistImageUri,
+                            uri: artist.avatar_url ? `${appConfig.apiPrefix}${artist.avatar_url}` : unknownArtistImageUri,
                           }}
                           priority={'normal'}
-                          style={styles.artistImage}
+                          containerStyle={styles.artistImage}
                         />
                       </View>
                       
