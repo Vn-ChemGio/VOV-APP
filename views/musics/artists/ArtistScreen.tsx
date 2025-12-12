@@ -74,7 +74,7 @@ export const ArtistsScreen = () => {
                       
                       <View style={{width: '100%'}}>
                         <Text numberOfLines={1} style={styles.artistNameText}>
-                          {artist.name} {(artist.id)}
+                          {artist.name}
                         </Text>
                       </View>
                     </View>

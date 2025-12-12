@@ -40,7 +40,7 @@ export const ArtistTracksList = ({ artist }: { artist: Artist }) => {
               source={{
                 uri: artist.avatar_url ? `https://picsum.photos/200`: unknownArtistImageUri,
               }}
-              style={styles.artistImage}
+              containerStyle={styles.artistImage}
               priority={'high'}
             />
           </View>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width: '60%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 128,
+    borderRadius: '50%',
   },
   artistNameText: {
     ...defaultStyles.text,
