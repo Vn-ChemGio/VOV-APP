@@ -1,2 +1,1 @@
-export * from './ArtistScreen';
-export * from './ArtistDetailScreen';
+export * from './SongScreen';

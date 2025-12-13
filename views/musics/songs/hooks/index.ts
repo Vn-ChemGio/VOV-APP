@@ -1,1 +1,1 @@
-export * from './useArtists';
+export * from './useSongs';

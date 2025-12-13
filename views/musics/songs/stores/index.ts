@@ -1,1 +1,1 @@
-export * from './useArtistsStore';
+export * from './useSongsStore';

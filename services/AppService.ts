@@ -65,3 +65,18 @@ export async function apiGetMusicCategories<T>(
     }
   });
 }
+
+export async function apiGetMusicSongs<T>(
+  [_]: [string],
+) {
+  console.log('apiGetMusicArtists',_);
+  return ApiService.fetchDataWithAxios<T>({
+    url: _,
+    method: 'get',
+    params: {
+      order: {
+        id: 'ASC'
+      }
+    }
+  });
+}

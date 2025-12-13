@@ -5,17 +5,19 @@ import {View} from 'react-native'
 import {useColor} from "@/hooks/useColor";
 
 const SongsScreenLayout = () => {
-  const backgroundColor = useColor('card');
+  const backgroundColor = useColor('background');
+  const cardBackgroundColor = useColor('card');
+  
   const textColor = useColor('text');
   return (
-    <View style={defaultStyles.container}>
+    <View style={[defaultStyles.container, {backgroundColor}]}>
       <Stack>
         <Stack.Screen
           name="index"
           options={{
             ...StackScreenWithSearchBar,
             headerLargeStyle: {
-              backgroundColor,
+              backgroundColor: cardBackgroundColor,
             },
             headerLargeTitleStyle: {
               color: textColor,
