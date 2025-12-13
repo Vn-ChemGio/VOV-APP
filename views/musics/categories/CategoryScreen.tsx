@@ -64,7 +64,7 @@ export const CategoriesScreen = () => {
                     <View style={[styles.categoryImage, {position: 'relative'}]}>
                       <Image
                         source={{
-                          uri: category.image_url ? `${appConfig.mediaHost}${category.image_url}` : unknownArtistImageUri,
+                          uri: category.image_url ? category.image_url: unknownArtistImageUri,
                         }}
                         priority="low"
                         containerStyle={styles.categoryImage}
