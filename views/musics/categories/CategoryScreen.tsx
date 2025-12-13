@@ -1,17 +1,19 @@
-import {unknownArtistImageUri, unknownTrackImageUri} from '@/constants/images'
-import {useCategories} from './hooks'
-import {defaultStyles, utilsStyles} from '@/styles'
-import {Link} from 'expo-router'
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
-import {ScrollView} from 'react-native-gesture-handler'
-import {Image} from "@/components/ui/image";
-import {LoadingOverlay} from "@/components/ui/spinner";
-import {useNavigationSearch} from "@/hooks/useNavigationSearch";
-import {categoryNameFilter} from "@/helpers/filter";
-import appConfig from "@/configs/app.config";
-import {useColor} from "@/hooks/useColor";
+import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import {BlurView} from 'expo-blur'
+import {Link} from 'expo-router'
+import {ScrollView} from 'react-native-gesture-handler'
+import {unknownArtistImageUri, unknownTrackImageUri} from '@/constants/images'
+import {defaultStyles, utilsStyles} from '@/styles'
+import appConfig from "@/configs/app.config";
+import {useNavigationSearch} from "@/hooks/useNavigationSearch";
+import {useColor} from "@/hooks/useColor";
+import {LoadingOverlay} from "@/components/ui/spinner";
+import {Image} from "@/components/ui/image";
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
+import {categoryNameFilter} from "@/helpers/filter";
+import {useCategories} from './hooks'
 
 
 export const CategoriesScreen = () => {
@@ -23,7 +25,6 @@ export const CategoriesScreen = () => {
   
   const {categories, isLoading} = useCategories()
   const backgroundColor = useColor('background')
-  const textColor = useColor('text')
   
   const filteredCategories = useMemo(() => {
     if (!search) return categories
@@ -96,34 +97,6 @@ export const CategoriesScreen = () => {
                   </View>
                 </TouchableWithoutFeedback>
               </Link>
-              /* <Link href={`/musics/(tabs)/categories/${category.id}`} asChild>
-                 <TouchableWithoutFeedback>
-                   <View style={styles.categoryContainer}>
-                     <View>
-                       <Image
-                         source={{
-                           uri: category.image_url ? `${appConfig.mediaHost}${category.image_url}` : unknownArtistImageUri,
-                         }}
-                         priority="low"
-                         containerStyle={styles.categoryImage}
-                       />
-                     </View>
-                     
-                     <View
-                       style={{
-                         flexDirection: 'row',
-                         justifyContent: 'space-between',
-                         alignItems: 'center',
-                         width: '100%',
-                       }}
-                     >
-                       <Text numberOfLines={1} style={[styles.categoryNameText, {color: textColor}]}>
-                         {category.name}
-                       </Text>
-                     </View>
-                   </View>
-                 </TouchableWithoutFeedback>
-               </Link>*/
             )}
             scrollEnabled={false}
           />

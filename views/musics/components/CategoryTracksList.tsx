@@ -1,20 +1,22 @@
+import {useMemo} from 'react'
+import {StyleSheet} from 'react-native'
+
 import {fontSize} from '@/constants/tokens'
+import appConfig from "@/configs/app.config";
 import {trackTitleFilter} from '@/helpers/filter'
 import {generateTracksListId} from '@/helpers/miscellaneous'
 import {useNavigationSearch} from '@/hooks/useNavigationSearch'
-import {useMemo} from 'react'
-import {StyleSheet, Text, View} from 'react-native'
 
-import {QueueControls} from './QueueControls'
-import {TracksList} from './TracksList'
 import {Image} from "@/components/ui/image";
-import {MusicCategory} from "@/types";
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
 import {unknownArtistImageUri} from "@/constants/images";
-import appConfig from "@/configs/app.config";
-import {useColor} from "@/hooks/useColor";
+import {QueueControls} from './QueueControls'
+
+import {TracksList} from './TracksList'
+import {MusicCategory} from "@/types";
 
 export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
-  const textColor = useColor('text')
   const search = useNavigationSearch({
     searchBarOptions: {
       hideWhenScrolling: true,
@@ -47,7 +49,7 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
             />
           </View>
           
-          <Text numberOfLines={1} style={[styles.playlistNameText, {color: textColor}]}>
+          <Text numberOfLines={1} style={styles.playlistNameText}>
             {category.name}
           </Text>
           
@@ -77,12 +79,11 @@ const styles = StyleSheet.create({
   },
   artworkImage: {
     width: '100%',
-    height: '100%',
     resizeMode: 'cover',
     borderRadius: 12,
+    aspectRatio: 1
   },
   playlistNameText: {
-    marginTop: 22,
     textAlign: 'center',
     fontSize: fontSize.lg,
     fontWeight: '800',

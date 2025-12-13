@@ -23,7 +23,7 @@ const ArtistsScreenLayout = () => {
               color: textColor,
             },
             headerTintColor: textColor,
-            headerTitle: 'Artists',
+            headerTitle: 'Ca sĩ',
           }}
         />
         

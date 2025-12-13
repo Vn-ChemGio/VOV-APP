@@ -1,11 +1,10 @@
-import {screenPadding} from '@/constants/tokens'
-import {useCategories} from './hooks'
-import {defaultStyles} from '@/styles'
 import {Redirect, useLocalSearchParams} from 'expo-router'
 import {View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
-import {CategoryTracksList} from "@/components/CategoryTracksList";
+import {defaultStyles} from '@/styles'
 import {useColor} from "@/hooks/useColor";
+import {useCategories} from './hooks'
+import {CategoryTracksList} from "../components";
 
 export const CategoryDetailScreen = () => {
   const backgroundColor = useColor('background')
@@ -22,12 +21,12 @@ export const CategoryDetailScreen = () => {
   }
   
   return (
-    <View style={[defaultStyles.container, { backgroundColor }]}>
+    <View style={[defaultStyles.container, {backgroundColor}]}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={{paddingHorizontal: 16}}
       >
-        <CategoryTracksList category={category} />
+        <CategoryTracksList category={category}/>
       </ScrollView>
     </View>
   )

@@ -1,10 +1,11 @@
-import {ArtistTracksList} from '@/components/ArtistTracksList'
-import {useArtists} from './hooks'
-import {defaultStyles} from '@/styles'
-import {Redirect, useLocalSearchParams} from 'expo-router'
 import {View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
+import {Redirect, useLocalSearchParams} from 'expo-router'
+
+import {defaultStyles} from '@/styles'
 import {useColor} from "@/hooks/useColor";
+import {useArtists} from './hooks'
+import {ArtistTracksList} from '../components'
 
 export const ArtistDetailScreen = () => {
   const backgroundColor = useColor('background')
@@ -21,10 +22,10 @@ export const ArtistDetailScreen = () => {
   }
   
   return (
-    <View style={[defaultStyles.container, { backgroundColor }]}>
+    <View style={[defaultStyles.container, {backgroundColor}]}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={{paddingHorizontal: 12}}
+        style={{paddingHorizontal: 16}}
       >
         <ArtistTracksList artist={artist}/>
       </ScrollView>

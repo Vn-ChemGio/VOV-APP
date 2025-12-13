@@ -1,12 +1,12 @@
-import {colors} from '@/constants/tokens'
-import {defaultStyles} from '@/styles'
-import {Ionicons} from '@expo/vector-icons'
-import {StyleSheet, Text, View, ViewProps} from 'react-native'
-import {TouchableOpacity} from 'react-native-gesture-handler'
+import {StyleSheet, TouchableOpacity, ViewProps} from 'react-native'
 import TrackPlayer, {Track} from 'react-native-track-player'
-import {MusicSong} from "@/types";
+import {Ionicons} from '@expo/vector-icons'
 import {useColorScheme} from "@/hooks/useColorScheme";
 import {useColor} from "@/hooks/useColor";
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
+
+import {MusicSong} from "@/types";
 
 type QueueControlsProps = {
   tracks: (MusicSong & Track)[]
@@ -14,10 +14,9 @@ type QueueControlsProps = {
 
 export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps) => {
   const theme = useColorScheme() ?? 'light';
-  
-  console.log(theme)
-  const isDarkMode = theme === 'dark';
   const textColor = useColor('text');
+  
+  const isDarkMode = theme === 'dark';
   const handlePlay = async () => {
     await TrackPlayer.setQueue(tracks)
     await TrackPlayer.play()
@@ -38,7 +37,7 @@ export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps)
                           style={[isDarkMode ? styles.buttonDark : styles.buttonLight]}>
           <Ionicons name="play" size={22} color={textColor}/>
           
-          <Text style={[styles.buttonText, {color: textColor}]}>Play</Text>
+          <Text style={styles.buttonText}>Play</Text>
         </TouchableOpacity>
       </View>
       
@@ -48,7 +47,7 @@ export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps)
                           style={[isDarkMode ? styles.buttonDark : styles.buttonLight]}>
           <Ionicons name={'shuffle-sharp'} size={24} color={textColor}/>
           
-          <Text style={[styles.buttonText, {color: textColor}]}>Shuffle</Text>
+          <Text style={styles.buttonText}>Shuffle</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -77,8 +76,6 @@ const styles = StyleSheet.create({
     columnGap: 8,
   },
   buttonText: {
-    ...defaultStyles.text,
-    color: colors.primary,
     fontWeight: '600',
     fontSize: 18,
     textAlign: 'center',

@@ -1,5 +1,4 @@
 import {unknownArtistImageUri} from '@/constants/images'
-import {screenPadding} from '@/constants/tokens'
 import {useArtists} from './hooks'
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Link} from 'expo-router'
@@ -31,7 +30,7 @@ export const ArtistsScreen = () => {
   return (
     <View style={defaultStyles.container}>
       <ScrollView
-        style={{paddingHorizontal: screenPadding.horizontal}}
+        style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
       >
         {isLoading ? <LoadingOverlay visible={true}/> :

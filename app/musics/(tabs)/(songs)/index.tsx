@@ -1,4 +1,4 @@
-import { TracksList } from '@/components/TracksList'
+import { TracksList } from '@/views/musics/components/TracksList'
 import { screenPadding } from '@/constants/tokens'
 import { trackTitleFilter } from '@/helpers/filter'
 import { generateTracksListId } from '@/helpers/miscellaneous'

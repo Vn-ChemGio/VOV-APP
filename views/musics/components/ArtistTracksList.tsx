@@ -1,16 +1,22 @@
+import {useMemo} from 'react'
+import {StyleSheet} from 'react-native'
+
 import {unknownArtistImageUri} from '@/constants/images'
 import {fontSize} from '@/constants/tokens'
+import appConfig from "@/configs/app.config";
+
 import {trackTitleFilter} from '@/helpers/filter'
 import {generateTracksListId} from '@/helpers/miscellaneous'
+
 import {useNavigationSearch} from '@/hooks/useNavigationSearch'
-import {defaultStyles} from '@/styles'
-import {useMemo} from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import {Image} from "@/components/ui/image";
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
+
 import {QueueControls} from './QueueControls'
 import {TracksList} from './TracksList'
-import {Image} from "@/components/ui/image";
+
 import {Artist} from "@/types";
-import appConfig from "@/configs/app.config";
 
 export const ArtistTracksList = ({artist}: { artist: Artist }) => {
   const search = useNavigationSearch({
@@ -79,7 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: '50%',
   },
   artistNameText: {
-    ...defaultStyles.text,
     marginTop: 22,
     textAlign: 'center',
     fontSize: fontSize.lg,

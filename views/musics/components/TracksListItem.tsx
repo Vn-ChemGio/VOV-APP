@@ -1,14 +1,18 @@
-import {unknownTrackImageUri} from '@/constants/images'
-import {colors, fontSize} from '@/constants/tokens'
-import {defaultStyles} from '@/styles'
-import {Ionicons} from '@expo/vector-icons'
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native'
-import {Image} from "@/components/ui/image";
+import {StyleSheet, TouchableOpacity} from 'react-native'
 import LoaderKit from 'react-native-loader-kit'
 import {Track, useActiveTrack, useIsPlaying} from 'react-native-track-player'
-import {MusicSong} from "@/types";
+
+import {Ionicons} from '@expo/vector-icons'
+import {unknownTrackImageUri} from '@/constants/images'
+
+import {colors, fontSize} from '@/constants/tokens'
+import {Image} from "@/components/ui/image";
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
+
 import appConfig from "@/configs/app.config";
 import {useColor} from "@/hooks/useColor";
+import {MusicSong} from "@/types";
 
 export type TracksListItemProps = {
   track: MusicSong & Track
@@ -25,13 +29,13 @@ export const TracksListItem = ({
   const isActiveTrack = useActiveTrack()?.url === track.url;
   
   return (
-    <TouchableHighlight onPress={() => handleTrackSelect(track)}>
+    <TouchableOpacity onPress={() => handleTrackSelect(track)}>
       <View style={styles.trackItemContainer}>
         <View>
           
           <Image
             source={{
-              uri: track.image_url ? `${appConfig.mediaHost}${track.image_url}` : unknownTrackImageUri,
+              uri: track.image_url ? `${appConfig.mediaHost}${track.image_url}` : track.artwork ?? unknownTrackImageUri,
             }}
             priority={'normal'}
             style={{
@@ -78,7 +82,7 @@ export const TracksListItem = ({
             </Text>
             
             {track.artist && (
-              <Text numberOfLines={1} style={[styles.trackArtistText, {color: textColor}]}>
+              <Text numberOfLines={1} style={styles.trackArtistText}>
                 {track.artist}
               </Text>
             )}
@@ -91,7 +95,7 @@ export const TracksListItem = ({
           </StopPropagation>*/}
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   )
 }
 
@@ -121,13 +125,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   trackTitleText: {
-    ...defaultStyles.text,
     fontSize: fontSize.sm,
     fontWeight: '600',
     maxWidth: '90%',
   },
   trackArtistText: {
-    ...defaultStyles.text,
     color: colors.textMuted,
     fontSize: 14,
     marginTop: 4,

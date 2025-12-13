@@ -1,7 +1,7 @@
+import {View} from 'react-native'
+import {Stack} from 'expo-router'
 import {StackScreenWithSearchBar} from '@/constants/layout'
 import {defaultStyles} from '@/styles'
-import {Stack} from 'expo-router'
-import {View} from 'react-native'
 import {useColor} from "@/hooks/useColor";
 
 const ArtistsScreenLayout = () => {
@@ -23,7 +23,7 @@ const ArtistsScreenLayout = () => {
               color: textColor,
             },
             headerTintColor: textColor,
-            headerTitle: 'Artists',
+            headerTitle: 'Danh mục',
           }}
         />
         

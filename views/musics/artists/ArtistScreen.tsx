@@ -1,18 +1,21 @@
+import React, {useMemo} from 'react'
+import {FlatList, StyleSheet, TouchableWithoutFeedback, View} from 'react-native'
+import {ScrollView} from 'react-native-gesture-handler'
+import {Link} from 'expo-router'
+
 import {unknownArtistImageUri} from '@/constants/images'
 import {screenPadding} from '@/constants/tokens'
-import {useArtists} from './hooks'
+import appConfig from "@/configs/app.config";
+
 import {defaultStyles, utilsStyles} from '@/styles'
-import {Link} from 'expo-router'
-import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native'
-import {ScrollView} from 'react-native-gesture-handler'
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
 import {LoadingOverlay} from "@/components/ui/spinner";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
-import {artistNameFilter} from "@/helpers/filter";
-import appConfig from "@/configs/app.config";
+
 import {useColor} from "@/hooks/useColor";
+import {artistNameFilter} from "@/helpers/filter";
+import {useArtists} from './hooks'
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -31,9 +34,9 @@ export const ArtistsScreen = () => {
   }, [artists, search])
   
   return (
-    <View style={[defaultStyles.container, { backgroundColor }]}>
+    <View style={[defaultStyles.container, {backgroundColor}]}>
       <ScrollView
-        style={{paddingHorizontal: screenPadding.horizontal}}
+        style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
       >
         {isLoading ? <LoadingOverlay visible={true}/> :

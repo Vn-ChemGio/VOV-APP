@@ -1,23 +1,21 @@
-import { TracksListItem } from '@/components/TracksListItem'
-import { unknownTrackImageUri } from '@/constants/images'
-import { useQueue } from '@/store/queue'
-import { utilsStyles } from '@/styles'
-import { useRef } from 'react'
-import { FlatList, FlatListProps, Text, View } from 'react-native'
-import TrackPlayer, { Track } from 'react-native-track-player'
-import { QueueControls } from './QueueControls'
-import {Image} from "expo-image";
+import {useRef} from 'react'
+import {FlatList, FlatListProps} from 'react-native'
+import TrackPlayer, {Track} from 'react-native-track-player'
+import {useQueue} from '@/store/queue'
+import {utilsStyles} from '@/styles'
+import {View} from "@/components/ui/view";
+import {Text} from "@/components/ui/text";
+
+import {QueueControls} from './QueueControls'
+import {TracksListItem} from './TracksListItem'
+
 import {MusicSong} from "@/types";
 
-export type TracksListProps = Partial<FlatListProps<Track>> & {
+export type TracksListProps = Partial<FlatListProps<Track & MusicSong>> & {
   id: string
   tracks: (MusicSong & Track)[]
   hideQueueControls?: boolean
 }
-
-const ItemDivider = () => (
-  <View style={{ ...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: 60 }} />
-)
 
 export const TracksList = ({
                              id,
@@ -26,9 +24,9 @@ export const TracksList = ({
                              ...flatlistProps
                            }: TracksListProps) => {
   const queueOffset = useRef(0)
-  const { activeQueueId, setActiveQueueId } = useQueue()
+  const {activeQueueId, setActiveQueueId} = useQueue()
   
-  const handleTrackSelect = async (selectedTrack: Track) => {
+  const handleTrackSelect = async (selectedTrack: Track & MusicSong) => {
     const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.url)
     
     if (trackIndex === -1) return
@@ -64,22 +62,25 @@ export const TracksList = ({
   return (
     <FlatList
       data={tracks}
-      contentContainerStyle={{ paddingTop: 10, paddingBottom: 128 }}
+      contentContainerStyle={{paddingTop: 10}}
       ListHeaderComponent={
         !hideQueueControls ? (
-          <QueueControls tracks={tracks} style={{ paddingBottom: 20 }} />
+          <QueueControls tracks={tracks} style={{paddingBottom: 20}}/>
         ) : undefined
       }
-      ListFooterComponent={ItemDivider}
-      ItemSeparatorComponent={ItemDivider}
+      ListFooterComponent={() => (
+        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: tracks.length ? 60 : 0}}/>
+      )}
+      ItemSeparatorComponent={() => (
+        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: tracks.length ? 60 : 0}}/>
+      )}
       ListEmptyComponent={
         <View>
           <Text style={utilsStyles.emptyContentText}>No songs found</Text>
-          <Image source={{ uri: unknownTrackImageUri}} priority={'normal'} style={utilsStyles.emptyContentImage}/>
         </View>
       }
-      renderItem={({ item: track }) => (
-        <TracksListItem track={track} onTrackSelect={handleTrackSelect} />
+      renderItem={({item: track}) => (
+        <TracksListItem track={track} onTrackSelect={handleTrackSelect}/>
       )}
       {...flatlistProps}
     />
