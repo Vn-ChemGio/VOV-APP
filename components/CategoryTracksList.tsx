@@ -2,7 +2,6 @@ import {fontSize} from '@/constants/tokens'
 import {trackTitleFilter} from '@/helpers/filter'
 import {generateTracksListId} from '@/helpers/miscellaneous'
 import {useNavigationSearch} from '@/hooks/useNavigationSearch'
-import {defaultStyles} from '@/styles'
 import {useMemo} from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 
@@ -12,8 +11,10 @@ import {Image} from "@/components/ui/image";
 import {MusicCategory} from "@/types";
 import {unknownArtistImageUri} from "@/constants/images";
 import appConfig from "@/configs/app.config";
+import {useColor} from "@/hooks/useColor";
 
 export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
+  const textColor = useColor('text')
   const search = useNavigationSearch({
     searchBarOptions: {
       hideWhenScrolling: true,
@@ -46,7 +47,7 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
             />
           </View>
           
-          <Text numberOfLines={1} style={styles.playlistNameText}>
+          <Text numberOfLines={1} style={[styles.playlistNameText, {color: textColor}]}>
             {category.name}
           </Text>
           
@@ -71,16 +72,16 @@ const styles = StyleSheet.create({
   artworkImageContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 300,
+    paddingHorizontal: 48,
+    paddingVertical: 24,
   },
   artworkImage: {
-    width: '85%',
+    width: '100%',
     height: '100%',
     resizeMode: 'cover',
     borderRadius: 12,
   },
   playlistNameText: {
-    ...defaultStyles.text,
     marginTop: 22,
     textAlign: 'center',
     fontSize: fontSize.lg,

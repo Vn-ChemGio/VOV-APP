@@ -25,7 +25,7 @@ export const CategoryDetailScreen = () => {
     <View style={[defaultStyles.container, { backgroundColor }]}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={{paddingHorizontal: screenPadding.horizontal}}
+        style={{paddingHorizontal: 16}}
       >
         <CategoryTracksList category={category} />
       </ScrollView>

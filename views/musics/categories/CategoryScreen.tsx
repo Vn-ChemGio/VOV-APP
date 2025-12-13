@@ -1,10 +1,9 @@
 import {unknownArtistImageUri, unknownTrackImageUri} from '@/constants/images'
-import {screenPadding} from '@/constants/tokens'
 import {useCategories} from './hooks'
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Link} from 'expo-router'
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, Text, TouchableHighlight, TouchableWithoutFeedback, View} from 'react-native'
+import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Image} from "@/components/ui/image";
 import {LoadingOverlay} from "@/components/ui/spinner";
@@ -12,6 +11,7 @@ import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 import {categoryNameFilter} from "@/helpers/filter";
 import appConfig from "@/configs/app.config";
 import {useColor} from "@/hooks/useColor";
+import {BlurView} from 'expo-blur'
 
 
 export const CategoriesScreen = () => {
@@ -32,28 +32,15 @@ export const CategoriesScreen = () => {
   }, [categories, search])
   
   return (
-    <View style={[defaultStyles.container, { backgroundColor }]}>
+    <View style={[defaultStyles.container, {backgroundColor}]}>
       <ScrollView
-        style={{paddingHorizontal: screenPadding.horizontal}}
+        style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
       >
         {isLoading ? <LoadingOverlay visible={true}/> :
           <FlatList
             contentContainerStyle={{paddingTop: 10, paddingBottom: 128}}
-            ItemSeparatorComponent={() => <View
-              style={{
-                ...utilsStyles.itemSeparator,
-                marginLeft: filteredCategories.length ? 80 : 0,
-                marginVertical: 12
-              }}/>}
-            ListFooterComponent={
-              () => <View
-                style={{
-                  ...utilsStyles.itemSeparator,
-                  marginLeft: filteredCategories.length ? 80 : 0,
-                  marginVertical: 12
-                }}/>
-            }
+            columnWrapperStyle={{gap: 12}}
             ListEmptyComponent={
               <View>
                 <Text style={utilsStyles.emptyContentText}>Không tìm thấy dữ liệu</Text>
@@ -65,12 +52,15 @@ export const CategoriesScreen = () => {
                 />
               </View>
             }
+            numColumns={2}
             data={filteredCategories}
             renderItem={({item: category}) => (
               <Link href={`/musics/(tabs)/categories/${category.id}`} asChild>
                 <TouchableWithoutFeedback>
-                  <View style={styles.categoryContainer}>
-                    <View>
+                  <View style={[styles.categoryContainer, {
+                    backgroundImage: category.image_url,
+                  }]}>
+                    <View style={[styles.categoryImage, {position: 'relative'}]}>
                       <Image
                         source={{
                           uri: category.image_url ? `${appConfig.mediaHost}${category.image_url}` : unknownArtistImageUri,
@@ -78,23 +68,62 @@ export const CategoriesScreen = () => {
                         priority="low"
                         containerStyle={styles.categoryImage}
                       />
+                      <View
+                        style={[
+                          StyleSheet.absoluteFill,
+                          {
+                            backgroundColor: 'rgba(0,0,0,0.2)', // dark overlay
+                            borderRadius: styles.categoryImage?.borderRadius ?? 8,
+                            overflow: 'hidden',
+                          },
+                        ]}
+                      />
+                      <BlurView
+                        intensity={5}
+                        tint="dark"
+                        style={[
+                          StyleSheet.absoluteFill,
+                          {
+                            borderRadius: styles.categoryImage?.borderRadius ?? 8,
+                            overflow: 'hidden',
+                          },
+                        ]}
+                      />
                     </View>
-                    
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: '100%',
-                      }}
-                    >
-                      <Text numberOfLines={1} style={[styles.categoryNameText, {color: textColor}]}>
-                        {category.name}
-                      </Text>
-                    </View>
+                    <Text numberOfLines={2} style={styles.categoryNameText}>
+                      {category.name}
+                    </Text>
                   </View>
                 </TouchableWithoutFeedback>
               </Link>
+              /* <Link href={`/musics/(tabs)/categories/${category.id}`} asChild>
+                 <TouchableWithoutFeedback>
+                   <View style={styles.categoryContainer}>
+                     <View>
+                       <Image
+                         source={{
+                           uri: category.image_url ? `${appConfig.mediaHost}${category.image_url}` : unknownArtistImageUri,
+                         }}
+                         priority="low"
+                         containerStyle={styles.categoryImage}
+                       />
+                     </View>
+                     
+                     <View
+                       style={{
+                         flexDirection: 'row',
+                         justifyContent: 'space-between',
+                         alignItems: 'center',
+                         width: '100%',
+                       }}
+                     >
+                       <Text numberOfLines={1} style={[styles.categoryNameText, {color: textColor}]}>
+                         {category.name}
+                       </Text>
+                     </View>
+                   </View>
+                 </TouchableWithoutFeedback>
+               </Link>*/
             )}
             scrollEnabled={false}
           />
@@ -106,20 +135,28 @@ export const CategoriesScreen = () => {
 
 const styles = StyleSheet.create({
   categoryContainer: {
-    flexDirection: 'row',
-    columnGap: 14,
+    flex: 1, // Ensures items in a row share space equally
+    marginVertical: 6,
+    borderRadius: 12,
+    backgroundColor: '#f9c2ff',
     alignItems: 'center',
-    paddingRight: 90,
+    justifyContent: 'center',
+    aspectRatio: 4 / 3,
   },
   categoryImage: {
-    borderRadius: 8,
-    width: 70,
-    height: 70,
+    borderRadius: 12,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    backgroundPosition: 'center',
   },
   categoryNameText: {
-    ...defaultStyles.text,
-    fontSize: 17,
-    fontWeight: '600',
-    maxWidth: '80%',
+    position: 'absolute',
+    bottom: 8,
+    left: 8,
+    right: 8,
+    fontSize: 16,
+    fontWeight: '800',
+    color: 'white',
   },
 })
