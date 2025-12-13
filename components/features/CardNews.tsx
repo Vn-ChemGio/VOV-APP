@@ -1,22 +1,18 @@
 import React from 'react';
-import {Dimensions, Pressable, StyleSheet} from "react-native";
+import {Pressable, StyleSheet} from "react-native";
 import {BlurView} from "expo-blur";
+import {Href} from "expo-router";
 import {Ionicons} from "@expo/vector-icons";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardHeader, CardTitle} from "@/components/ui/card";
 import {View} from "@/components/ui/view";
-import {ShareButton} from "@/components/ui/share";
 import {Badge} from "@/components/ui/badge";
 import {Image} from '@/components/ui/image';
 import {Text} from '@/components/ui/text';
-import {useWebView} from "@/contexts/webviews";
+import {Link} from "@/components/ui/link";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
 import {News} from "@/types";
 
 const CardNews = (item: News & { idx: number }) => {
-  const {openWebView} = useWebView()
-  const onPress = () => {
-    openWebView(item.source_url)
-  }
   return (
     <Card style={styles.card}>
       <Hoverable hoveredValue={item.idx}>
@@ -25,10 +21,10 @@ const CardNews = (item: News & { idx: number }) => {
             {/* Overlay to dismiss hover when isHovered */}
             {isHovered && (
               <Pressable
-              onPress={() => setHovered(false)}
-              style={{position: 'absolute', inset: 0, zIndex: 10}}
-              pointerEvents="box-none"   // <-- change this line
-            >
+                onPress={() => setHovered(false)}
+                style={{position: 'absolute', inset: 0, zIndex: 10}}
+                pointerEvents="box-none"   // <-- change this line
+              >
                 {/* empty overlay */}
               </Pressable>
             )}
@@ -61,35 +57,22 @@ const CardNews = (item: News & { idx: number }) => {
                     />
                   </View>
                   <View style={styles.contentContainerHovered}>
-                    <Pressable onPress={()=> {openWebView(item.source_url)}} style={styles.onPress}>
+                    <Link href={item.source_url as Href} browser='in-app' asChild>
                       <Ionicons name="play-circle" size={48} color="#fff" style={{opacity: 0.9}}/>
-                    </Pressable>
+                    </Link>
                   </View>
                 </View>
               )}
             </Pressable>
             
             <CardHeader style={styles.cardHeader}>
-              <CardTitle style={styles.cardTitle}   numberOfLines={2}onPress={() => {
-                setHovered(true);
-                onPress();
-              }}>{item.title}</CardTitle>
-              <Text variant="body" style={styles.cardDescription}   numberOfLines={3} ellipsizeMode="tail">{item.description}</Text>
+              <Link href={item.source_url as Href} browser='in-app' asChild>
+                <CardTitle style={styles.cardTitle} numberOfLines={2}>{item.title}</CardTitle>
+              </Link>
+              <Text variant="body" style={styles.cardDescription} numberOfLines={3}
+                    ellipsizeMode="tail">{item.description}</Text>
             
             </CardHeader>
-            <CardFooter style={styles.cardFooter}>
-              <CardDescription style={{fontSize: 10}}>{item.published_at}</CardDescription>
-              
-              <ShareButton
-                content={{
-                  url: item.source_url,
-                  title: item.title,
-                  subject: item.description,
-                  message: item.title
-                }}
-                variant="link"
-              />
-            </CardFooter>
             <View style={styles.badgeWrapper}>
               <Badge>
                 {item.category?.name}
@@ -115,10 +98,11 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 0,
     paddingVertical: 0,
+    marginTop: 6,
   },
   cardImageContainer: {
     width: '100%',
-    aspectRatio: 16/9,
+    aspectRatio: 16 / 9,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     borderBottomLeftRadius: 0,
