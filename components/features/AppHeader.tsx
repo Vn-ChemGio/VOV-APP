@@ -49,6 +49,16 @@ export const AppHeaderStickyAnimation: React.FC<Props> = ({scrollY}) => {
         ]}
       >
         <StatusBar translucent backgroundColor="auto" barStyle="default"/>
+        <View style={{
+          position: 'absolute',
+          top: -8,
+          left: 0,
+          right: 0,
+          height: 16,
+          overflow: 'hidden',
+        }}>
+          <View style={{height: '100%', width: '100%', backgroundColor: 'red'}}/>
+        </View>
         <BlurView tint="systemChromeMaterial"
                   intensity={90}
                   style={{
@@ -94,6 +104,7 @@ export const AppHeaderStickyAnimation: React.FC<Props> = ({scrollY}) => {
             <ModeToggle/>
           </View>
         </BlurView>
+      
       </Animated.View>
     
     </>
