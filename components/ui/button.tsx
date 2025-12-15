@@ -29,7 +29,7 @@ export type ButtonVariant =
   | 'ghost'
   | 'link';
 
-export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'ghost-icon';
+export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
 
 export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
   label?: string;
@@ -99,14 +99,6 @@ export const Button = forwardRef<View, ButtonProps>(
           Object.assign(baseStyle, {
             height: HEIGHT,
             width: HEIGHT,
-            paddingHorizontal: 0,
-          });
-          break;
-        
-        case 'ghost-icon':
-          Object.assign(baseStyle, {
-            height: 24,
-            width: 24,
             paddingHorizontal: 0,
           });
           break;

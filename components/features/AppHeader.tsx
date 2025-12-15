@@ -7,6 +7,7 @@ import {View} from '@/components/ui/view';
 import {Image} from '@/components/ui/image';
 import {Text} from '@/components/ui/text';
 import {ModeToggle} from '@/components/ui/mode-toggle';
+import {SheetNavigation} from "@/components/demo/sheet/sheet-navigation";
 
 type Props = {
   scrollY: Animated.Value;
@@ -101,7 +102,7 @@ export const AppHeaderStickyAnimation: React.FC<Props> = ({scrollY}) => {
                 </Text>
               </View>
             </View>
-            <ModeToggle/>
+            <SheetNavigation/>
           </View>
         </BlurView>
       
@@ -163,7 +164,7 @@ export const AppHeaderScrollAnimation: React.FC<Props> = ({scrollY}) => {
             </Text>
           </View>
         </View>
-        <ModeToggle/>
+        <SheetNavigation/>
       </View>
     </Animated.View>
   );

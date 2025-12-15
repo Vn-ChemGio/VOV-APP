@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   title: {
-    marginBottom: 8,
+    marginTop: 8,
   },
   description: {
     fontSize: FONT_SIZE,
