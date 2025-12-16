@@ -1,10 +1,10 @@
 import React, {useRef} from 'react';
 import {View} from '@/components/ui/view';
-import {LoadingOverlay} from "@/components/ui/spinner";
 import TrackPlayer, {Track} from "react-native-track-player";
 import {useQueue} from "@/stores/queue";
 import {usePodcasts} from "../hooks";
 import CardPodCast from "@/components/features/CardPodCast";
+import LoadingScreen from "@/components/features/loading-screen";
 import {HoveredProvider} from "@/contexts/hover/HoveredContext";
 
 export const Podcasts = ({category_id}: { category_id: number }) => {
@@ -48,7 +48,7 @@ export const Podcasts = ({category_id}: { category_id: number }) => {
     }
   }
   
-  return isLoading ? <LoadingOverlay visible={true}/> : (
+  return isLoading ? <LoadingScreen/> : (
     <View style={{paddingHorizontal: 16, paddingBottom: 120, gap: 16}}>
       <HoveredProvider>
         {(tracks || [])?.map((item, idx) => (

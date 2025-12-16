@@ -4,18 +4,17 @@ import {ScrollView} from 'react-native-gesture-handler'
 import {Link} from 'expo-router'
 
 import {unknownArtistImageUri} from '@/constants/images'
-import {screenPadding} from '@/constants/tokens'
 import appConfig from "@/configs/app.config";
 
 import {defaultStyles, utilsStyles} from '@/styles'
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
-import {LoadingOverlay} from "@/components/ui/spinner";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 
 import {useColor} from "@/hooks/useColor";
 import {artistNameFilter} from "@/helpers/filter";
 import {useArtists} from './hooks'
+import LoadingScreen from "@/components/features/loading-screen";
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -39,7 +38,7 @@ export const ArtistsScreen = () => {
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
       >
-        {isLoading ? <LoadingOverlay visible={true}/> :
+        {isLoading ? <LoadingScreen/> :
           <FlatList
             contentContainerStyle={{paddingTop: 10, paddingBottom: 120}}
             scrollEnabled={false}

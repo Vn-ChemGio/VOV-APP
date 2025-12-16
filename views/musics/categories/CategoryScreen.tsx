@@ -5,13 +5,12 @@ import {Link} from 'expo-router'
 import {ScrollView} from 'react-native-gesture-handler'
 import {unknownArtistImageUri, unknownTrackImageUri} from '@/constants/images'
 import {defaultStyles, utilsStyles} from '@/styles'
-import appConfig from "@/configs/app.config";
 import {useNavigationSearch} from "@/hooks/useNavigationSearch";
 import {useColor} from "@/hooks/useColor";
-import {LoadingOverlay} from "@/components/ui/spinner";
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
+import LoadingScreen from "@/components/features/loading-screen";
 import {categoryNameFilter} from "@/helpers/filter";
 import {useCategories} from './hooks'
 
@@ -38,7 +37,7 @@ export const CategoriesScreen = () => {
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
       >
-        {isLoading ? <LoadingOverlay visible={true}/> :
+        {isLoading ? <LoadingScreen/> :
           <FlatList
             contentContainerStyle={{paddingTop: 10, paddingBottom: 128}}
             columnWrapperStyle={{gap: 12}}
@@ -64,7 +63,7 @@ export const CategoriesScreen = () => {
                     <View style={[styles.categoryImage, {position: 'relative'}]}>
                       <Image
                         source={{
-                          uri: category.image_url ? category.image_url: unknownArtistImageUri,
+                          uri: category.image_url ? category.image_url : unknownArtistImageUri,
                         }}
                         priority="low"
                         containerStyle={styles.categoryImage}

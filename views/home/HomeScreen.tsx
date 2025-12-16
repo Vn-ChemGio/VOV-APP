@@ -2,9 +2,9 @@ import React, {useRef} from 'react';
 import {Animated, StyleSheet} from "react-native";
 import {useColor} from "@/hooks/useColor";
 import {PADDING_HORIZONTAL} from "@/theme/globals";
-import {LoadingOverlay} from "@/components/ui/spinner";
 import {View} from "@/components/ui/view";
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from '@/components/features/AppHeader';
+import LoadingScreen from "@/components/features/loading-screen";
 import {AppBanners, AppMenu, News, PodCasts, RadioChannels, Recommends} from "./components";
 import {useHomePage} from "./hooks";
 
@@ -17,7 +17,7 @@ export const HomeScreen = () => {
   const {isLoading, data} = useHomePage();
   
   if (isLoading) return (
-    <LoadingOverlay visible={true}/>
+    <LoadingScreen/>
   )
   return (
     <View style={{flex: 1}}>
