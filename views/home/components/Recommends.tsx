@@ -25,14 +25,12 @@ export const Recommends = ({data = []}: { data?: Recommend[] }) => {
       >
         {data.map((item, i) => (
           <Card key={i} style={styles.card}>
-            <View style={styles.cardImageWrapper}>
-              <Image source={{uri: item.image_url}}
-                     contentFit="cover"
-                     variant="default"
-                     containerStyle={styles.cardImageContainer}
-                     style={styles.cardImage}
-              />
-            </View>
+            <Image source={{uri: item.image_url}}
+                   contentFit="cover"
+                   variant="default"
+                   containerStyle={styles.cardImageWrapper}
+                   style={styles.cardImage}
+            />
             <View style={{flex: 1, gap: 4, justifyContent: 'space-between'}}>
               <CardHeader style={styles.cardHeader}>
                 <CardTitle style={styles.cardTitle}>{item.title}</CardTitle>
@@ -90,19 +88,11 @@ const styles = StyleSheet.create({
   },
   cardImageWrapper: {
     position: 'relative',
-    width: '100%',
+    height: screenWidth * 2 / 3 * 9 / 16,
     aspectRatio: 16 / 9,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     overflow: 'hidden',
-  },
-  cardImageContainer: {
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
   },
   cardImage: {
     borderTopLeftRadius: 12,

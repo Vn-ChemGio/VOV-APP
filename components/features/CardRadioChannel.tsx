@@ -48,7 +48,7 @@ const CardRadioChannel = (item: RadioChannel & Track & {
                   source={{uri: `${appConfig.apiPrefix}${item.image_url}`}}
                   height={(screenWidth - 16 * 2 - 8 * 2) / 3}
                   contentFit="cover"
-                  style={styles.contentContainer}
+                  containerStyle={styles.contentContainer}
                 />
                 <View style={{
                   position: 'absolute',
