@@ -1,6 +1,6 @@
-import { FontAwesome6 } from '@expo/vector-icons'
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
-import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
+import {FontAwesome6} from '@expo/vector-icons'
+import {StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
+import TrackPlayer, {useIsPlaying} from 'react-native-track-player'
 import {useColor} from "@/hooks/useColor";
 
 type PlayerControlsProps = {
@@ -10,53 +10,54 @@ type PlayerControlsProps = {
 type PlayerButtonProps = {
   style?: ViewStyle
   iconSize?: number
+  color?: TextStyle['color']
 }
 
-export const PlayerControls = ({ style }: PlayerControlsProps) => {
+export const PlayerControls = ({style}: PlayerControlsProps) => {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.row}>
-        <SkipToPreviousButton />
+        <SkipToPreviousButton color='white'/>
         
-        <PlayPauseButton />
+        <PlayPauseButton  color='white'/>
         
-        <SkipToNextButton />
+        <SkipToNextButton  color='white'/>
       </View>
     </View>
   )
 }
 
-export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
-  const { playing } = useIsPlaying()
-  const  textColor= useColor('text')
+export const PlayPauseButton = ({style, iconSize = 48, color}: PlayerButtonProps) => {
+  const {playing} = useIsPlaying()
+  const textColor = useColor('text')
   return (
-    <View style={[{ height: iconSize }, style]}>
+    <View style={[{height: iconSize}, style]}>
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
       >
-        <FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={textColor} />
+        <FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={color ?? textColor}/>
       </TouchableOpacity>
     </View>
   )
 }
 
-export const SkipToNextButton = ({ iconSize = 30 }: PlayerButtonProps) => {
-  const  textColor= useColor('text')
+export const SkipToNextButton = ({iconSize = 30, color}: PlayerButtonProps) => {
+  const textColor = useColor('text')
   
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
-      <FontAwesome6 name="forward" size={iconSize} color={textColor} />
+      <FontAwesome6 name="forward" size={iconSize} color={color ?? textColor}/>
     </TouchableOpacity>
   )
 }
 
-export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
-  const  textColor= useColor('text')
+export const SkipToPreviousButton = ({iconSize = 30, color}: PlayerButtonProps) => {
+  const textColor = useColor('text')
   
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
-      <FontAwesome6 name={'backward'} size={iconSize} color={textColor} />
+      <FontAwesome6 name={'backward'} size={iconSize} color={color ?? textColor}/>
     </TouchableOpacity>
   )
 }

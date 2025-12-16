@@ -4,9 +4,11 @@ import {PlayerProgressBar} from '@/components/PlayerProgressbar'
 // import {PlayerRepeatToggle} from '@/components/PlayerRepeatToggle'
 import {PlayerVolumeBar} from '@/components/PlayerVolumeBar'
 import {unknownTrackImageUri} from '@/constants/images'
+import { defaultStyles, utilsStyles } from '@/styles'
+import { colors, fontSize, screenPadding } from '@/constants/tokens'
 
 import {usePlayerBackground} from '@/hooks/usePlayerBackground'
-import {useTrackPlayerFavorite} from '@/hooks/useTrackPlayerFavorite'
+//import {useTrackPlayerFavorite} from '@/hooks/useTrackPlayerFavorite'
 import {FontAwesome} from '@expo/vector-icons'
 import {LinearGradient} from 'expo-linear-gradient'
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native'
@@ -25,8 +27,8 @@ const PlayerScreen = () => {
   
   const {top, bottom} = useSafeAreaInsets()
   
-  const {isFavorite, toggleFavorite} = useTrackPlayerFavorite()
-  
+  //const {isFavorite, toggleFavorite} = useTrackPlayerFavorite()
+  const isFavorite = false;
   if (!activeTrack) {
     return (
       <View style={[styles.container, {justifyContent: 'center', backgroundColor}]}>
@@ -40,20 +42,21 @@ const PlayerScreen = () => {
       style={{flex: 1}}
       colors={imageColors ? [imageColors.background, imageColors.primary] : [backgroundColor, backgroundColor]}
     >
-      <View style={[styles.overlayContainer, {
-        backgroundColor,
-        opacity: 0.95,
-      }]}>
+      <View style={styles.overlayContainer}>
         <DismissPlayerSymbol/>
         
         <View style={{flex: 1, marginTop: top + 70, marginBottom: bottom}}>
           <View style={styles.artworkImageContainer}>
-            <Image source={{uri: activeTrack.artwork ?? unknownTrackImageUri}} priority="high"/>
+            <Image
+              source={{uri: activeTrack.artwork ?? unknownTrackImageUri}}
+              priority="high"
+              containerStyle={styles.artworkImage}
+            />
           </View>
           
           <View style={{flex: 1}}>
-            <View style={{marginTop: 'auto'}}>
-              <View style={{height: 60}}>
+            <View>
+              <View style={{paddingVertical: 24}}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -66,20 +69,17 @@ const PlayerScreen = () => {
                     <MovingText
                       text={activeTrack.title ?? ''}
                       animationThreshold={30}
-                      style={{
-                        color: textColor, fontSize: 22,
-                        fontWeight: '700'
-                      }}
+                      style={styles.trackTitleText}
                     />
                   </View>
                   
                   {/* Favorite button icon */}
                   <FontAwesome
-                    name={isFavorite ? 'heart' : 'heart-o'}
+                    name={'times'}
                     size={20}
-                    color={isFavorite ? primaryColor : textColor}
+                    color={textColor}
                     style={{marginHorizontal: 14}}
-                    onPress={toggleFavorite}
+                    onPress={()=>{}}
                   />
                 </View>
                 
@@ -92,7 +92,7 @@ const PlayerScreen = () => {
                 )}
               </View>
               
-              <PlayerProgressBar style={{marginTop: 32}}/>
+              <PlayerProgressBar style={{marginTop: 16}}/>
               
               <PlayerControls style={{marginTop: 40}}/>
             </View>
@@ -142,8 +142,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   overlayContainer: {
-    flex: 1,
-    paddingHorizontal: 24,
+    ...defaultStyles.container,
+    paddingHorizontal: screenPadding.horizontal,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   artworkImageContainer: {
     shadowOffset: {
@@ -154,20 +155,27 @@ const styles = StyleSheet.create({
     shadowRadius: 11.0,
     flexDirection: 'row',
     justifyContent: 'center',
-    height: '45%',
+    paddingHorizontal: 48,
+    paddingVertical: 24,
   },
   artworkImage: {
     width: '100%',
-    height: '100%',
     resizeMode: 'cover',
     borderRadius: 12,
+    aspectRatio: 1
   },
   trackTitleContainer: {
     flex: 1,
     overflow: 'hidden',
   },
-  
+  trackTitleText: {
+    ...defaultStyles.text,
+    fontSize: 22,
+    fontWeight: '700',
+  },
   trackArtistText: {
+    ...defaultStyles.text,
+    fontSize: fontSize.base,
     opacity: 0.8,
     maxWidth: '90%',
   },
