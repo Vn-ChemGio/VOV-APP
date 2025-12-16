@@ -39,19 +39,19 @@ export const Text = forwardRef<RNText, TextProps>(
         case 'heading':
           return {
             ...baseStyle,
-            fontSize: 28,
+            fontSize: 20,
             fontWeight: '800',
           };
         case 'title':
           return {
             ...baseStyle,
-            fontSize: 24,
+            fontSize: 16,
             fontWeight: '700',
           };
         case 'subtitle':
           return {
             ...baseStyle,
-            fontSize: 19,
+            fontSize: FONT_SIZE,
             fontWeight: '600',
           };
         case 'caption':

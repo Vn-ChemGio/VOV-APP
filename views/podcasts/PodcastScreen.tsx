@@ -1,15 +1,16 @@
 import React, {useRef} from 'react';
 import {View} from '@/components/ui/view';
-import {Animated} from "react-native";
+import {Animated, StyleSheet} from "react-native";
 import {useColor} from "@/hooks/useColor";
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from "@/components/features/AppHeader";
 import {Button} from "@/components/ui/button";
 import {Text} from "@/components/ui/text";
-import {CircleArrowLeftIcon, SquareMenu} from "lucide-react-native";
+import {ArrowLeftIcon, CircleArrowLeftIcon, SquareMenu} from "lucide-react-native";
 import {useBottomSheet} from "@/components/ui/bottom-sheet";
 import {useNavigation} from "expo-router";
 import {usePodcastCategories} from "@/views/podcasts/hooks/usePodcasts";
 import {Podcasts, PodcastsMenu} from "./components";
+import {HEIGHT, PADDING_HORIZONTAL} from "@/theme/globals";
 
 export const PodcastScreen = () => {
   const backgroundColor = useColor('background');
@@ -28,17 +29,9 @@ export const PodcastScreen = () => {
         [{nativeEvent: {contentOffset: {y: scrollY}}}],
         {useNativeDriver: false}
       )}
-      style={{
-        width: '100%',
-        backgroundColor: bgCard,
-        paddingTop: 16,
-        paddingBottom: 120,
-      }}
+      style={[styles.containerWrapper, {backgroundColor}]}
     >
-      <View style={{
-        gap: 8,
-        backgroundColor: backgroundColor,
-      }}>
+      <View style={[styles.container, {backgroundColor: bgCard}]}>
         {/* Section 1: Heading (logo + welcome bar) */}
         <AppHeaderScrollAnimation scrollY={scrollY}/>
         
@@ -48,7 +41,7 @@ export const PodcastScreen = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 16,
+          padding: 16
         }}>
           <View style={{
             display: 'flex',
@@ -58,8 +51,8 @@ export const PodcastScreen = () => {
             flex: 1,
             gap: 8,
           }}>
-            <Button size='icon' variant='ghost'
-                    icon={() => <CircleArrowLeftIcon size={32} strokeWidth={1}/>}
+            <Button size='icon' variant='outline'
+                    icon={ArrowLeftIcon}
                     onPress={() => {
                       if (navigation.canGoBack()) {
                         navigation.goBack();
@@ -67,18 +60,21 @@ export const PodcastScreen = () => {
                     }}
                     animation={true}
                     style={{
-                      padding: 0,
+                      height: 32,
+                      width: 32,
+                      padding: 8,
+                      flexDirection: 'row-reverse',
                     }}
             />
             <Text variant="heading">Podcasts</Text>
           </View>
-          <Button size='icon' variant='ghost' icon={() => <SquareMenu size={32} strokeWidth={1}/>}
-                  onPress={open}
-                  animation={true}
-                  style={{
-                    padding: 0,
-                  }}
-          />
+          <Button
+            icon={SquareMenu}
+            onPress={open}
+            variant='link'
+          >
+            Danh mục
+          </Button>
         </View>
         
         <Podcasts category_id={selectedCategoryId}/>
@@ -89,3 +85,12 @@ export const PodcastScreen = () => {
   </View>
 };
 
+
+const styles = StyleSheet.create({
+  containerWrapper: {
+    width: '100%',
+  },
+  container: {
+    gap: 8,
+  },
+})
