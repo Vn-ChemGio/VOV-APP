@@ -78,7 +78,10 @@ const CardPodCast = (item: Podcast & Track & {
             </View>
             <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingTop: 0, paddingBottom: 12}}>
               <CardTitle numberOfLines={2}>{item.title}</CardTitle>
-              <CardDescription numberOfLines={2}>
+              <CardDescription
+                numberOfLines={3}
+                ellipsizeMode="tail"
+              >
                 {item.description}
               </CardDescription>
             </CardHeader>

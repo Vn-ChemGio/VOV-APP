@@ -66,7 +66,7 @@ export const PodcastScreen = () => {
                       flexDirection: 'row-reverse',
                     }}
             />
-            <Text variant="heading">Podcasts</Text>
+            <Text variant="heading" style={{fontWeight: '600'}}>Podcasts</Text>
           </View>
           <Button
             icon={SquareMenu}

@@ -3,11 +3,10 @@ import {Pressable, StyleSheet} from "react-native";
 import {BlurView} from "expo-blur";
 import {Href} from "expo-router";
 import {Ionicons} from "@expo/vector-icons";
-import {Card, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {View} from "@/components/ui/view";
 import {Badge} from "@/components/ui/badge";
 import {Image} from '@/components/ui/image';
-import {Text} from '@/components/ui/text';
 import {Link} from "@/components/ui/link";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
 import {News} from "@/types";
@@ -67,10 +66,12 @@ const CardNews = (item: News & { idx: number }) => {
             
             <CardHeader style={styles.cardHeader}>
               <Link href={item.source_url as Href} browser='in-app' asChild>
-                <CardTitle style={styles.cardTitle} numberOfLines={2}>{item.title}</CardTitle>
+                <CardTitle numberOfLines={2}>{item.title}</CardTitle>
               </Link>
-              <Text variant="body" style={styles.cardDescription} numberOfLines={3}
-                    ellipsizeMode="tail">{item.description}</Text>
+              <CardDescription
+                numberOfLines={3}
+                ellipsizeMode="tail"
+              >{item.description}</CardDescription>
             
             </CardHeader>
             <View style={styles.badgeWrapper}>
@@ -117,8 +118,8 @@ const styles = StyleSheet.create({
   cardHeader: {
     display: 'flex', paddingHorizontal: 12, flex: 1, paddingVertical: 0, gap: 6
   },
-  cardTitle: {fontSize: 14},
-  cardDescription: {fontSize: 12},
+  cardTitle: {},
+  cardDescription: {},
   cardFooter: {
     paddingHorizontal: 12,
     marginTop: 0,

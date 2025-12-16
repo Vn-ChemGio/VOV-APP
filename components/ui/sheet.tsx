@@ -231,7 +231,7 @@ export function SheetHeader({ children, style }: SheetHeaderProps) {
 
 export function SheetTitle({ children }: SheetTitleProps) {
   return (
-    <Text variant='title' style={styles.title}>
+    <Text variant='heading' style={styles.title}>
       {children}
     </Text>
   );

@@ -21,7 +21,9 @@ export const PodcastsMenu = ({isVisible, close}: { isVisible: boolean; close: ()
       }}
       key={item.id}
     >
-      <Text variant='body' style={{fontWeight: '600'}}>
+      <Text variant='heading' style={{
+        fontWeight: '600',
+      }}>
         {item.name}
       </Text>
     </TouchableOpacity>
