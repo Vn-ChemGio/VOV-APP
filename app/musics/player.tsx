@@ -1,5 +1,5 @@
 import {MovingText} from '@/components/MovingText'
-import {PlayerControls} from '@/components/PlayerControls'
+import {PlayerControls} from '@/components/features/player-controls'
 import {PlayerProgressBar} from '@/components/PlayerProgressbar'
 // import {PlayerRepeatToggle} from '@/components/PlayerRepeatToggle'
 import {PlayerVolumeBar} from '@/components/PlayerVolumeBar'

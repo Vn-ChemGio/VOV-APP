@@ -9,6 +9,7 @@ import {useLastActiveTrack} from "@/hooks/useLastActiveTrack";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {BlurView} from "expo-blur";
 import {useColorScheme} from "@/hooks/useColorScheme";
+import {useRouter} from "expo-router";
 
 export const FloatingPlayer = ({style}: ViewProps) => {
   const {bottom} = useSafeAreaInsets();
@@ -20,8 +21,10 @@ export const FloatingPlayer = ({style}: ViewProps) => {
   const lastActiveTrack = useLastActiveTrack()
   
   const displayedTrack = activeTrack ?? lastActiveTrack
+  const router = useRouter()
   
   const handlePress = () => {
+    router.navigate('/musics/player')
   }
   
   if (!displayedTrack) return null
@@ -29,8 +32,7 @@ export const FloatingPlayer = ({style}: ViewProps) => {
   
   return (
     
-    <TouchableOpacity onPress={() => {
-    }} activeOpacity={0.9} style={[styles.container, {
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.9} style={[styles.container, {
       bottom: bottom,
       position: 'absolute',
       left: 8,
