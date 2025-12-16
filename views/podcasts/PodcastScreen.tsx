@@ -58,7 +58,7 @@ export const PodcastScreen = () => {
             flex: 1,
             gap: 8,
           }}>
-            <Button size='ghost-icon' variant='ghost'
+            <Button size='icon' variant='ghost'
                     icon={() => <CircleArrowLeftIcon size={32} strokeWidth={1}/>}
                     onPress={() => {
                       if (navigation.canGoBack()) {
@@ -72,7 +72,7 @@ export const PodcastScreen = () => {
             />
             <Text variant="heading">Podcasts</Text>
           </View>
-          <Button size='ghost-icon' variant='ghost' icon={() => <SquareMenu size={32} strokeWidth={1}/>}
+          <Button size='icon' variant='ghost' icon={() => <SquareMenu size={32} strokeWidth={1}/>}
                   onPress={open}
                   animation={true}
                   style={{

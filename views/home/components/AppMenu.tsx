@@ -6,19 +6,18 @@ import {useColor} from "@/hooks/useColor";
 import {View} from "@/components/ui/view";
 import {Icon} from "@/components/ui/icon";
 import {Text} from "@/components/ui/text";
+import {BORDER_RADIUS} from "@/theme/globals";
 import {Menu} from "@/types";
 
 const menus: Menu[] = [
   {key: 'radios', label: 'Radio', icon: Radio},
-  {key: 'news', label: 'News', icon: Newspaper},
-  {key: 'musics', label: 'Music', icon: Music},
+  {key: 'news', label: 'Tin tức', icon: Newspaper},
+  {key: 'musics', label: 'Âm nhạc', icon: Music},
   {key: 'podcast', label: 'Podcast', icon: Podcast},
 ];
 
 export const AppMenu = ({data = menus}: { data?: Menu[] }) => {
   const borderColor = useColor('border');
-  const foregroundColor = useColor('foreground');
-  const primaryColor = useColor('primary');
   
   const router = useRouter();
   
@@ -31,8 +30,8 @@ export const AppMenu = ({data = menus}: { data?: Menu[] }) => {
           style={[styles.itemContainer, {borderColor}]}
           onPress={() => router.navigate(item.key as any)}
         >
-          <Icon name={item.icon} color={primaryColor} size={24} style={styles.itemIcon}/>
-          <Text style={[styles.itemLabel, {color: foregroundColor}]}>{item.label}</Text>
+          <Icon name={item.icon} style={styles.itemIcon}/>
+          <Text style={styles.itemLabel}>{item.label}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -46,12 +45,13 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flex: 1,
+    aspectRatio: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: BORDER_RADIUS,
     backgroundColor: 'transparent',
-    gap: 6,
+    gap: 4,
   },
   itemIcon: {},
   itemLabel: {}
