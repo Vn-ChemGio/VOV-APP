@@ -25,6 +25,10 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
   })
   
   const filteredPlaylistTracks = useMemo(() => {
+    if (!search) return category.songs.map(song => ({
+      ...song,
+      url: `${appConfig.mediaHost}${song.source_url}`
+    }))
     return category.songs.filter(trackTitleFilter(search)).map(song => ({
       ...song,
       url: `${appConfig.mediaHost}${song.source_url}`
@@ -42,7 +46,7 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
           <View style={styles.artworkImageContainer}>
             <Image
               source={{
-                uri: category.image_url ? `${appConfig.mediaHost}${category.image_url}` : unknownArtistImageUri,
+                uri: category.image_url ? category.image_url : unknownArtistImageUri,
               }}
               priority={'high'}
               containerStyle={styles.artworkImage}

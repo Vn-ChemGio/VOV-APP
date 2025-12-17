@@ -27,6 +27,11 @@ export const ArtistTracksList = ({artist}: { artist: Artist }) => {
   })
   
   const filteredArtistTracks = useMemo(() => {
+    if (!search) return artist.songs.map(song => ({
+      ...song,
+      url: `${appConfig.mediaHost}${song.source_url}`
+    }))
+    
     return artist.songs.filter(trackTitleFilter(search)).map(song => ({
       ...song,
       url: `${appConfig.mediaHost}${song.source_url}`
@@ -41,7 +46,7 @@ export const ArtistTracksList = ({artist}: { artist: Artist }) => {
       ListHeaderComponentStyle={styles.artistHeaderContainer}
       ListHeaderComponent={
         <View>
-          <View style={styles.artworkImageContainer}>
+          <View style={styles.artistImageContainer}>
             <Image
               source={{
                 uri: artist.avatar_url ? `https://picsum.photos/200` : unknownArtistImageUri,
@@ -73,16 +78,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 32,
   },
-  artworkImageContainer: {
+  artistImageContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 200,
+    paddingHorizontal: 48,
+    paddingVertical: 24,
   },
   artistImage: {
-    width: '60%',
-    height: '100%',
+    width: '100%',
     resizeMode: 'cover',
-    borderRadius: '50%',
+    borderRadius: 999,
+    aspectRatio: 1
   },
   artistNameText: {
     marginTop: 22,

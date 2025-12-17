@@ -4,11 +4,11 @@ import {MusicCategory, MusicSong} from "@/types";
 import {useCategoriesStore} from "../stores";
 
 export const useCategories = () => {
-  const {categories, total, setOptions} = useCategoriesStore()
+  const {categories, total, setOptions, tableQueries} = useCategoriesStore()
   const {isLoading, isValidating} = useSWR<[(Omit<MusicCategory, 'songs'> & {
     song_categories: { song: MusicSong }[]
   })[], number]>(
-    ['music-categories'],
+    ['music-categories', {...tableQueries}],
     apiGetMusicCategories,
     {
       revalidateOnFocus: false,
@@ -18,8 +18,6 @@ export const useCategories = () => {
           ...rest,
           songs: song_categories.map(({song}) => song)
         })), data[1]])
-        
-        
       }
     })
   
