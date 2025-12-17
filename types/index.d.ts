@@ -49,7 +49,7 @@ export type Recommend = {
 }
 
 export type RadioChannel = {
-  id: number;
+  id: number | string;
   name: string;
   image_url: string;
   source_url: string;

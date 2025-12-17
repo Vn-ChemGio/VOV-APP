@@ -19,6 +19,7 @@ type AudioContextType = {
   next: () => Promise<void>;
   prev: () => Promise<void>;
   isPlaying: boolean;
+  isLoading: boolean;
   currentTrack?: Track;
 };
 
@@ -31,7 +32,9 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   
   const [queue, setQueue] = useState<Track[]>([]);
   const [index, setIndex] = useState(0);
+  
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   // ===== INIT PLAYER =====
   useEffect(() => {
@@ -41,11 +44,18 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     const sub = player.addListener(
       'playbackStatusUpdate',
       (status: any) => {
+        // Sync isPlaying with native if needed
         if (typeof status?.isPlaying === 'boolean') {
-          setIsPlaying(status.isPlaying);
+          setIsPlaying(prev =>
+            prev !== status.isPlaying ? status.isPlaying : prev
+          );
+          
+          if (status.isPlaying) {
+            setIsLoading(false); // load finished
+          }
         }
         
-        // ⭐ auto-next (foreground + background)
+        // ⭐ auto next (foreground + background)
         if (status?.didJustFinish) {
           next();
         }
@@ -63,6 +73,9 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   const loadAndPlay = async (track: Track) => {
     const player = playerRef.current;
     if (!player) return;
+    
+    setIsLoading(true);
+    setIsPlaying(true); // optimistic
     
     await player.replace({
       uri: track.uri,
@@ -87,10 +100,12 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   };
   
   const play = async () => {
+    if(!isPlaying) setIsPlaying(true); // optimistic
     await playerRef.current?.play?.();
   };
   
   const pause = async () => {
+    if(isPlaying) setIsPlaying(false); // optimistic
     await playerRef.current?.pause?.();
   };
   
@@ -121,6 +136,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         next,
         prev,
         isPlaying,
+        isLoading,
         currentTrack: queue[index],
       }}
     >

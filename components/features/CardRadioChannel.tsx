@@ -8,21 +8,22 @@ import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
 import {useColor} from "@/hooks/useColor";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
-import {RadioChannel} from "@/types";
-import {Track, useActiveTrack, useIsPlaying} from "react-native-track-player";
-import appConfig from "@/configs/app.config";
+import {RadioChannel, Track} from "@/types";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const CardRadioChannel = (item: RadioChannel & Track & {
   handleTrackSelect: (selectedTrack: Track) => void,
   idx: number
+  isOnline?: boolean;
+  image_url: string;
 }) => {
   const borderColor = useColor('border');
   
-  const {playing} = useIsPlaying()
+  const {isPlaying, currentTrack} = useAudio();
   
-  const activeTrackUrl = useActiveTrack()?.url;
+  const activeTrackUrl = currentTrack?.uri;
   
   return (
     <Card style={[styles.card, {borderColor}]}>
@@ -45,7 +46,7 @@ const CardRadioChannel = (item: RadioChannel & Track & {
             >
               <View style={{position: 'relative', width: '100%', height: '100%'}}>
                 <Image
-                  source={{uri: `${appConfig.apiPrefix}${item.image_url}`}}
+                  source={{uri: item.image_url}}
                   height={(screenWidth - 16 * 2 - 8 * 2) / 3}
                   contentFit="cover"
                   containerStyle={styles.contentContainer}
@@ -82,9 +83,9 @@ const CardRadioChannel = (item: RadioChannel & Track & {
                   <View style={styles.contentContainerHovered}>
                     <Pressable
                       onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
-                      disabled={activeTrackUrl === item.url && playing || !item.isOnline}
+                      disabled={activeTrackUrl === item.uri && isPlaying || !item.isOnline}
                     >
-                      <Ionicons name={(activeTrackUrl === item.url) && playing ? "pause-circle" : "play-circle"}
+                      <Ionicons name={(activeTrackUrl === item.uri) && isPlaying ? "pause-circle" : "play-circle"}
                                 size={48} color="#fff" style={{opacity: 0.9}}/>
                     </Pressable>
                   </View>

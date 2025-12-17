@@ -1,57 +1,31 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
-import TrackPlayer, {Track} from "react-native-track-player";
 import {View} from '@/components/ui/view';
 import {Text} from '@/components/ui/text';
 import {useColor} from '@/hooks/useColor';
 import CardRadioChannel from "@/components/features/CardRadioChannel";
 import {HoveredProvider} from '@/contexts/hover/HoveredContext';
-import {RadioChannel} from "@/types";
-import {useQueue} from "@/stores/queue";
 import appConfig from "@/configs/app.config";
+import {useAudio} from "@/contexts/audio/AudioProvider";
+import {RadioChannel, Track} from "@/types";
 
 export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
   const backgroundColor = useColor('background');
   
-  const {activeQueueId, setActiveQueueId} = useQueue()
-  const queueOffset = useRef(0)
-  const tracks: Track[] = data.map((item, index) => ({
-    ...item, url: item.source_url, artwork: `${appConfig.apiPrefix}${item.image_url}`, title: item.name,
+  const {playTrack} = useAudio();
+  const tracks = data.map((item, index) => ({
+    ...item,
+    id: item.id?.toString() || index.toString(),
+    uri: item.source_url,
+    image_url: `${appConfig.apiPrefix}${item.image_url}`,
+    title: item.name,
     isOnline: index !== 4
   }));
   
   const handleTrackSelect = async (selectedTrack: Track) => {
-    const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.source_url)
-    
-    if (trackIndex === -1) return
-    
-    const isChangingQueue = `radio-home` !== activeQueueId
-    
-    if (isChangingQueue) {
-      const beforeTracks: Track[] = tracks.slice(0, trackIndex)
-      const afterTracks: Track[] = tracks.slice(trackIndex + 1)
-      
-      await TrackPlayer.reset()
-      
-      // we construct the new queue
-      await TrackPlayer.add(selectedTrack)
-      await TrackPlayer.add(afterTracks)
-      await TrackPlayer.add(beforeTracks)
-      
-      await TrackPlayer.play()
-      
-      queueOffset.current = trackIndex
-      setActiveQueueId(`radio-home`)
-    } else {
-      const nextTrackIndex =
-        trackIndex - queueOffset.current < 0
-          ? tracks.length + trackIndex - queueOffset.current
-          : trackIndex - queueOffset.current
-      
-      await TrackPlayer.skip(nextTrackIndex)
-      TrackPlayer.play()
-    }
+    await playTrack(selectedTrack, tracks)
   }
+  
   return (
     <HoveredProvider>
       <View style={[styles.container, {backgroundColor}]}>
@@ -59,7 +33,7 @@ export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
         <View style={styles.contentContainer}>
           <HoveredProvider>
             {tracks.map((item, idx) => (
-              <CardRadioChannel id={0} name={""} image_url={""} source_url={""} {...{
+              <CardRadioChannel {...{
                 ...item,
                 idx,
                 handleTrackSelect
