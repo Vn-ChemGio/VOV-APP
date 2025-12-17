@@ -30,13 +30,13 @@ export const usePodcastCategories = () => {
 }
 
 export const usePodcasts = (category_id: number) => {
-    const customizableOptionStore = React.useMemo(
+    const podcastsStore = React.useMemo(
         () => getPodcastsStoreById(category_id),
         [category_id],
     );
     
     const {tableData, setTableData, setOptions, options, total} =
-        customizableOptionStore();
+        podcastsStore();
     
     const {error, isLoading, mutate, isValidating} = useSWR<[Podcast[], number]>(
         [`/podcasts`, category_id, tableData],

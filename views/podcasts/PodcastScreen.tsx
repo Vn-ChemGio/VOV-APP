@@ -5,12 +5,11 @@ import {useColor} from "@/hooks/useColor";
 import {AppHeaderScrollAnimation, AppHeaderStickyAnimation} from "@/components/features/AppHeader";
 import {Button} from "@/components/ui/button";
 import {Text} from "@/components/ui/text";
-import {ArrowLeftIcon, CircleArrowLeftIcon, SquareMenu} from "lucide-react-native";
+import {ArrowLeftIcon, SquareMenu} from "lucide-react-native";
 import {useBottomSheet} from "@/components/ui/bottom-sheet";
 import {useNavigation} from "expo-router";
 import {usePodcastCategories} from "@/views/podcasts/hooks/usePodcasts";
 import {Podcasts, PodcastsMenu} from "./components";
-import {HEIGHT, PADDING_HORIZONTAL} from "@/theme/globals";
 
 export const PodcastScreen = () => {
   const backgroundColor = useColor('background');
