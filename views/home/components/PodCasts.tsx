@@ -1,25 +1,22 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
-import TrackPlayer, {Track} from "react-native-track-player";
 import {Text} from '@/components/ui/text';
 import {ScrollView} from '@/components/ui/scroll-view';
 import {View} from '@/components/ui/view';
 import CardPodCast from "@/components/features/CardPodCast";
 import {useColor} from '@/hooks/useColor';
-import {useQueue} from "@/stores/queue";
-import {Podcast} from "@/types";
+import {Podcast, Track} from "@/types";
 import {PADDING_BOTTOM} from "@/theme/globals";
 import {HoveredProvider} from "@/contexts/hover/HoveredContext";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: string }) => {
   const backgroundColor = useColor('background');
   
-  const queueOffset = useRef(0)
-  const {activeQueueId, setActiveQueueId} = useQueue()
+  const {playTrack} = useAudio();
+  const tracks = data.map(item => ({...item, id: item.id.toString(), uri: item.source_url, artwork: item.image_url}));
   
-  const tracks = data.map(item => ({...item, url: item.source_url, artwork: item.image_url}));
-  
-  const handleTrackSelect = async (selectedTrack: Track) => {
+  /*const handleTrackSelect = async (selectedTrack: Track) => {
     
     const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.source_url)
     
@@ -52,8 +49,10 @@ export const PodCasts = ({data = [], id = 'all'}: { data?: Podcast[], id?: strin
       TrackPlayer.play()
     }
   }
-  
-  
+  */
+  const handleTrackSelect = async (selectedTrack: Track) => {
+    await playTrack(selectedTrack, tracks)
+  }
   return (
     <View style={[styles.container, {backgroundColor}]}>
       <Text variant="subtitle" style={styles.title}>Podcast mới</Text>

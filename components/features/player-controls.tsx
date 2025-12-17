@@ -1,7 +1,7 @@
 import {FontAwesome6} from '@expo/vector-icons'
 import {StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
-import TrackPlayer, {useIsPlaying} from 'react-native-track-player'
 import {useColor} from "@/hooks/useColor";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 type PlayerControlsProps = {
   style?: ViewStyle
@@ -19,24 +19,24 @@ export const PlayerControls = ({style}: PlayerControlsProps) => {
       <View style={styles.row}>
         <SkipToPreviousButton color='white'/>
         
-        <PlayPauseButton  color='white'/>
+        <PlayPauseButton color='white'/>
         
-        <SkipToNextButton  color='white'/>
+        <SkipToNextButton color='white'/>
       </View>
     </View>
   )
 }
 
 export const PlayPauseButton = ({style, iconSize = 48, color}: PlayerButtonProps) => {
-  const {playing} = useIsPlaying()
   const textColor = useColor('text')
+  const {isPlaying, play, pause} = useAudio();
   return (
     <View style={[{height: iconSize}, style]}>
       <TouchableOpacity
         activeOpacity={0.85}
-        onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
+        onPress={isPlaying ? pause : play}
       >
-        <FontAwesome6 name={playing ? 'pause' : 'play'} size={iconSize} color={color ?? textColor}/>
+        <FontAwesome6 name={isPlaying ? 'pause' : 'play'} size={iconSize} color={color ?? textColor}/>
       </TouchableOpacity>
     </View>
   )
@@ -44,9 +44,9 @@ export const PlayPauseButton = ({style, iconSize = 48, color}: PlayerButtonProps
 
 export const SkipToNextButton = ({iconSize = 30, color}: PlayerButtonProps) => {
   const textColor = useColor('text')
-  
+  const {next} = useAudio();
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+    <TouchableOpacity activeOpacity={0.7} onPress={next}>
       <FontAwesome6 name="forward" size={iconSize} color={color ?? textColor}/>
     </TouchableOpacity>
   )
@@ -54,9 +54,9 @@ export const SkipToNextButton = ({iconSize = 30, color}: PlayerButtonProps) => {
 
 export const SkipToPreviousButton = ({iconSize = 30, color}: PlayerButtonProps) => {
   const textColor = useColor('text')
-  
+  const {prev} = useAudio();
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+    <TouchableOpacity activeOpacity={0.7} onPress={prev}>
       <FontAwesome6 name={'backward'} size={iconSize} color={color ?? textColor}/>
     </TouchableOpacity>
   )

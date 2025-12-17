@@ -4,31 +4,26 @@ import {unknownTrackImageUri} from '@/constants/images';
 import {PlayPauseButton, SkipToNextButton, SkipToPreviousButton} from './player-controls';
 import {MovingText} from '@/components/features/moving-text';
 import {useColor} from '@/hooks/useColor';
-import {useActiveTrack} from "react-native-track-player";
-import {useLastActiveTrack} from "@/hooks/useLastActiveTrack";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {BlurView} from "expo-blur";
 import {useColorScheme} from "@/hooks/useColorScheme";
 import {useRouter} from "expo-router";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 export const FloatingPlayer = ({style}: ViewProps) => {
   const {bottom} = useSafeAreaInsets();
-  //const displayedTrack = {title: 'La la la'};
   const text = useColor('text');
   const theme = useColorScheme() ?? 'light';
   
-  const activeTrack = useActiveTrack()
-  const lastActiveTrack = useLastActiveTrack()
+  const {currentTrack,} = useAudio();
   
-  const displayedTrack = activeTrack ?? lastActiveTrack
   const router = useRouter()
   
   const handlePress = () => {
     router.navigate('/musics/player')
   }
-  
-  if (!displayedTrack) return null
-  
+  // Không có track → không render (Spotify behavior)
+  if (!currentTrack) return null
   
   return (
     
@@ -54,7 +49,7 @@ export const FloatingPlayer = ({style}: ViewProps) => {
         </View>
         <Image
           source={{
-            uri: displayedTrack?.artwork ?? unknownTrackImageUri,
+            uri: currentTrack?.image_url ?? unknownTrackImageUri,
           }}
           style={styles.trackArtworkImage}
         />
@@ -62,7 +57,7 @@ export const FloatingPlayer = ({style}: ViewProps) => {
         <View style={styles.trackTitleContainer}>
           <MovingText
             style={{...styles.trackTitle, color: text}}
-            text={displayedTrack.title ?? ''}
+            text={currentTrack.title ?? ''}
             animationThreshold={25}
           />
         </View>

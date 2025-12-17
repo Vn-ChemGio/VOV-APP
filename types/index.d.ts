@@ -3,6 +3,13 @@ import {LucideIcon} from "lucide-react-native";
 declare module '*.png'
 declare module '*.jpg'
 
+export type Track = {
+  id: string;
+  title: string;
+  uri: string;
+  artist?: string;
+  image_url?: string;
+};
 
 export type TableQueries = {
   total?: number
@@ -76,7 +83,7 @@ export type PodcastCategory = {
 }
 
 export type Podcast = {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   image_url: string;

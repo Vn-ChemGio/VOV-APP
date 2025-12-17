@@ -9,8 +9,8 @@ import {ThemeProvider} from '@/theme/theme-provider';
 import {FloatingPlayer} from "@/components/features/floating-player";
 import {useSetupTrackPlayer} from '@/hooks/useSetupTrackPlayer'
 import {useLogTrackPlayerState} from '@/hooks/useLogTrackPlayerState'
-import {WebViewProvider} from "@/contexts/webviews/WebViewContext";
 import {playbackService} from "@/constants/playbackService";
+import {AudioProvider} from "@/contexts/audio/AudioProvider";
 
 SplashScreen.preventAutoHideAsync()
 TrackPlayer.registerPlaybackService(() => playbackService)
@@ -29,7 +29,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <ThemeProvider>
-        <WebViewProvider>
+        <AudioProvider>
           <Stack>
             <Stack.Screen name='index' options={{headerShown: false}}/>
             <Stack.Screen name='profile' options={{
@@ -61,7 +61,7 @@ export default function RootLayout() {
               bottom: 78,
             }}
           />
-        </WebViewProvider>
+        </AudioProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
