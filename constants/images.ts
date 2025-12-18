@@ -1,4 +1,4 @@
-import unknownArtistImage from '@/assets/images/unknown_artist.png';
+import unknownArtistImage from '@/assets/images/unknown_artist.jpg';
 import unknownTrackImage from '@/assets/images/unknown_track.png';
 import { Image } from 'react-native';
 

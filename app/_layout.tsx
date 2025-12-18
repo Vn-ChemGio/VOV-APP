@@ -6,10 +6,14 @@ import {StatusBar} from 'expo-status-bar';
 import {ThemeProvider} from '@/theme/theme-provider';
 import {FloatingPlayer} from "@/components/features/floating-player";
 import {AudioProvider} from "@/contexts/audio/AudioProvider";
+import {useEffect} from "react";
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
+  useEffect(() => {
+    SplashScreen.hideAsync()
+  },[])
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <ThemeProvider>
