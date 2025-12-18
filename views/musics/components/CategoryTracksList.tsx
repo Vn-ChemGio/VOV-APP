@@ -10,7 +10,7 @@ import {useNavigationSearch} from '@/hooks/useNavigationSearch'
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
-import {unknownArtistImageUri} from "@/constants/images";
+import {unknownArtistImageUri, unknownTrackImageUri} from "@/constants/images";
 import {QueueControls} from './QueueControls'
 
 import {TracksList} from './TracksList'
@@ -27,11 +27,13 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
   const filteredPlaylistTracks = useMemo(() => {
     if (!search) return category.songs.map(song => ({
       ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
+      uri: `${appConfig.mediaHost}${song.source_url}`,
+      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
     }))
     return category.songs.filter(trackTitleFilter(search)).map(song => ({
       ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
+      uri: `${appConfig.mediaHost}${song.source_url}`,
+      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
     }))
   }, [category.songs, search])
   
@@ -60,7 +62,8 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
           {search.length === 0 && (
             <QueueControls style={{paddingTop: 24}} tracks={category.songs.map(song => ({
               ...song,
-              url: `${appConfig.mediaHost}${song.source_url}`
+              uri: `${appConfig.mediaHost}${song.source_url}`,
+              image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
             }))}/>
           )}
         </View>

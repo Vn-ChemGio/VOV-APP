@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { createAudioPlayer } from 'expo-audio';
+import {AudioPlayer, createAudioPlayer} from 'expo-audio';
 import {Track} from "@/types";
 
 type AudioContextType = {
@@ -21,6 +21,7 @@ type AudioContextType = {
   isPlaying: boolean;
   isLoading: boolean;
   currentTrack?: Track;
+  playerRef: React.RefObject<AudioPlayer>;
 };
 
 const AudioContext = createContext<AudioContextType | null>(null);
@@ -138,6 +139,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         isPlaying,
         isLoading,
         currentTrack: queue[index],
+        playerRef,
       }}
     >
       {children}

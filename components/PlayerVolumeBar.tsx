@@ -1,5 +1,4 @@
 import { colors } from '@/constants/tokens'
-import { useTrackPlayerVolume } from '@/hooks/useTrackPlayerVolume'
 import { utilsStyles } from '@/styles'
 import { Ionicons } from '@expo/vector-icons'
 import { View, ViewProps } from 'react-native'
@@ -7,13 +6,13 @@ import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
 
 export const PlayerVolumeBar = ({ style }: ViewProps) => {
-	const { volume, updateVolume } = useTrackPlayerVolume()
+	
 
 	const progress = useSharedValue(0)
 	const min = useSharedValue(0)
 	const max = useSharedValue(1)
 
-	progress.value = volume ?? 0
+	progress.value = 0
 
 	return (
 		<View style={style}>
@@ -26,7 +25,7 @@ export const PlayerVolumeBar = ({ style }: ViewProps) => {
 						minimumValue={min}
 						containerStyle={utilsStyles.slider}
 						onValueChange={(value) => {
-							updateVolume(value)
+						
 						}}
 						renderBubble={() => null}
 						theme={{

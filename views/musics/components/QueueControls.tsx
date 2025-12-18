@@ -1,15 +1,15 @@
 import {StyleSheet, TouchableOpacity, ViewProps} from 'react-native'
-import TrackPlayer, {Track} from 'react-native-track-player'
 import {Ionicons} from '@expo/vector-icons'
 import {useColorScheme} from "@/hooks/useColorScheme";
 import {useColor} from "@/hooks/useColor";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 
-import {MusicSong} from "@/types";
+import {Track} from "@/types";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 type QueueControlsProps = {
-  tracks: (MusicSong & Track)[]
+  tracks: Track[]
 } & ViewProps
 
 export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps) => {
@@ -17,16 +17,15 @@ export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps)
   const textColor = useColor('text');
   
   const isDarkMode = theme === 'dark';
+  const {playTrack} = useAudio()
+  
   const handlePlay = async () => {
-    await TrackPlayer.setQueue(tracks)
-    await TrackPlayer.play()
+    await playTrack(tracks[0], tracks)
   }
   
   const handleShufflePlay = async () => {
     const shuffledTracks = [...tracks].sort(() => Math.random() - 0.5)
-    
-    await TrackPlayer.setQueue(shuffledTracks)
-    await TrackPlayer.play()
+    await playTrack(shuffledTracks[0], shuffledTracks)
   }
   
   return (

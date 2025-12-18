@@ -1,6 +1,5 @@
 import {useRef} from 'react'
 import {FlatList, FlatListProps} from 'react-native'
-import TrackPlayer, {Track} from 'react-native-track-player'
 import {useQueue} from '@/store/queue'
 import {utilsStyles} from '@/styles'
 import {View} from "@/components/ui/view";
@@ -9,11 +8,12 @@ import {Text} from "@/components/ui/text";
 import {QueueControls} from './QueueControls'
 import {TracksListItem} from './TracksListItem'
 
-import {MusicSong} from "@/types";
+import {Track} from "@/types";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
-export type TracksListProps = Partial<FlatListProps<Track & MusicSong>> & {
+export type TracksListProps = Partial<FlatListProps<Track>> & {
   id: string
-  tracks: (MusicSong & Track)[]
+  tracks: Track[]
   hideQueueControls?: boolean
 }
 
@@ -25,9 +25,9 @@ export const TracksList = ({
                            }: TracksListProps) => {
   const queueOffset = useRef(0)
   const {activeQueueId, setActiveQueueId} = useQueue()
-  
-  const handleTrackSelect = async (selectedTrack: Track & MusicSong) => {
-    const trackIndex = tracks.findIndex((track) => track.url === selectedTrack.url)
+  const {playTrack} = useAudio()
+  const handleTrackSelect = async (selectedTrack: Track) => {
+    const trackIndex = tracks.findIndex((track) => track.uri === selectedTrack.uri)
     
     if (trackIndex === -1) return
     
@@ -36,26 +36,18 @@ export const TracksList = ({
     if (isChangingQueue) {
       const beforeTracks = tracks.slice(0, trackIndex)
       const afterTracks = tracks.slice(trackIndex + 1)
-      
-      await TrackPlayer.reset()
-      
-      // we construct the new queue
-      await TrackPlayer.add(selectedTrack)
-      await TrackPlayer.add(afterTracks)
-      await TrackPlayer.add(beforeTracks)
-      
-      await TrackPlayer.play()
+      await playTrack(selectedTrack, [selectedTrack].concat(afterTracks).concat(beforeTracks))
       
       queueOffset.current = trackIndex
       setActiveQueueId(id)
     } else {
-      const nextTrackIndex =
-        trackIndex - queueOffset.current < 0
-          ? tracks.length + trackIndex - queueOffset.current
-          : trackIndex - queueOffset.current
-      
-      await TrackPlayer.skip(nextTrackIndex)
-      TrackPlayer.play()
+      /* const nextTrackIndex =
+         trackIndex - queueOffset.current < 0
+           ? tracks.length + trackIndex - queueOffset.current
+           : trackIndex - queueOffset.current
+       
+       await TrackPlayer.skip(nextTrackIndex)
+       TrackPlayer.play()*/
     }
   }
   

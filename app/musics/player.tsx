@@ -1,11 +1,11 @@
 import {MovingText} from '@/components/MovingText'
 import {PlayerControls} from '@/components/features/player-controls'
-import {PlayerProgressBar} from '@/components/PlayerProgressbar'
+// import {PlayerProgressBar} from '@/components/PlayerProgressbar'
 // import {PlayerRepeatToggle} from '@/components/PlayerRepeatToggle'
-import {PlayerVolumeBar} from '@/components/PlayerVolumeBar'
+// import {PlayerVolumeBar} from '@/components/PlayerVolumeBar'
 import {unknownTrackImageUri} from '@/constants/images'
-import { defaultStyles, utilsStyles } from '@/styles'
-import { colors, fontSize, screenPadding } from '@/constants/tokens'
+import {defaultStyles} from '@/styles'
+import {fontSize, screenPadding} from '@/constants/tokens'
 
 import {usePlayerBackground} from '@/hooks/usePlayerBackground'
 //import {useTrackPlayerFavorite} from '@/hooks/useTrackPlayerFavorite'
@@ -13,23 +13,23 @@ import {FontAwesome} from '@expo/vector-icons'
 import {LinearGradient} from 'expo-linear-gradient'
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {useActiveTrack} from 'react-native-track-player'
 import {useColor} from "@/hooks/useColor";
 import {Image} from "@/components/ui/image";
+import {useAudio} from "@/contexts/audio/AudioProvider";
+import {Progress} from "@/components/ui/progress";
+import {PlayerProgressBar} from "@/components/PlayerProgressbar";
 
 const PlayerScreen = () => {
   const backgroundColor = useColor('background');
   const textColor = useColor('text');
-  const primaryColor = useColor('primary');
   
-  const activeTrack = useActiveTrack()
-  const {imageColors} = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri)
+  const {currentTrack} = useAudio()
+  const {imageColors} = usePlayerBackground(currentTrack?.image_url ?? unknownTrackImageUri)
   
   const {top, bottom} = useSafeAreaInsets()
-  
+
   //const {isFavorite, toggleFavorite} = useTrackPlayerFavorite()
-  const isFavorite = false;
-  if (!activeTrack) {
+  if (!currentTrack) {
     return (
       <View style={[styles.container, {justifyContent: 'center', backgroundColor}]}>
         <ActivityIndicator color={textColor}/>
@@ -48,7 +48,7 @@ const PlayerScreen = () => {
         <View style={{flex: 1, marginTop: top + 70, marginBottom: bottom}}>
           <View style={styles.artworkImageContainer}>
             <Image
-              source={{uri: activeTrack.artwork ?? unknownTrackImageUri}}
+              source={{uri: currentTrack.image_url ?? unknownTrackImageUri}}
               priority="high"
               containerStyle={styles.artworkImage}
             />
@@ -67,7 +67,7 @@ const PlayerScreen = () => {
                   {/* Track title */}
                   <View style={styles.trackTitleContainer}>
                     <MovingText
-                      text={activeTrack.title ?? ''}
+                      text={currentTrack.title ?? ''}
                       animationThreshold={30}
                       style={styles.trackTitleText}
                     />
@@ -79,26 +79,27 @@ const PlayerScreen = () => {
                     size={20}
                     color={textColor}
                     style={{marginHorizontal: 14}}
-                    onPress={()=>{}}
+                    onPress={() => {
+                    }}
                   />
                 </View>
                 
                 {/* Track artist */}
-                {activeTrack.artist && (
+                {currentTrack.artist && (
                   <Text numberOfLines={1}
                         style={[styles.trackArtistText, {color: textColor, marginTop: 6, fontSize: 20}]}>
-                    {activeTrack.artist}
+                    {currentTrack.artist}
                   </Text>
                 )}
               </View>
               
-              <PlayerProgressBar style={{marginTop: 16}}/>
+               <PlayerProgressBar style={{marginTop: 16}}/>
               
               <PlayerControls style={{marginTop: 40}}/>
             </View>
             
-            <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>
-            
+            {/* <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>
+           */}
             <View style={styles.centeredRow}>
               {/*<PlayerRepeatToggle size={30} style={{marginBottom: 6}}/>*/}
             </View>

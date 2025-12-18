@@ -7,6 +7,7 @@ import {Image} from "@/components/ui/image";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Podcast, Track} from "@/types";
 import {Hoverable} from "@/contexts/hover/HoveredContext";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 const {width: screenWidth} = Dimensions.get('window');
 
@@ -14,6 +15,11 @@ const CardPodCast = (item: Podcast & Track & {
   handleTrackSelect: (selectedTrack: Track) => void;
   idx: number;
 } & { style?: StyleProp<ViewStyle> }) => {
+  
+  const {isPlaying, currentTrack} = useAudio();
+  
+  const activeTrackUrl = currentTrack?.uri;
+  
   return (
     <Card style={[styles.card, item.style]}>
       <Hoverable hoveredValue={item.idx}>
@@ -61,13 +67,10 @@ const CardPodCast = (item: Podcast & Track & {
                     <View style={styles.contentContainerHovered}>
                       <Pressable
                         onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
-                        //disabled={activeTrackUrl === item.url && playing}
+                        disabled={activeTrackUrl === item.uri && isPlaying}
                       >
-                        <Ionicons name={true ? "pause-circle" : "play-circle"}
+                        <Ionicons name={(activeTrackUrl === item.uri) && isPlaying ? "pause-circle" : "play-circle"}
                                   size={48} color="#fff" style={{opacity: 0.9}}/>
-                        
-                        {/*   <Ionicons name={(activeTrackUrl === item.url) && playing ? "pause-circle" : "play-circle"}
-                                  size={48} color="#fff" style={{opacity: 0.9}}/>*/}
                       </Pressable>
                     </View>
                   </View>

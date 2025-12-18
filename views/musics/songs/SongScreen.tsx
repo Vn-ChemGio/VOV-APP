@@ -11,6 +11,7 @@ import {useColor} from "@/hooks/useColor";
 import {TracksList} from '../components'
 import {useSongs} from "./hooks";
 import appConfig from "@/configs/app.config";
+import {unknownTrackImageUri} from "@/constants/images";
 
 export const SongsScreen = () => {
   const search = useNavigationSearch({
@@ -24,12 +25,16 @@ export const SongsScreen = () => {
   const filteredTracks = useMemo(() => {
     if (!search) return songs.map(song => ({
       ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
+      uri: `${appConfig.mediaHost}${song.source_url}`,
+      id: song.id.toString(),
+      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
     })).filter(track => track.source_url)
     
     return songs.filter(trackTitleFilter(search)).map(song => ({
       ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
+      uri: `${appConfig.mediaHost}${song.source_url}`,
+      id: song.id.toString(),
+      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
     })).filter(track => track.source_url)
   }, [search, songs])
   

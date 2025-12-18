@@ -105,6 +105,7 @@ export function Progress({
   const animatedProgressStyle = useAnimatedStyle(() => {
     return {
       width: `${progressWidth.value}%`,
+      backgroundColor: 'white'
     };
   });
 

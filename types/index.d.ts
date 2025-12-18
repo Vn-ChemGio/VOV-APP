@@ -4,7 +4,7 @@ declare module '*.png'
 declare module '*.jpg'
 
 export type Track = {
-  id: string;
+  id: string | number;
   title: string;
   uri: string;
   artist?: string;
@@ -107,7 +107,7 @@ export type Artist = {
 }
 
 export type MusicSong = {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   image_url: string;

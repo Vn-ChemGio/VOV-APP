@@ -1,6 +1,5 @@
 import {StyleSheet, TouchableOpacity} from 'react-native'
 import LoaderKit from 'react-native-loader-kit'
-import {Track, useActiveTrack, useIsPlaying} from 'react-native-track-player'
 
 import {Ionicons} from '@expo/vector-icons'
 import {unknownTrackImageUri} from '@/constants/images'
@@ -12,11 +11,12 @@ import {Text} from "@/components/ui/text";
 
 import appConfig from "@/configs/app.config";
 import {useColor} from "@/hooks/useColor";
-import {MusicSong} from "@/types";
+import {Track} from "@/types";
+import {useAudio} from "@/contexts/audio/AudioProvider";
 
 export type TracksListItemProps = {
-  track: MusicSong & Track
-  onTrackSelect: (track: MusicSong & Track) => void
+  track: Track
+  onTrackSelect: (track: Track) => void
 }
 
 export const TracksListItem = ({
@@ -24,9 +24,9 @@ export const TracksListItem = ({
                                  onTrackSelect: handleTrackSelect,
                                }: TracksListItemProps) => {
   const textColor = useColor('text')
-  const {playing} = useIsPlaying()
+  const {isPlaying, currentTrack} = useAudio()
   
-  const isActiveTrack = useActiveTrack()?.url === track.url;
+  const isActiveTrack = currentTrack?.uri === track.uri;
   
   return (
     <TouchableOpacity onPress={() => handleTrackSelect(track)}>
@@ -35,7 +35,7 @@ export const TracksListItem = ({
           
           <Image
             source={{
-              uri: track.image_url ? `${appConfig.mediaHost}${track.image_url}` : track.artwork ?? unknownTrackImageUri,
+              uri: track.image_url,
             }}
             priority={'normal'}
             style={{
@@ -45,7 +45,7 @@ export const TracksListItem = ({
           />
           
           {isActiveTrack &&
-            (playing ? (
+            (isPlaying ? (
               <LoaderKit
                 style={styles.trackPlayingIconIndicator}
                 name="LineScaleParty"
