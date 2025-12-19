@@ -1,7 +1,6 @@
-import React, {createContext, useCallback, useEffect, useRef, useState,} from 'react';
-import {AudioPlayer, createAudioPlayer} from 'expo-audio';
-import {MediaContent} from "@/types";
-import { AudioEngine } from '@/native/AudioEngine';
+import React, {createContext, useCallback, useRef, useState,} from 'react';
+import TrackPlayer, {Event, State, Track, useTrackPlayerEvents,} from 'react-native-track-player';
+import {MediaContent} from '@/types';
 
 type AudioContextType = {
   playContent: (content: MediaContent, queue?: MediaContent[]) => Promise<void>;
@@ -12,7 +11,6 @@ type AudioContextType = {
   isPlaying: boolean;
   isLoading: boolean;
   currentContent?: MediaContent;
-  playerRef: React.RefObject<AudioPlayer>;
 };
 
 export const AudioContext = createContext<AudioContextType | null>(null);
@@ -20,120 +18,96 @@ export const AudioContext = createContext<AudioContextType | null>(null);
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
                                                                          children,
                                                                        }) => {
-  const playerRef = useRef<any>(null);
-  
-  const [queue, setQueue] = useState<MediaContent[]>([]);
-  const [index, setIndex] = useState(0);
+  const queueRef = useRef<MediaContent[]>([]);
+  const indexRef = useRef(0);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentContent, setCurrentContent] = useState<MediaContent>();
   
-  // ===== INIT PLAYER =====
-  useEffect(() => {
-    const player = createAudioPlayer();
-    playerRef.current = player;
-    
-    const sub = player.addListener(
-      'playbackStatusUpdate',
-      (status: any) => {
-        // Sync isPlaying with native if needed
-        if (typeof status?.isPlaying === 'boolean') {
-          setIsPlaying(prev =>
-            prev !== status.isPlaying ? status.isPlaying : prev
-          );
-          
-          if (status.isPlaying) {
-            setIsLoading(false); // load finished
-          }
-        }
-        
-        // ⭐ auto next (foreground + background)
-        if (status?.didJustFinish) {
-          next();
+  // ===== TRACKPLAYER EVENTS =====
+  useTrackPlayerEvents(
+    [Event.PlaybackState, Event.PlaybackQueueEnded],
+    async event => {
+      if (event.type === Event.PlaybackState) {
+        setIsPlaying(event.state === State.Playing);
+        if (event.state === State.Playing) {
+          setIsLoading(false);
         }
       }
-    );
-    
-    return () => {
-      sub?.remove?.();
-      player?.release?.();
-      playerRef.current = null;
-    };
-  }, [next]);
+      
+      // ⭐ auto next (foreground + background)
+      if (event.type === Event.PlaybackQueueEnded && !event.position) {
+        await next();
+      }
+    }
+  );
   
-  // ===== LOAD & PLAY =====
+  // ===== INTERNAL =====
+  const buildTrack = (c: MediaContent): Track => ({
+    id: `${c.type}_${c.id}`,
+    url: c.source_url,
+    title: c.title,
+    artist: c.artist,
+    album: c.category,
+    artwork: c.image_url,
+  });
+  
   const loadAndPlay = async (content: MediaContent) => {
-    const player = playerRef.current;
-    if (!player) return;
-    
     setIsLoading(true);
     setIsPlaying(true); // optimistic
     
-    await player.replace({
-      uri: content.source_url,
-      metadata: {
-        title: content.title,
-        artist: content.artist,
-        albumTitle: content.category,
-        artworkUrl: content.image_url,
-      },
-    });
-    setIsPlaying(true);
-    setIsLoading(true);
+    await TrackPlayer.reset();
+    await TrackPlayer.add(buildTrack(content));
+    await TrackPlayer.play();
     
-    AudioEngine.load(
-      content.source_url,
-      content.title,
-      content.artist || '',
-      content.image_url
-    );
-    
-    AudioEngine.play();
-    
-    setIsLoading(false);
+    setCurrentContent(content);
   };
   
   // ===== PUBLIC API =====
-  const playContent = async (content: MediaContent, list: MediaContent[] = []) => {
-    if (!list.length) {
-      list = [content];
-    }
+  const playContent = async (
+    content: MediaContent,
+    list: MediaContent[] = []
+  ) => {
+    if (!list.length) list = [content];
     
-    const idx = list.findIndex(t => t.id === content.id && t.type === content.type);
+    const idx = list.findIndex(
+      t => t.id === content.id && t.type === content.type
+    );
     if (idx === -1) return;
     
-    setQueue(list);
-    setIndex(idx);
+    queueRef.current = list;
+    indexRef.current = idx;
     
     await loadAndPlay(content);
   };
   
   const play = async () => {
-    if (!isPlaying) setIsPlaying(true); // optimistic
-    await playerRef.current?.play?.();
+    if (!isPlaying) setIsPlaying(true);
+    await TrackPlayer.play();
   };
   
   const pause = async () => {
-    if (isPlaying) setIsPlaying(false); // optimistic
-    AudioEngine.pause();
+    if (isPlaying) setIsPlaying(false);
+    await TrackPlayer.pause();
   };
   
   const next = useCallback(async () => {
-    setIndex(prev => {
-      const ni = prev + 1;
-      if (!queue[ni]) return prev;
-      
-      loadAndPlay(queue[ni]);
-      return ni;
-    });
-  }, [queue]);
+    const ni = indexRef.current + 1;
+    const q = queueRef.current;
+    if (!q[ni]) return;
+    
+    indexRef.current = ni;
+    await loadAndPlay(q[ni]);
+  }, []);
   
   const prev = async () => {
-    const pi = index - 1;
-    if (!queue[pi]) return;
+    const pi = indexRef.current - 1;
+    const q = queueRef.current;
+    if (!q[pi]) return;
     
-    setIndex(pi);
-    await loadAndPlay(queue[pi]);
+    indexRef.current = pi;
+    await loadAndPlay(q[pi]);
   };
   
   return (
@@ -146,8 +120,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         prev,
         isPlaying,
         isLoading,
-        currentContent: queue[index],
-        playerRef,
+        currentContent,
       }}
     >
       {children}

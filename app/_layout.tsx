@@ -1,20 +1,24 @@
 import {useEffect} from "react";
 import {SplashScreen, Stack} from 'expo-router'
 import {StatusBar} from "expo-status-bar";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { AudioProvider } from "@/contexts/audio/AudioProvider";
-import { ThemeProvider } from "@/theme/theme-provider";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
+import TrackPlayer from "react-native-track-player";
+
+import {AudioProvider, setupTrackPlayer, trackPlayerService} from "@/contexts/audio";
+import {ThemeProvider} from "@/theme/theme-provider";
 
 export const unstable_settings = {
   // Ensure any route can link back to the specified name
   initialRouteName: 'index',
 };
 
+TrackPlayer.registerPlaybackService(() => trackPlayerService);
 
 export default function RootLayout() {
   useEffect(() => {
+    setupTrackPlayer();
     SplashScreen.hideAsync()
-  },[])
+  }, [])
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <ThemeProvider>
