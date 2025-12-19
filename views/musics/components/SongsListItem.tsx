@@ -1,41 +1,41 @@
 import {StyleSheet, TouchableOpacity} from 'react-native'
 import LoaderKit from 'react-native-loader-kit'
 
-import {Ionicons} from '@expo/vector-icons'
-import {unknownTrackImageUri} from '@/constants/images'
+import {Entypo, Ionicons} from '@expo/vector-icons'
 
-import {colors, fontSize} from '@/constants/tokens'
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 
-import appConfig from "@/configs/app.config";
-import {useColor} from "@/hooks/useColor";
-import {Track} from "@/types";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+import {useAudio, useColor} from "@/hooks";
+import {MusicSong} from "@/types";
+import {StopPropagation} from "./StopPropagation";
+import { SongShortcutsMenu } from "./SongShortcutsMenu";
 
-export type TracksListItemProps = {
-  track: Track
-  onTrackSelect: (track: Track) => void
+export type SongsListItemProps = {
+  song: MusicSong
+  onSongSelect: (track: MusicSong) => void
 }
 
-export const TracksListItem = ({
-                                 track,
-                                 onTrackSelect: handleTrackSelect,
-                               }: TracksListItemProps) => {
+export const SongsListItem = ({
+                                 song,
+                                 onSongSelect: handleSongSelect,
+                               }: SongsListItemProps) => {
   const textColor = useColor('text')
-  const {isPlaying, currentTrack} = useAudio()
+  const primaryColor = useColor('primary')
+  const textMutedColor = useColor('textMuted')
+  const {isPlaying, currentContent} = useAudio()
   
-  const isActiveTrack = currentTrack?.uri === track.uri;
+  const isActiveTrack = currentContent?.source_url === song?.source_url;
   
   return (
-    <TouchableOpacity onPress={() => handleTrackSelect(track)}>
+    <TouchableOpacity onPress={() => handleSongSelect(song)}>
       <View style={styles.trackItemContainer}>
         <View>
           
           <Image
             source={{
-              uri: track.image_url,
+              uri: song.image_url,
             }}
             priority={'normal'}
             style={{
@@ -49,14 +49,14 @@ export const TracksListItem = ({
               <LoaderKit
                 style={styles.trackPlayingIconIndicator}
                 name="LineScaleParty"
-                color={colors.icon}
+                color={textColor}
               />
             ) : (
               <Ionicons
                 style={styles.trackPausedIndicator}
                 name="play"
                 size={24}
-                color={colors.icon}
+                color={textColor}
               />
             ))}
         </View>
@@ -75,24 +75,24 @@ export const TracksListItem = ({
               numberOfLines={1}
               style={{
                 ...styles.trackTitleText,
-                color: isActiveTrack ? colors.primary : textColor,
+                color: isActiveTrack ? primaryColor : textColor,
               }}
             >
-              {track.title}
+              {song.title}
             </Text>
             
-            {track.artist && (
-              <Text numberOfLines={1} style={styles.trackArtistText}>
-                {track.artist}
+            {song.artist?.name && (
+              <Text numberOfLines={1} style={{...styles.trackArtistText, color: textMutedColor}}>
+                {song.artist?.name}
               </Text>
             )}
           </View>
           
-          {/*<StopPropagation>
-            <TrackShortcutsMenu track={track}>
-              <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
-            </TrackShortcutsMenu>
-          </StopPropagation>*/}
+          <StopPropagation>
+            <SongShortcutsMenu song={song}>
+              <Entypo name="dots-three-horizontal" size={18} color={textColor} />
+            </SongShortcutsMenu>
+          </StopPropagation>
         </View>
       </View>
     </TouchableOpacity>
@@ -125,12 +125,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   trackTitleText: {
-    fontSize: fontSize.sm,
+    fontSize: 16,
     fontWeight: '600',
     maxWidth: '90%',
   },
   trackArtistText: {
-    color: colors.textMuted,
     fontSize: 14,
     marginTop: 4,
   },

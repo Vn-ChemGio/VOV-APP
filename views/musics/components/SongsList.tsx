@@ -6,37 +6,39 @@ import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 
 import {QueueControls} from './QueueControls'
-import {TracksListItem} from './TracksListItem'
+import {SongsListItem} from './SongsListItem'
 
-import {Track} from "@/types";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+import {MusicSong} from "@/types";
+import {useAudio} from "@/hooks";
+import {musicSongToMediaContent} from "@/helpers";
 
-export type TracksListProps = Partial<FlatListProps<Track>> & {
+export type SongsListProps = Partial<FlatListProps<MusicSong>> & {
   id: string
-  tracks: Track[]
+  songs: MusicSong[]
   hideQueueControls?: boolean
 }
 
-export const TracksList = ({
+export const SongsList = ({
                              id,
-                             tracks,
+                             songs,
                              hideQueueControls = false,
                              ...flatlistProps
-                           }: TracksListProps) => {
+                           }: SongsListProps) => {
   const queueOffset = useRef(0)
   const {activeQueueId, setActiveQueueId} = useQueue()
-  const {playTrack} = useAudio()
-  const handleTrackSelect = async (selectedTrack: Track) => {
-    const trackIndex = tracks.findIndex((track) => track.uri === selectedTrack.uri)
+  const {playContent} = useAudio();
+  
+  const handleSongSelect = async (selectedSong: MusicSong) => {
+    const trackIndex = songs.findIndex((song) => song.source_url === selectedSong.source_url)
     
     if (trackIndex === -1) return
     
     const isChangingQueue = id !== activeQueueId
     
     if (isChangingQueue) {
-      const beforeTracks = tracks.slice(0, trackIndex)
-      const afterTracks = tracks.slice(trackIndex + 1)
-      await playTrack(selectedTrack, [selectedTrack].concat(afterTracks).concat(beforeTracks))
+      const beforeTracks = songs.slice(0, trackIndex)
+      const afterTracks = songs.slice(trackIndex + 1)
+      await playContent(musicSongToMediaContent(selectedSong), ([selectedSong].concat(afterTracks).concat(beforeTracks)).map(song => musicSongToMediaContent(song)))
       
       queueOffset.current = trackIndex
       setActiveQueueId(id)
@@ -53,26 +55,26 @@ export const TracksList = ({
   
   return (
     <FlatList
-      data={tracks}
+      data={songs}
       contentContainerStyle={{paddingTop: 10}}
       ListHeaderComponent={
         !hideQueueControls ? (
-          <QueueControls tracks={tracks} style={{paddingBottom: 20}}/>
+          <QueueControls songs={songs} style={{paddingBottom: 20}}/>
         ) : undefined
       }
       ListFooterComponent={() => (
-        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: tracks.length ? 60 : 0}}/>
+        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: songs.length ? 60 : 0}}/>
       )}
       ItemSeparatorComponent={() => (
-        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: tracks.length ? 60 : 0}}/>
+        <View style={{...utilsStyles.itemSeparator, marginVertical: 9, marginLeft: songs.length ? 60 : 0}}/>
       )}
       ListEmptyComponent={
         <View>
           <Text style={utilsStyles.emptyContentText}>No songs found</Text>
         </View>
       }
-      renderItem={({item: track}) => (
-        <TracksListItem track={track} onTrackSelect={handleTrackSelect}/>
+      renderItem={({item: song}) => (
+        <SongsListItem song={song} onSongSelect={handleSongSelect}/>
       )}
       {...flatlistProps}
     />

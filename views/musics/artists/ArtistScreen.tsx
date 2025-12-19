@@ -1,20 +1,19 @@
 import React, {useMemo} from 'react'
-import {FlatList, StyleSheet, TouchableWithoutFeedback, View} from 'react-native'
+import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Link} from 'expo-router'
 
 import {unknownArtistImageUri} from '@/constants/images'
 import appConfig from "@/configs/app.config";
 
-import {defaultStyles, utilsStyles} from '@/styles'
+import {View} from "@/components/ui/view";
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
-import {useNavigationSearch} from "@/hooks/useNavigationSearch";
-
-import {useColor} from "@/hooks/useColor";
-import {artistNameFilter} from "@/helpers/filter";
+import {useColor, useNavigationSearch} from "@/hooks";
+import {artistNameFilter} from "@/helpers";
 import {useArtists} from './hooks'
 import LoadingScreen from "@/components/features/loading-screen";
+import {defaultStyles} from "@/styles";
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -24,6 +23,8 @@ export const ArtistsScreen = () => {
   })
   const backgroundColor = useColor('background')
   const textColor = useColor('text')
+  const textMutedColor = useColor('textMuted')
+  
   const {artists, isLoading} = useArtists()
   
   const filteredArtists = useMemo(() => {
@@ -33,7 +34,7 @@ export const ArtistsScreen = () => {
   }, [artists, search])
   
   return (
-    <View style={[defaultStyles.container, {backgroundColor}]}>
+    <View style={{flex: 1, backgroundColor}}>
       <ScrollView
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
@@ -44,34 +45,49 @@ export const ArtistsScreen = () => {
             scrollEnabled={false}
             ItemSeparatorComponent={() => <View
               style={{
-                ...utilsStyles.itemSeparator,
+                borderColor: textMutedColor,
+                borderWidth: StyleSheet.hairlineWidth,
+                opacity: 0.3,
                 marginLeft: filteredArtists.length ? 50 : 0,
                 marginVertical: 12
               }}/>
             }
             ListFooterComponent={() => <View
               style={{
-                ...utilsStyles.itemSeparator,
+                borderColor: textMutedColor,
+                borderWidth: StyleSheet.hairlineWidth,
+                opacity: 0.3,
                 marginLeft: filteredArtists.length ? 50 : 0,
                 marginVertical: 12
               }}/>}
             ListEmptyComponent={
               <View>
-                <Text style={utilsStyles.emptyContentText}>Không tìm thấy dữ liệu</Text>
+                <Text style={{
+                  fontSize: 16,
+                  color: textMutedColor,
+                  textAlign: 'center',
+                  marginTop: 20,
+                }}>Không tìm thấy dữ liệu</Text>
                 
                 <Image
                   source={{
                     uri: unknownArtistImageUri,
                   }}
                   priority={'normal'}
-                  containerStyle={utilsStyles.emptyContentImage}
+                  containerStyle={{
+                    width: 200,
+                    height: 200,
+                    alignSelf: 'center',
+                    marginTop: 40,
+                    opacity: 0.3,
+                  }}
                 />
               </View>
             }
             data={filteredArtists}
             renderItem={({item: artist}) => {
               return (
-                <Link href={`/musics/(tabs)/artists/${artist.id}`} asChild>
+                <Link href={`/musics/artists/${artist.id}`} asChild>
                   <TouchableWithoutFeedback>
                     <View style={styles.artistItemContainer}>
                       <View>
@@ -113,7 +129,6 @@ const styles = StyleSheet.create({
     height: 40,
   },
   artistNameText: {
-    ...defaultStyles.text,
     fontSize: 17,
     maxWidth: '80%',
   },

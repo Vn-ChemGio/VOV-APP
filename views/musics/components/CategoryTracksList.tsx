@@ -2,18 +2,17 @@ import {useMemo} from 'react'
 import {StyleSheet} from 'react-native'
 
 import {fontSize} from '@/constants/tokens'
-import appConfig from "@/configs/app.config";
-import {trackTitleFilter} from '@/helpers/filter'
-import {generateTracksListId} from '@/helpers/miscellaneous'
-import {useNavigationSearch} from '@/hooks/useNavigationSearch'
+import {cleanMusicSongs, generateTracksListId, trackTitleFilter} from '@/helpers'
+import {useNavigationSearch} from '@/hooks'
 
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
-import {unknownArtistImageUri, unknownTrackImageUri} from "@/constants/images";
-import {QueueControls} from './QueueControls'
 
-import {TracksList} from './TracksList'
+import {unknownArtistImageUri} from "@/constants/images";
+import {QueueControls} from './QueueControls'
+import {SongsList} from './SongsList'
+
 import {MusicCategory} from "@/types";
 
 export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
@@ -24,21 +23,13 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
     },
   })
   
-  const filteredPlaylistTracks = useMemo(() => {
-    if (!search) return category.songs.map(song => ({
-      ...song,
-      uri: `${appConfig.mediaHost}${song.source_url}`,
-      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
-    }))
-    return category.songs.filter(trackTitleFilter(search)).map(song => ({
-      ...song,
-      uri: `${appConfig.mediaHost}${song.source_url}`,
-      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
-    }))
+  const filteredCategorySongs = useMemo(() => {
+    if (!search) return cleanMusicSongs(category.songs)
+    return cleanMusicSongs(category.songs.filter(trackTitleFilter(search)))
   }, [category.songs, search])
   
   return (
-    <TracksList
+    <SongsList
       id={generateTracksListId(`music-category-${category.id}`, search)}
       scrollEnabled={false}
       hideQueueControls={true}
@@ -60,15 +51,11 @@ export const CategoryTracksList = ({category}: { category: MusicCategory }) => {
           </Text>
           
           {search.length === 0 && (
-            <QueueControls style={{paddingTop: 24}} tracks={category.songs.map(song => ({
-              ...song,
-              uri: `${appConfig.mediaHost}${song.source_url}`,
-              image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
-            }))}/>
+            <QueueControls style={{paddingTop: 24}} songs={filteredCategorySongs}/>
           )}
         </View>
       }
-      tracks={filteredPlaylistTracks}
+      songs={filteredCategorySongs}
     />
   )
 }

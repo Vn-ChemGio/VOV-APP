@@ -103,11 +103,12 @@ export type Artist = {
 }
 
 export type MusicSong = {
-  id: number | string;
+  id: number;
   title: string;
   description: string;
   image_url: string;
   source_url: string;
+  artist?: Artist;
 }
 
 export type MediaContent = {

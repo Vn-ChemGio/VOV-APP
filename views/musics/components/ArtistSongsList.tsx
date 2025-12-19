@@ -2,23 +2,20 @@ import {useMemo} from 'react'
 import {StyleSheet} from 'react-native'
 
 import {unknownArtistImageUri} from '@/constants/images'
-import {fontSize} from '@/constants/tokens'
-import appConfig from "@/configs/app.config";
 
-import {trackTitleFilter} from '@/helpers/filter'
-import {generateTracksListId} from '@/helpers/miscellaneous'
+import {cleanMusicSongs, generateTracksListId, trackTitleFilter} from '@/helpers'
 
-import {useNavigationSearch} from '@/hooks/useNavigationSearch'
+import {useNavigationSearch} from '@/hooks'
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 
 import {QueueControls} from './QueueControls'
-import {TracksList} from './TracksList'
+import {SongsList} from './SongsList'
 
 import {Artist} from "@/types";
 
-export const ArtistTracksList = ({artist}: { artist: Artist }) => {
+export const ArtistSongsList = ({artist}: { artist: Artist }) => {
   const search = useNavigationSearch({
     searchBarOptions: {
       hideWhenScrolling: true,
@@ -26,20 +23,14 @@ export const ArtistTracksList = ({artist}: { artist: Artist }) => {
     },
   })
   
-  const filteredArtistTracks = useMemo(() => {
-    if (!search) return artist.songs.map(song => ({
-      ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
-    }))
+  const filteredArtistSongs = useMemo(() => {
+    if (!search) return cleanMusicSongs(artist.songs)
     
-    return artist.songs.filter(trackTitleFilter(search)).map(song => ({
-      ...song,
-      url: `${appConfig.mediaHost}${song.source_url}`
-    }))
+    return cleanMusicSongs(artist.songs.filter(trackTitleFilter(search)));
   }, [artist.songs, search])
   
   return (
-    <TracksList
+    <SongsList
       id={generateTracksListId(`music-artist-${artist.id}`, search)}
       scrollEnabled={false}
       hideQueueControls={true}
@@ -61,14 +52,11 @@ export const ArtistTracksList = ({artist}: { artist: Artist }) => {
           </Text>
           
           {search.length === 0 && (
-            <QueueControls tracks={artist.songs.map(song => ({
-              ...song,
-              url: `${appConfig.mediaHost}${song.source_url}`
-            }))} style={{paddingTop: 24}}/>
+            <QueueControls songs={filteredArtistSongs} style={{paddingTop: 24}}/>
           )}
         </View>
       }
-      tracks={filteredArtistTracks}
+      songs={filteredArtistSongs}
     />
   )
 }
@@ -93,7 +81,7 @@ const styles = StyleSheet.create({
   artistNameText: {
     marginTop: 22,
     textAlign: 'center',
-    fontSize: fontSize.lg,
+    fontSize: 24,
     fontWeight: '800',
   },
 })

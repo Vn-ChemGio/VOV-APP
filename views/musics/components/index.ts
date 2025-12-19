@@ -1,3 +1,3 @@
 export * from './CategoryTracksList';
-export * from './ArtistTracksList';
-export * from './TracksList';
+export * from './ArtistSongsList';
+export * from './SongsList';

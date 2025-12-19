@@ -1,7 +1,7 @@
-import {Artist, MusicCategory} from "@/types";
+import {Artist, MusicCategory, MusicSong} from "@/types";
 
-export const trackTitleFilter = (title: string) => (track: any) =>
-	track.name?.toLowerCase().includes(title.toLowerCase())
+export const trackTitleFilter = (title: string) => (track: MusicSong) =>
+	track.title?.toLowerCase().includes(title.toLowerCase())
 
 export const artistNameFilter = (name: string) => (artist: Artist) =>
 	artist.name.toLowerCase().includes(name.toLowerCase())

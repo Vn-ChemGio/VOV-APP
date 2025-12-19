@@ -1,17 +1,16 @@
 import React, {useMemo} from 'react'
-import {ScrollView, View} from 'react-native'
+import {ScrollView} from 'react-native'
+
+import {View} from '@/components/ui/view';
+
+import {cleanMusicSongs, generateTracksListId, trackTitleFilter} from '@/helpers'
+import {useColor, useNavigationSearch} from "@/hooks";
 
 import LoadingScreen from "@/components/features/loading-screen";
-import {trackTitleFilter} from '@/helpers/filter'
-import {generateTracksListId} from '@/helpers/miscellaneous'
-import {useNavigationSearch} from '@/hooks/useNavigationSearch'
-import {defaultStyles} from '@/styles'
 
-import {useColor} from "@/hooks/useColor";
-import {TracksList} from '../components'
+import {SongsList} from '../components'
+
 import {useSongs} from "./hooks";
-import appConfig from "@/configs/app.config";
-import {unknownTrackImageUri} from "@/constants/images";
 
 export const SongsScreen = () => {
   const search = useNavigationSearch({
@@ -23,31 +22,21 @@ export const SongsScreen = () => {
   const {songs, isLoading} = useSongs()
   
   const filteredTracks = useMemo(() => {
-    if (!search) return songs.map(song => ({
-      ...song,
-      uri: `${appConfig.mediaHost}${song.source_url}`,
-      id: song.id.toString(),
-      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
-    })).filter(track => track.source_url)
+    if (!search) return cleanMusicSongs(songs)
     
-    return songs.filter(trackTitleFilter(search)).map(song => ({
-      ...song,
-      uri: `${appConfig.mediaHost}${song.source_url}`,
-      id: song.id.toString(),
-      image_url: song.image_url ? `${appConfig.mediaHost}${song.image_url}` : song.image_url ?? unknownTrackImageUri,
-    })).filter(track => track.source_url)
+    return cleanMusicSongs(songs.filter(trackTitleFilter(search)))
   }, [search, songs])
   
   return (
-    <View style={[defaultStyles.container, {backgroundColor}]}>
+    <View style={{flex: 1, backgroundColor}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={{paddingHorizontal: 16}}
       >
         {isLoading ? <LoadingScreen/> :
-          <TracksList
+          <SongsList
             id={generateTracksListId('songs', search)}
-            tracks={filteredTracks}
+            songs={filteredTracks}
             scrollEnabled={false}
           />}
       </ScrollView>

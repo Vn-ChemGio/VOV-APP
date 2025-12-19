@@ -62,7 +62,6 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   
   // ===== LOAD & PLAY =====
   const loadAndPlay = async (content: MediaContent) => {
-    console.log('loadAndPlay', content);
     const player = playerRef.current;
     if (!player) return;
     

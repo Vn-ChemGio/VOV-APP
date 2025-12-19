@@ -1,8 +1,9 @@
 import {Redirect, useLocalSearchParams} from 'expo-router'
-import {View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
-import {defaultStyles} from '@/styles'
-import {useColor} from "@/hooks/useColor";
+
+import {View} from '@/components/ui/view'
+
+import {useColor} from "@/hooks";
 import {useCategories} from './hooks'
 import {CategoryTracksList} from "../components";
 
@@ -17,11 +18,11 @@ export const CategoryDetailScreen = () => {
   if (!category) {
     console.warn(`Category ${categoryId} not found!`)
     
-    return <Redirect href={'/musics/(tabs)/categories'}/>
+    return <Redirect href={'/musics/categories'}/>
   }
   
   return (
-    <View style={[defaultStyles.container, {backgroundColor}]}>
+    <View style={{flex: 1, backgroundColor}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={{paddingHorizontal: 16}}

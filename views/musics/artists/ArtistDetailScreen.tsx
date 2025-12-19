@@ -2,10 +2,9 @@ import {View} from 'react-native'
 import {ScrollView} from 'react-native-gesture-handler'
 import {Redirect, useLocalSearchParams} from 'expo-router'
 
-import {defaultStyles} from '@/styles'
-import {useColor} from "@/hooks/useColor";
+import {useColor} from "@/hooks";
 import {useArtists} from './hooks'
-import {ArtistTracksList} from '../components'
+import {ArtistSongsList} from '../components'
 
 export const ArtistDetailScreen = () => {
   const backgroundColor = useColor('background')
@@ -18,16 +17,16 @@ export const ArtistDetailScreen = () => {
   if (!artist) {
     console.warn(`Artist ${artistId} not found!`)
     
-    return <Redirect href={'/musics/(tabs)/artists'}/>
+    return <Redirect href={'/musics/artists'}/>
   }
   
   return (
-    <View style={[defaultStyles.container, {backgroundColor}]}>
+    <View style={{flex: 1, backgroundColor}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={{paddingHorizontal: 16}}
       >
-        <ArtistTracksList artist={artist}/>
+        <ArtistSongsList artist={artist}/>
       </ScrollView>
     </View>
   )

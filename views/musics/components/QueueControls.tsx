@@ -1,31 +1,32 @@
 import {StyleSheet, TouchableOpacity, ViewProps} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
-import {useColorScheme} from "@/hooks/useColorScheme";
-import {useColor} from "@/hooks/useColor";
+import {useAudio, useColor, useColorScheme} from "@/hooks";
+
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
 
-import {Track} from "@/types";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+import {MusicSong} from "@/types";
+import {musicSongToMediaContent} from "@/helpers";
 
 type QueueControlsProps = {
-  tracks: Track[]
+  songs: MusicSong[]
 } & ViewProps
 
-export const QueueControls = ({tracks, style, ...viewProps}: QueueControlsProps) => {
+export const QueueControls = ({songs, style, ...viewProps}: QueueControlsProps) => {
   const theme = useColorScheme() ?? 'light';
   const textColor = useColor('text');
   
   const isDarkMode = theme === 'dark';
-  const {playTrack} = useAudio()
+  const {playContent} = useAudio()
   
   const handlePlay = async () => {
-    await playTrack(tracks[0], tracks)
+    await playContent(musicSongToMediaContent(songs[0]), songs.map((song) => musicSongToMediaContent(song)))
+    
   }
   
   const handleShufflePlay = async () => {
-    const shuffledTracks = [...tracks].sort(() => Math.random() - 0.5)
-    await playTrack(shuffledTracks[0], shuffledTracks)
+    const shuffledTracks = [...songs].sort(() => Math.random() - 0.5)
+    await playContent(musicSongToMediaContent(shuffledTracks[0]), shuffledTracks.map((song) => musicSongToMediaContent(song)))
   }
   
   return (

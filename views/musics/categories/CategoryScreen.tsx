@@ -3,15 +3,19 @@ import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import {BlurView} from 'expo-blur'
 import {Link} from 'expo-router'
 import {ScrollView} from 'react-native-gesture-handler'
+
 import {unknownArtistImageUri, unknownTrackImageUri} from '@/constants/images'
-import {defaultStyles, utilsStyles} from '@/styles'
-import {useNavigationSearch} from "@/hooks/useNavigationSearch";
-import {useColor} from "@/hooks/useColor";
+
+import {useColor, useNavigationSearch} from "@/hooks";
+
 import {Image} from "@/components/ui/image";
 import {View} from "@/components/ui/view";
 import {Text} from "@/components/ui/text";
+
 import LoadingScreen from "@/components/features/loading-screen";
-import {categoryNameFilter} from "@/helpers/filter";
+
+import {categoryNameFilter} from "@/helpers";
+
 import {useCategories} from './hooks'
 
 
@@ -24,6 +28,7 @@ export const CategoriesScreen = () => {
   
   const {categories, isLoading} = useCategories()
   const backgroundColor = useColor('background')
+  const textMutedColor = useColor('textMuted')
   
   const filteredCategories = useMemo(() => {
     if (!search) return categories
@@ -32,7 +37,7 @@ export const CategoriesScreen = () => {
   }, [categories, search])
   
   return (
-    <View style={[defaultStyles.container, {backgroundColor}]}>
+    <View style={{flex: 1, backgroundColor}}>
       <ScrollView
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
@@ -43,11 +48,22 @@ export const CategoriesScreen = () => {
             columnWrapperStyle={{gap: 12}}
             ListEmptyComponent={
               <View>
-                <Text style={utilsStyles.emptyContentText}>Không tìm thấy dữ liệu</Text>
+                <Text style={{
+                  fontSize: 16,
+                  color: textMutedColor,
+                  textAlign: 'center',
+                  marginTop: 20,
+                }}>Không tìm thấy dữ liệu</Text>
                 
                 <Image
                   source={{uri: unknownTrackImageUri}}
-                  containerStyle={utilsStyles.emptyContentImage}
+                  containerStyle={{
+                    width: 200,
+                    height: 200,
+                    alignSelf: 'center',
+                    marginTop: 40,
+                    opacity: 0.3,
+                  }}
                   priority="normal"
                 />
               </View>
@@ -55,7 +71,7 @@ export const CategoriesScreen = () => {
             numColumns={2}
             data={filteredCategories}
             renderItem={({item: category}) => (
-              <Link href={`/musics/(tabs)/categories/${category.id}`} asChild>
+              <Link href={`/musics/categories/${category.id}`} asChild>
                 <TouchableWithoutFeedback>
                   <View style={[styles.categoryContainer, {
                     backgroundImage: category.image_url,

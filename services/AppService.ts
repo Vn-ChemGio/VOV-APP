@@ -85,7 +85,7 @@ export async function apiGetMusicCategories<T>(
     url: _,
     method: 'get',
     params: {
-      relations: ['song_categories','song_categories.song'],
+      relations: ['song_categories','song_categories.song','song_categories.song.artist'],
       order: {
         id: 'ASC'
       }
@@ -101,6 +101,7 @@ export async function apiGetMusicSongs<T>(
     url: _,
     method: 'get',
     params: {
+      relations: ['artist'],
       order: {
         id: 'ASC'
       }
