@@ -36,6 +36,8 @@ const UPPER_HEADER_PADDING_TOP = 4;
 const LOWER_HEADER_HEIGHT = 96;
 
 export default function MomoHeader() {
+  
+  console.log('render layout profile')
   const animatedValue = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef<ScrollView>(null);
   const lastOffsetY = useRef(0);

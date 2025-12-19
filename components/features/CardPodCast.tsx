@@ -5,20 +5,22 @@ import {Ionicons} from "@expo/vector-icons";
 import {View} from "@/components/ui/view";
 import {Image} from "@/components/ui/image";
 import {Card, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Podcast, Track} from "@/types";
+
+import {useAudio} from '@/hooks'
+import {Podcast} from "@/types";
+
 import {Hoverable} from "@/contexts/hover/HoveredContext";
-import {useAudio} from "@/contexts/audio/AudioProvider";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const CardPodCast = (item: Podcast & Track & {
-  handleTrackSelect: (selectedTrack: Track) => void;
+const CardPodCast = (item: Podcast & {
+  handlePodcastSelect: (selectedTrack: Podcast) => void;
   idx: number;
 } & { style?: StyleProp<ViewStyle> }) => {
   
-  const {isPlaying, currentTrack} = useAudio();
+  const {isPlaying, currentContent} = useAudio();
   
-  const activeTrackUrl = currentTrack?.uri;
+  const activeTrackUrl = currentContent?.source_url;
   
   return (
     <Card style={[styles.card, item.style]}>
@@ -66,11 +68,12 @@ const CardPodCast = (item: Podcast & Track & {
                     </View>
                     <View style={styles.contentContainerHovered}>
                       <Pressable
-                        onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
-                        disabled={activeTrackUrl === item.uri && isPlaying}
+                        onPress={() => item.handlePodcastSelect(item)} style={styles.onPress}
+                        disabled={activeTrackUrl === item.source_url && isPlaying}
                       >
-                        <Ionicons name={(activeTrackUrl === item.uri) && isPlaying ? "pause-circle" : "play-circle"}
-                                  size={48} color="#fff" style={{opacity: 0.9}}/>
+                        <Ionicons
+                          name={(activeTrackUrl === item.source_url) && isPlaying ? "pause-circle" : "play-circle"}
+                          size={48} color="#fff" style={{opacity: 0.9}}/>
                       </Pressable>
                     </View>
                   </View>
@@ -78,7 +81,7 @@ const CardPodCast = (item: Podcast & Track & {
               </Pressable>
             </View>
             <CardHeader style={{paddingHorizontal: 12, flex: 1, paddingTop: 0, paddingBottom: 12}}>
-              <CardTitle numberOfLines={2}>{item.title}</CardTitle>
+              <CardTitle numberOfLines={2}>{item.name}</CardTitle>
               <CardDescription
                 numberOfLines={3}
                 ellipsizeMode="tail"

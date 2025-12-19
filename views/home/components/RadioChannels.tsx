@@ -1,29 +1,25 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
+
 import {View} from '@/components/ui/view';
 import {Text} from '@/components/ui/text';
-import {useColor} from '@/hooks/useColor';
+
+import {useAudio, useColor} from '@/hooks';
+import {radioChannelToMediaContent} from "@/helpers";
+
 import CardRadioChannel from "@/components/features/CardRadioChannel";
 import {HoveredProvider} from '@/contexts/hover/HoveredContext';
-import appConfig from "@/configs/app.config";
-import {useAudio} from "@/contexts/audio/AudioProvider";
-import {RadioChannel, Track} from "@/types";
+
+import {MediaContent, RadioChannel} from "@/types";
 
 export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
   const backgroundColor = useColor('background');
   
-  const {playTrack} = useAudio();
-  const tracks = data.map((item, index) => ({
-    ...item,
-    id: item.id?.toString() || index.toString(),
-    uri: item.source_url,
-    image_url: `${appConfig.apiPrefix}${item.image_url}`,
-    title: item.name,
-    isOnline: index !== 4
-  }));
+  const {playContent} = useAudio();
+  const contents: MediaContent[] = data.map((item) => radioChannelToMediaContent(item));
   
-  const handleTrackSelect = async (selectedTrack: Track) => {
-    await playTrack(selectedTrack, tracks)
+  const handleTrackSelect = async (selectedChannel: RadioChannel) => {
+    await playContent(radioChannelToMediaContent(selectedChannel), contents)
   }
   
   return (
@@ -32,7 +28,7 @@ export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
         <Text variant="subtitle" style={styles.title}>Chương trình Radio</Text>
         <View style={styles.contentContainer}>
           <HoveredProvider>
-            {tracks.map((item, idx) => (
+            {data.map((item, idx) => (
               <CardRadioChannel {...{
                 ...item,
                 idx,

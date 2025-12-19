@@ -1,9 +1,9 @@
-import { colors } from '@/constants/tokens'
-import { utilsStyles } from '@/styles'
-import { Ionicons } from '@expo/vector-icons'
 import { View, ViewProps } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import { Slider } from 'react-native-awesome-slider'
 import { useSharedValue } from 'react-native-reanimated'
+import { colors } from '@/constants/tokens'
+import { utilsStyles } from '@/styles'
 
 export const PlayerVolumeBar = ({ style }: ViewProps) => {
 	

@@ -1,7 +1,6 @@
 import {FontAwesome6} from '@expo/vector-icons'
 import {StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle} from 'react-native'
-import {useColor} from "@/hooks/useColor";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+import {useColor, useAudio} from "@/hooks";
 
 type PlayerControlsProps = {
   style?: ViewStyle

@@ -3,14 +3,6 @@ import {LucideIcon} from "lucide-react-native";
 declare module '*.png'
 declare module '*.jpg'
 
-export type Track = {
-  id: string | number;
-  title: string;
-  uri: string;
-  artist?: string;
-  image_url?: string;
-};
-
 export type TableQueries = {
   total?: number
   pageIndex?: number
@@ -49,10 +41,11 @@ export type Recommend = {
 }
 
 export type RadioChannel = {
-  id: number | string;
+  id: number;
   name: string;
   image_url: string;
   source_url: string;
+  is_online: boolean;
 }
 
 export type NewsCategory = {
@@ -83,9 +76,9 @@ export type PodcastCategory = {
 }
 
 export type Podcast = {
-  id: number | string;
-  title: string;
-  description: string;
+  id: number;
+  name: string;
+  description?: string;
   image_url: string;
   source_url: string;
 }
@@ -113,3 +106,15 @@ export type MusicSong = {
   image_url: string;
   source_url: string;
 }
+
+export type MediaContent = {
+  type: 'music' | 'podcast' | 'radio',
+  id: number;
+  name: string;
+  description?: string;
+  author?: string;
+  artist?: string;
+  category?: string;
+  image_url: string; //https://picsum.photos/id/1002/500/300
+  source_url: string;
+} & Record<string, any>

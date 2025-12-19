@@ -1,13 +1,13 @@
-import {colors, fontSize} from '@/constants/tokens'
-import {defaultStyles} from '@/styles'
-import {StyleSheet, Text, View, ViewProps} from 'react-native'
 import {useCallback, useEffect, useState} from "react";
-import {useColor} from "@/hooks/useColor";
-import {AudioWaveform} from "@/components/ui/audio-waveform";
-import {useAudio} from "@/contexts/audio/AudioProvider";
-import {Progress} from "@/components/ui/progress";
+import {StyleSheet, ViewProps} from 'react-native'
+import {useAudio, useColor} from "@/hooks";
 
-export const PlayerProgressBar = ({style}: ViewProps) => {
+import {AudioWaveform} from "@/components/ui/audio-waveform";
+import {Progress} from "@/components/ui/progress";
+import {Text} from "@/components/ui/text";
+import {View} from "@/components/ui/view";
+
+export const PlayerProgressbar = ({style}: ViewProps) => {
   // Enhanced waveform data - more bars for smoother visualization
   const [waveformData] = useState<number[]>(
     Array.from({length: 60}, (_, i) => {
@@ -151,10 +151,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   timeText: {
-    ...defaultStyles.text,
-    color: colors.text,
     opacity: 0.75,
-    fontSize: fontSize.xs,
     letterSpacing: 0.7,
     fontWeight: '500',
   },

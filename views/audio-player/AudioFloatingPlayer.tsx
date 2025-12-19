@@ -1,35 +1,30 @@
 import {StyleSheet, TouchableOpacity, View, ViewProps} from 'react-native';
-import {Image} from 'expo-image';
-import {unknownTrackImageUri} from '@/constants/images';
-import {PlayPauseButton, SkipToNextButton, SkipToPreviousButton} from './player-controls';
-import {MovingText} from '@/components/features/moving-text';
-import {useColor} from '@/hooks/useColor';
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {BlurView} from "expo-blur";
-import {useColorScheme} from "@/hooks/useColorScheme";
 import {useRouter} from "expo-router";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+import {BlurView} from "expo-blur";
+import {Image} from 'expo-image';
 
-export const FloatingPlayer = ({style}: ViewProps) => {
-  const {bottom} = useSafeAreaInsets();
-  const text = useColor('text');
+import {useAudio, useColorScheme} from "@/hooks";
+import {unknownTrackImageUri} from '@/constants/images';
+
+import {MovingText} from '@/views/audio-player/components/moving-text';
+import {PlayPauseButton, SkipToNextButton, SkipToPreviousButton,} from '@/views/audio-player/components/player-controls';
+
+export const AudioFloatingPlayer = ({style}: ViewProps) => {
   const theme = useColorScheme() ?? 'light';
   
-  const {currentTrack,} = useAudio();
+  const {currentContent} = useAudio();
   
   const router = useRouter()
   
   const handlePress = () => {
-    router.navigate('/musics/player')
+    router.navigate('/player')
   }
   // Không có track → không render (Spotify behavior)
-  if (!currentTrack) return null
+  if (!currentContent) return null
   
   return (
     
     <TouchableOpacity onPress={handlePress} activeOpacity={0.9} style={[styles.container, {
-      bottom: bottom,
-      position: 'absolute',
       left: 8,
       right: 8,
       // Add shadow for iOS and elevation for Android
@@ -38,7 +33,7 @@ export const FloatingPlayer = ({style}: ViewProps) => {
       shadowOpacity: 0.18,
       shadowRadius: 6,
       elevation: 8,
-    }]}>
+    }, style]}>
       <>
         <View style={{borderRadius: 12, overflow: 'hidden', ...StyleSheet.absoluteFillObject}}>
           <BlurView
@@ -49,15 +44,15 @@ export const FloatingPlayer = ({style}: ViewProps) => {
         </View>
         <Image
           source={{
-            uri: currentTrack?.image_url ?? unknownTrackImageUri,
+            uri: currentContent?.image_url ?? unknownTrackImageUri,
           }}
           style={styles.trackArtworkImage}
         />
         
         <View style={styles.trackTitleContainer}>
           <MovingText
-            style={{...styles.trackTitle, color: text}}
-            text={currentTrack.title ?? ''}
+            style={styles.trackTitle}
+            text={currentContent.title ?? ''}
             animationThreshold={25}
           />
         </View>

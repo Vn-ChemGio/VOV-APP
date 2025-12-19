@@ -64,13 +64,13 @@ const lightColors = {
   // Pink accent color for various UI elements
   pink: '#FF2D92',
 
-  // Purple accent for creative apps and features
+  // Purple accent for creative apps and (features)
   purple: '#AF52DE',
 
-  // Teal accent for communication features
+  // Teal accent for communication (features)
   teal: '#5AC8FA',
 
-  // Indigo accent for system features
+  // Indigo accent for system (features)
   indigo: '#5856D6',
 };
 
@@ -140,13 +140,13 @@ const darkColors = {
   // Pink accent color for various UI elements
   pink: '#FF375F',
 
-  // Purple accent for creative apps and features
+  // Purple accent for creative apps and (features)
   purple: '#BF5AF2',
 
-  // Teal accent for communication features
+  // Teal accent for communication (features)
   teal: '#64D2FF',
 
-  // Indigo accent for system features
+  // Indigo accent for system (features)
   indigo: '#5E5CE6',
 };
 

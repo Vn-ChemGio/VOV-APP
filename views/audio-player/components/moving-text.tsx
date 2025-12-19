@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { TextStyle } from 'react-native';
 import Animated, {
   cancelAnimation,
   Easing,
@@ -8,7 +9,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { TextStyle } from 'react-native';
+import {useColor} from "@/hooks";
 
 export type MovingTextProps = {
   text: string
@@ -22,6 +23,8 @@ export const MovingText = ({text, animationThreshold, style}: MovingTextProps) =
   
   const textWidth = text.length * 3;
   
+  const textColor = useColor('text');
+
   useEffect(() => {
     if (!shouldAnimate) return;
     
@@ -59,6 +62,7 @@ export const MovingText = ({text, animationThreshold, style}: MovingTextProps) =
           width: 9999, // preventing the ellipsis from appearing
           paddingLeft: 16, // avoid the initial character being barely visible
         },
+        {color: textColor}
       ]}
     >
       {text}

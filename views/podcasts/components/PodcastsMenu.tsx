@@ -1,9 +1,11 @@
 import React from 'react';
 import {TouchableOpacity} from "react-native";
+
 import {Text} from "@/components/ui/text";
 import {BottomSheet} from "@/components/ui/bottom-sheet";
+
+import {usePodcastCategoriesStore} from "../stores";
 import {PodcastCategory} from "@/types";
-import {usePodcastCategoriesStore} from "@/views/podcasts/stores";
 
 export const PodcastsMenu = ({isVisible, close}: { isVisible: boolean; close: () => void }) => {
   const {setSelectedCategoryId, categories} = usePodcastCategoriesStore();

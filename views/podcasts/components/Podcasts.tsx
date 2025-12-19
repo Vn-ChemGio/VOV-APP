@@ -1,35 +1,36 @@
 import React from 'react';
+
 import {View} from '@/components/ui/view';
+
 import CardPodCast from "@/components/features/CardPodCast";
 import LoadingScreen from "@/components/features/loading-screen";
+
 import {HoveredProvider} from "@/contexts/hover/HoveredContext";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+
+import {useAudio} from "@/hooks";
+import {podcastToMediaContent} from "@/helpers";
+
 import {usePodcasts} from "../hooks";
-import {Track} from "@/types";
+
+import {Podcast, MediaContent} from "@/types";
 
 export const Podcasts = ({category_id}: { category_id: number }) => {
   const {isLoading, options} = usePodcasts(category_id);
-  const {playTrack} = useAudio();
+  const {playContent} = useAudio();
   
-  const tracks = options.map(item => ({
-    ...item,
-    id: item.id.toString(),
-    uri: item.source_url,
-    artwork: item.image_url
-  }));
+  const contents: MediaContent[] = options.map(item => podcastToMediaContent(item));
   
-  const handleTrackSelect = async (selectedTrack: Track) => {
-    await playTrack(selectedTrack, tracks)
+  const handlePodcastSelect = async (selectedPodcast: Podcast) => {
+    await playContent(podcastToMediaContent(selectedPodcast), contents)
   }
-  
   return isLoading ? <LoadingScreen/> : (
     <View style={{paddingHorizontal: 16, paddingBottom: 120, gap: 16}}>
       <HoveredProvider>
-        {(tracks || [])?.map((item, idx) => (
+        {(contents || [])?.map((item, idx) => (
           <CardPodCast {...{
             ...item,
             idx,
-            handleTrackSelect,
+            handlePodcastSelect,
             style: {width: '100%'}
           }} key={`podcast-${idx}`}/>
         ))}

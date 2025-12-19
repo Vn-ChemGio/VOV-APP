@@ -6,24 +6,26 @@ import {Card} from "@/components/ui/card";
 import {View} from "@/components/ui/view";
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
-import {useColor} from "@/hooks/useColor";
+
+import {useAudio, useColor} from "@/hooks";
+
 import {Hoverable} from "@/contexts/hover/HoveredContext";
-import {RadioChannel, Track} from "@/types";
-import {useAudio} from "@/contexts/audio/AudioProvider";
+
+import {RadioChannel} from "@/types";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const CardRadioChannel = (item: RadioChannel & Track & {
-  handleTrackSelect: (selectedTrack: Track) => void,
+const CardRadioChannel = (item: RadioChannel & {
+  handleChannelSelect: (selectedChannel: RadioChannel) => void,
   idx: number
   isOnline?: boolean;
   image_url: string;
 }) => {
   const borderColor = useColor('border');
   
-  const {isPlaying, currentTrack} = useAudio();
+  const {isPlaying, currentContent} = useAudio();
   
-  const activeTrackUrl = currentTrack?.uri;
+  const activeTrackUrl = currentContent?.source_url;
   
   return (
     <Card style={[styles.card, {borderColor}]}>
@@ -69,7 +71,7 @@ const CardRadioChannel = (item: RadioChannel & Track & {
                     borderRadius: 4,
                     marginRight: 5,
                     backgroundColor: item.isOnline ? '#2ecc40' : '#bbb' // green for online, gray for offline
-                  }} />
+                  }}/>
                   <View>
                     <Text style={{color: '#fff', fontSize: 10, fontWeight: '500'}}>
                       {item.isOnline ? 'Online' : 'Offline'}
@@ -82,11 +84,12 @@ const CardRadioChannel = (item: RadioChannel & Track & {
                   <BlurView style={{...StyleSheet.absoluteFillObject, zIndex: 1,}} intensity={25} tint="dark"/>
                   <View style={styles.contentContainerHovered}>
                     <Pressable
-                      onPress={() => item.handleTrackSelect(item)} style={styles.onPress}
-                      disabled={activeTrackUrl === item.uri && isPlaying || !item.isOnline}
+                      onPress={() => item.handleChannelSelect(item)} style={styles.onPress}
+                      disabled={activeTrackUrl === item.source_url && isPlaying || !item.is_online}
                     >
-                      <Ionicons name={(activeTrackUrl === item.uri) && isPlaying ? "pause-circle" : "play-circle"}
-                                size={48} color="#fff" style={{opacity: 0.9}}/>
+                      <Ionicons
+                        name={(activeTrackUrl === item.source_url) && isPlaying ? "pause-circle" : "play-circle"}
+                        size={48} color="#fff" style={{opacity: 0.9}}/>
                     </Pressable>
                   </View>
                 </View>

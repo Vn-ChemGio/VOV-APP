@@ -1,35 +1,28 @@
-import {MovingText} from '@/components/MovingText'
-import {PlayerControls} from '@/components/features/player-controls'
-// import {PlayerProgressBar} from '@/components/PlayerProgressbar'
-// import {PlayerRepeatToggle} from '@/components/PlayerRepeatToggle'
-// import {PlayerVolumeBar} from '@/components/PlayerVolumeBar'
-import {unknownTrackImageUri} from '@/constants/images'
-import {defaultStyles} from '@/styles'
-import {fontSize, screenPadding} from '@/constants/tokens'
-
-import {usePlayerBackground} from '@/hooks/usePlayerBackground'
-//import {useTrackPlayerFavorite} from '@/hooks/useTrackPlayerFavorite'
-import {FontAwesome} from '@expo/vector-icons'
-import {LinearGradient} from 'expo-linear-gradient'
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native'
+import {ActivityIndicator, StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {useColor} from "@/hooks/useColor";
-import {Image} from "@/components/ui/image";
-import {useAudio} from "@/contexts/audio/AudioProvider";
-import {Progress} from "@/components/ui/progress";
-import {PlayerProgressBar} from "@/components/PlayerProgressbar";
+import {LinearGradient} from 'expo-linear-gradient'
+import {FontAwesome} from '@expo/vector-icons'
 
-const PlayerScreen = () => {
+import {unknownTrackImageUri} from '@/constants/images'
+import {useAudio, useColor, usePlayerBackground} from '@/hooks'
+import {Image} from "@/components/ui/image";
+import {Text} from "@/components/ui/text";
+import {View} from "@/components/ui/view";
+
+import {MovingText, PlayerControls, PlayerProgressbar} from './components';
+
+
+export const AudioPlayerScreen = () => {
   const backgroundColor = useColor('background');
   const textColor = useColor('text');
   
-  const {currentTrack} = useAudio()
-  const {imageColors} = usePlayerBackground(currentTrack?.image_url ?? unknownTrackImageUri)
+  const {currentContent} = useAudio()
+  const {imageColors} = usePlayerBackground(currentContent?.image_url ?? unknownTrackImageUri)
   
   const {top, bottom} = useSafeAreaInsets()
-
+  
   //const {isFavorite, toggleFavorite} = useTrackPlayerFavorite()
-  if (!currentTrack) {
+  if (!currentContent) {
     return (
       <View style={[styles.container, {justifyContent: 'center', backgroundColor}]}>
         <ActivityIndicator color={textColor}/>
@@ -42,13 +35,13 @@ const PlayerScreen = () => {
       style={{flex: 1}}
       colors={imageColors ? [imageColors.background, imageColors.primary] : [backgroundColor, backgroundColor]}
     >
-      <View style={styles.overlayContainer}>
+      <View style={[styles.overlayContainer, {backgroundColor}]}>
         <DismissPlayerSymbol/>
         
         <View style={{flex: 1, marginTop: top + 70, marginBottom: bottom}}>
           <View style={styles.artworkImageContainer}>
             <Image
-              source={{uri: currentTrack.image_url ?? unknownTrackImageUri}}
+              source={{uri: currentContent.image_url ?? unknownTrackImageUri}}
               priority="high"
               containerStyle={styles.artworkImage}
             />
@@ -67,7 +60,7 @@ const PlayerScreen = () => {
                   {/* Track title */}
                   <View style={styles.trackTitleContainer}>
                     <MovingText
-                      text={currentTrack.title ?? ''}
+                      text={currentContent.title ?? ''}
                       animationThreshold={30}
                       style={styles.trackTitleText}
                     />
@@ -85,24 +78,20 @@ const PlayerScreen = () => {
                 </View>
                 
                 {/* Track artist */}
-                {currentTrack.artist && (
+                {currentContent.artist && (
                   <Text numberOfLines={1}
-                        style={[styles.trackArtistText, {color: textColor, marginTop: 6, fontSize: 20}]}>
-                    {currentTrack.artist}
+                        style={[styles.trackArtistText, {marginTop: 6, fontSize: 20}]}>
+                    {currentContent.artist}
                   </Text>
                 )}
               </View>
               
-               <PlayerProgressBar style={{marginTop: 16}}/>
+              <PlayerProgressbar style={{marginTop: 16}}/>
               
               <PlayerControls style={{marginTop: 40}}/>
             </View>
             
-            {/* <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>
-           */}
-            <View style={styles.centeredRow}>
-              {/*<PlayerRepeatToggle size={30} style={{marginBottom: 6}}/>*/}
-            </View>
+            {/* <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>*/}
           </View>
         </View>
       </View>
@@ -143,8 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   overlayContainer: {
-    ...defaultStyles.container,
-    paddingHorizontal: screenPadding.horizontal,
+    flex: 1,
+    paddingHorizontal: 16,
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   artworkImageContainer: {
@@ -170,13 +159,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   trackTitleText: {
-    ...defaultStyles.text,
     fontSize: 22,
     fontWeight: '700',
   },
   trackArtistText: {
-    ...defaultStyles.text,
-    fontSize: fontSize.base,
     opacity: 0.8,
     maxWidth: '90%',
   },
@@ -186,5 +172,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }
 })
-
-export default PlayerScreen

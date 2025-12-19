@@ -1,37 +1,27 @@
-// src/audio/AudioProvider.tsx
-
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
-
+import React, {createContext, useCallback, useEffect, useRef, useState,} from 'react';
 import {AudioPlayer, createAudioPlayer} from 'expo-audio';
-import {Track} from "@/types";
+import {MediaContent} from "@/types";
 
 type AudioContextType = {
-  playTrack: (track: Track, queue: Track[]) => Promise<void>;
+  playContent: (content: MediaContent, queue?: MediaContent[]) => Promise<void>;
   play: () => Promise<void>;
   pause: () => Promise<void>;
   next: () => Promise<void>;
   prev: () => Promise<void>;
   isPlaying: boolean;
   isLoading: boolean;
-  currentTrack?: Track;
+  currentContent?: MediaContent;
   playerRef: React.RefObject<AudioPlayer>;
 };
 
-const AudioContext = createContext<AudioContextType | null>(null);
+export const AudioContext = createContext<AudioContextType | null>(null);
 
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
                                                                          children,
                                                                        }) => {
   const playerRef = useRef<any>(null);
   
-  const [queue, setQueue] = useState<Track[]>([]);
+  const [queue, setQueue] = useState<MediaContent[]>([]);
   const [index, setIndex] = useState(0);
   
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,7 +61,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [next]);
   
   // ===== LOAD & PLAY =====
-  const loadAndPlay = async (track: Track) => {
+  const loadAndPlay = async (content: MediaContent) => {
     const player = playerRef.current;
     if (!player) return;
     
@@ -79,10 +69,12 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsPlaying(true); // optimistic
     
     await player.replace({
-      uri: track.uri,
+      uri: content.source_url,
       metadata: {
-        title: track.title,
-        artist: track.artist,
+        title: content.title,
+        artist: content.artist ?? content.author,
+        albumTitle: content.category,
+        artworkUrl: content.image_url,
       },
     });
     
@@ -90,23 +82,27 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   };
   
   // ===== PUBLIC API =====
-  const playTrack = async (track: Track, list: Track[]) => {
-    const idx = list.findIndex(t => t.id === track.id);
+  const playContent = async (content: MediaContent, list: MediaContent[] = []) => {
+    if (!list.length) {
+      list = [content];
+    }
+    
+    const idx = list.findIndex(t => t.id === content.id && t.type === content.type);
     if (idx === -1) return;
     
     setQueue(list);
     setIndex(idx);
     
-    await loadAndPlay(track);
+    await loadAndPlay(content);
   };
   
   const play = async () => {
-    if(!isPlaying) setIsPlaying(true); // optimistic
+    if (!isPlaying) setIsPlaying(true); // optimistic
     await playerRef.current?.play?.();
   };
   
   const pause = async () => {
-    if(isPlaying) setIsPlaying(false); // optimistic
+    if (isPlaying) setIsPlaying(false); // optimistic
     await playerRef.current?.pause?.();
   };
   
@@ -131,26 +127,18 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AudioContext.Provider
       value={{
-        playTrack,
+        playContent,
         play,
         pause,
         next,
         prev,
         isPlaying,
         isLoading,
-        currentTrack: queue[index],
+        currentContent: queue[index],
         playerRef,
       }}
     >
       {children}
     </AudioContext.Provider>
   );
-};
-
-export const useAudio = () => {
-  const ctx = useContext(AudioContext);
-  if (!ctx) {
-    throw new Error('useAudio must be used inside AudioProvider');
-  }
-  return ctx;
 };
