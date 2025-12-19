@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		4BA79A2B2EF5B16400A77E59 /* AudioEngineModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA79A2A2EF5B16400A77E59 /* AudioEngineModule.swift */; };
+		4BA79A2D2EF5B1A400A77E59 /* AudioEngineModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA79A2C2EF5B1A400A77E59 /* AudioEngineModule.m */; };
 		8E0C8C384568B490F459406E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5964C47E74EEACAA5AEEC3CF /* ExpoModulesProvider.swift */; };
 		9108B1B119FEE3F62AEC290A /* libPods-VOVGiitr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DD3C3182B88C6A2D0754DE /* libPods-VOVGiitr.a */; };
 		94AE4D2FE404E69E6208E5C3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5EB8693BC6B808E67283C55B /* PrivacyInfo.xcprivacy */; };
@@ -21,6 +23,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = VOVGiitr/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = VOVGiitr/Info.plist; sourceTree = "<group>"; };
 		216F2A075B71D0ABAA44A9A4 /* Pods-VOVGiitr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VOVGiitr.release.xcconfig"; path = "Target Support Files/Pods-VOVGiitr/Pods-VOVGiitr.release.xcconfig"; sourceTree = "<group>"; };
+		4BA79A2A2EF5B16400A77E59 /* AudioEngineModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineModule.swift; sourceTree = "<group>"; };
+		4BA79A2C2EF5B1A400A77E59 /* AudioEngineModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioEngineModule.m; sourceTree = "<group>"; };
 		5964C47E74EEACAA5AEEC3CF /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-VOVGiitr/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		5EB8693BC6B808E67283C55B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = VOVGiitr/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7EE5A8605A9A92384724D1BB /* Pods-VOVGiitr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VOVGiitr.debug.xcconfig"; path = "Target Support Files/Pods-VOVGiitr/Pods-VOVGiitr.debug.xcconfig"; sourceTree = "<group>"; };
@@ -47,6 +51,8 @@
 		13B07FAE1A68108700A75B9A /* VOVGiitr */ = {
 			isa = PBXGroup;
 			children = (
+				4BA79A2C2EF5B1A400A77E59 /* AudioEngineModule.m */,
+				4BA79A2A2EF5B16400A77E59 /* AudioEngineModule.swift */,
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
 				F11748442D0722820044C1D9 /* VOVGiitr-Bridging-Header.h */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
@@ -334,8 +340,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BA79A2D2EF5B1A400A77E59 /* AudioEngineModule.m in Sources */,
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
 				8E0C8C384568B490F459406E /* ExpoModulesProvider.swift in Sources */,
+				4BA79A2B2EF5B16400A77E59 /* AudioEngineModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

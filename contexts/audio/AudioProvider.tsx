@@ -1,6 +1,7 @@
 import React, {createContext, useCallback, useEffect, useRef, useState,} from 'react';
 import {AudioPlayer, createAudioPlayer} from 'expo-audio';
 import {MediaContent} from "@/types";
+import { AudioEngine } from '@/native/AudioEngine';
 
 type AudioContextType = {
   playContent: (content: MediaContent, queue?: MediaContent[]) => Promise<void>;
@@ -77,8 +78,19 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         artworkUrl: content.image_url,
       },
     });
+    setIsPlaying(true);
+    setIsLoading(true);
     
-    await player.play();
+    AudioEngine.load(
+      content.source_url,
+      content.title,
+      content.artist || '',
+      content.image_url
+    );
+    
+    AudioEngine.play();
+    
+    setIsLoading(false);
   };
   
   // ===== PUBLIC API =====
@@ -103,7 +115,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   
   const pause = async () => {
     if (isPlaying) setIsPlaying(false); // optimistic
-    await playerRef.current?.pause?.();
+    AudioEngine.pause();
   };
   
   const next = useCallback(async () => {
