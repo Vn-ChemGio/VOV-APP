@@ -1,7 +1,6 @@
 import {ActivityIndicator, StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {LinearGradient} from 'expo-linear-gradient'
-import {FontAwesome} from '@expo/vector-icons'
 
 import {unknownTrackImageUri} from '@/constants/images'
 import {useAudio, useColor, useColorScheme, usePlayerBackground} from '@/hooks'
@@ -9,7 +8,7 @@ import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
 import {View} from "@/components/ui/view";
 
-import {MovingText, PlayerControls, PlayerProgressbar} from './components';
+import {MovingText, PlayerControls, PlayerProgressbar, PlayerVolumeBar, SheetRadioSchedules} from './components';
 
 
 export const AudioPlayerScreen = () => {
@@ -42,7 +41,7 @@ export const AudioPlayerScreen = () => {
       }}>
         <DismissPlayerSymbol/>
         
-        <View style={{flex: 1, marginTop: top + 70, marginBottom: bottom}}>
+        <View style={{flex: 1, marginTop: top + 20, marginBottom: bottom}}>
           <View style={styles.artworkImageContainer}>
             <Image
               source={{uri: currentContent.image_url ?? unknownTrackImageUri}}
@@ -51,7 +50,7 @@ export const AudioPlayerScreen = () => {
             />
           </View>
           
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, gap: 30}}>
             <View>
               <View style={{paddingVertical: 24}}>
                 <View
@@ -71,14 +70,7 @@ export const AudioPlayerScreen = () => {
                   </View>
                   
                   {/* Favorite button icon */}
-                  <FontAwesome
-                    name={'times'}
-                    size={20}
-                    color={textColor}
-                    style={{marginHorizontal: 14}}
-                    onPress={() => {
-                    }}
-                  />
+                  {currentContent.type === 'radio' ? <SheetRadioSchedules/> : null}
                 </View>
                 
                 {/* Track artist */}
@@ -95,7 +87,7 @@ export const AudioPlayerScreen = () => {
               <PlayerControls style={{marginTop: 40}}/>
             </View>
             
-            {/* <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>*/}
+            <PlayerVolumeBar style={{marginTop: 'auto', marginBottom: 30}}/>
           </View>
         </View>
       </View>
@@ -105,7 +97,7 @@ export const AudioPlayerScreen = () => {
 
 const DismissPlayerSymbol = () => {
   const {top} = useSafeAreaInsets()
-  
+  const textMutedColor = useColor('textMuted');
   return (
     <View
       style={{
@@ -123,7 +115,7 @@ const DismissPlayerSymbol = () => {
           width: 50,
           height: 8,
           borderRadius: 8,
-          backgroundColor: '#fff',
+          backgroundColor: textMutedColor,
           opacity: 0.7,
         }}
       />

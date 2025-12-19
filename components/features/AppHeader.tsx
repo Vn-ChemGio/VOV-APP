@@ -6,7 +6,6 @@ import {useColor} from '@/hooks/useColor';
 import {View} from '@/components/ui/view';
 import {Image} from '@/components/ui/image';
 import {Text} from '@/components/ui/text';
-import {ModeToggle} from '@/components/ui/mode-toggle';
 import {SheetNavigation} from "@/components/demo/sheet/sheet-navigation";
 
 type Props = {
