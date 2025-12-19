@@ -1,4 +1,4 @@
-import {Artist, MediaContent, MusicCategory, MusicSong, Podcast, RadioChannel} from "@/types";
+import {MediaContent, MusicSong, Podcast, RadioChannel} from "@/types";
 import appConfig from "@/configs/app.config";
 import {unknownTrackImageUri} from "@/constants/images";
 

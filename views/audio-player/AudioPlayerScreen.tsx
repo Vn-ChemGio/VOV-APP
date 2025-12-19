@@ -4,7 +4,7 @@ import {LinearGradient} from 'expo-linear-gradient'
 import {FontAwesome} from '@expo/vector-icons'
 
 import {unknownTrackImageUri} from '@/constants/images'
-import {useAudio, useColor, usePlayerBackground} from '@/hooks'
+import {useAudio, useColor, useColorScheme, usePlayerBackground} from '@/hooks'
 import {Image} from "@/components/ui/image";
 import {Text} from "@/components/ui/text";
 import {View} from "@/components/ui/view";
@@ -13,6 +13,7 @@ import {MovingText, PlayerControls, PlayerProgressbar} from './components';
 
 
 export const AudioPlayerScreen = () => {
+  const theme = useColorScheme() ?? 'light';
   const backgroundColor = useColor('background');
   const textColor = useColor('text');
   
@@ -35,7 +36,10 @@ export const AudioPlayerScreen = () => {
       style={{flex: 1}}
       colors={imageColors ? [imageColors.background, imageColors.primary] : [backgroundColor, backgroundColor]}
     >
-      <View style={[styles.overlayContainer, {backgroundColor}]}>
+      <View style={{
+        ...styles.overlayContainer,
+        backgroundColor: theme === 'light' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
+      }}>
         <DismissPlayerSymbol/>
         
         <View style={{flex: 1, marginTop: top + 70, marginBottom: bottom}}>
