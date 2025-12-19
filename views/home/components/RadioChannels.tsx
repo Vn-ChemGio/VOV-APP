@@ -18,7 +18,7 @@ export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
   const {playContent} = useAudio();
   const contents: MediaContent[] = data.map((item) => radioChannelToMediaContent(item));
   
-  const handleTrackSelect = async (selectedChannel: RadioChannel) => {
+  const handleChannelSelect = async (selectedChannel: RadioChannel) => {
     await playContent(radioChannelToMediaContent(selectedChannel), contents)
   }
   
@@ -32,7 +32,7 @@ export const RadioChannels = ({data = []}: { data?: RadioChannel[] }) => {
               <CardRadioChannel {...{
                 ...item,
                 idx,
-                handleTrackSelect
+                handleChannelSelect
               }} key={`radio-${idx}`}/>
             ))}
           </HoveredProvider>

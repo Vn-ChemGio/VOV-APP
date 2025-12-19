@@ -62,6 +62,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
   
   // ===== LOAD & PLAY =====
   const loadAndPlay = async (content: MediaContent) => {
+    console.log('loadAndPlay', content);
     const player = playerRef.current;
     if (!player) return;
     
@@ -72,7 +73,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
       uri: content.source_url,
       metadata: {
         title: content.title,
-        artist: content.artist ?? content.author,
+        artist: content.artist,
         albumTitle: content.category,
         artworkUrl: content.image_url,
       },

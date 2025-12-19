@@ -42,10 +42,12 @@ export type Recommend = {
 
 export type RadioChannel = {
   id: number;
-  name: string;
+  title: string;
+  description?: string;
   image_url: string;
   source_url: string;
   is_online: boolean;
+  author?: string;
 }
 
 export type NewsCategory = {
@@ -77,10 +79,11 @@ export type PodcastCategory = {
 
 export type Podcast = {
   id: number;
-  name: string;
+  title: string;
   description?: string;
   image_url: string;
   source_url: string;
+  author?: string;
 }
 
 export type MusicCategory = {
@@ -110,7 +113,7 @@ export type MusicSong = {
 export type MediaContent = {
   type: 'music' | 'podcast' | 'radio',
   id: number;
-  name: string;
+  title: string;
   description?: string;
   author?: string;
   artist?: string;

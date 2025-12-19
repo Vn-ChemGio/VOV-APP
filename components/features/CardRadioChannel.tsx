@@ -18,7 +18,6 @@ const {width: screenWidth} = Dimensions.get('window');
 const CardRadioChannel = (item: RadioChannel & {
   handleChannelSelect: (selectedChannel: RadioChannel) => void,
   idx: number
-  isOnline?: boolean;
   image_url: string;
 }) => {
   const borderColor = useColor('border');
@@ -70,11 +69,11 @@ const CardRadioChannel = (item: RadioChannel & {
                     height: 8,
                     borderRadius: 4,
                     marginRight: 5,
-                    backgroundColor: item.isOnline ? '#2ecc40' : '#bbb' // green for online, gray for offline
+                    backgroundColor: item.is_online ? '#2ecc40' : '#bbb' // green for online, gray for offline
                   }}/>
                   <View>
                     <Text style={{color: '#fff', fontSize: 10, fontWeight: '500'}}>
-                      {item.isOnline ? 'Online' : 'Offline'}
+                      {item.is_online ? 'Online' : 'Offline'}
                     </Text>
                   </View>
                 </View>
