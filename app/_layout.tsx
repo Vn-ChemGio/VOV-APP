@@ -28,7 +28,7 @@ export default function RootLayout() {
     setAudioModeAsync({
       playsInSilentMode: true,
       shouldPlayInBackground: true,
-      interruptionMode: 'mixWithOthers', // string for expo-audio (see expo docs)
+      interruptionMode: 'doNotMix', // string for expo-audio (see expo docs)
     }).then();
     
     SplashScreen.hideAsync()

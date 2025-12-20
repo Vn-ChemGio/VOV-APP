@@ -13,6 +13,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#0A0A0A"
     },
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.vn.chemgio.vov",
@@ -61,6 +65,12 @@
           "android": {
             "usesCleartextTraffic": true
           }
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": []
         }
       ]
     ],

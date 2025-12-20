@@ -14,6 +14,8 @@ import {MovingText, PlayerControls, PlayerProgressbar, PlayerVolumeBar, SheetRad
 export const AudioPlayerScreen = () => {
   const theme = useColorScheme() ?? 'light';
   const backgroundColor = useColor('background');
+  const mutedColor = useColor('muted');
+  const mutedForegroundColor = useColor('mutedForeground');
   const textColor = useColor('text');
   
   const {currentContent} = useAudio()
@@ -33,7 +35,16 @@ export const AudioPlayerScreen = () => {
   return (
     <LinearGradient
       style={{flex: 1}}
-      colors={imageColors ? [imageColors.background, imageColors.primary] : [backgroundColor, backgroundColor]}
+      colors={imageColors ?
+        (
+          imageColors.platform == 'ios'
+            ? [imageColors.background, imageColors.primary] :
+            theme == 'light'
+              ? [imageColors.muted, imageColors.lightMuted]
+              : [imageColors.muted, imageColors.darkMuted]
+        )
+        : [mutedColor, mutedForegroundColor]
+      }
     >
       <View style={{
         ...styles.overlayContainer,

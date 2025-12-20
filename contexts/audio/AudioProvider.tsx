@@ -1,5 +1,5 @@
 import React, {createContext, useCallback, useEffect, useRef, useState,} from 'react';
-import {AudioPlayer, createAudioPlayer, setAudioModeAsync} from 'expo-audio';
+import {AudioPlayer, createAudioPlayer} from 'expo-audio';
 import {MediaContent} from "@/types";
 
 type AudioContextType = {
@@ -52,10 +52,6 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     );
-    player.setActiveForLockScreen(true, undefined, {
-      showSeekBackward: true,
-      showSeekForward: true,
-    });
     
     return () => {
       sub?.remove?.();
@@ -72,17 +68,23 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(true);
     setIsPlaying(true); // optimistic
     
-     player.replace({
+    player.replace({
       uri: content.source_url,
     });
     
     // Set the lock screen metadata
-    player.updateLockScreenMetadata({
-      title: content.title,
-      artist: content.artist,
-      albumTitle: content.category,
-      artworkUrl: content.image_url,
-    });
+    player.setActiveForLockScreen(true,
+      {
+        title: content.title,
+        artist: content.artist,
+        albumTitle: content.category,
+        artworkUrl: content.image_url,
+      },
+      {
+        showSeekBackward: true,
+        showSeekForward: true,
+      }
+    );
     
     player.play();
   };
