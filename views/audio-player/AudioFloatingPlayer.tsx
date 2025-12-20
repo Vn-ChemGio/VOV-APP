@@ -28,11 +28,11 @@ export const AudioFloatingPlayer = ({style}: ViewProps) => {
       left: 8,
       right: 8,
       // Add shadow for iOS and elevation for Android
-      shadowColor: '#000',
+/*      shadowColor: '#000',
       shadowOffset: {width: 0, height: 3},
       shadowOpacity: 0.18,
       shadowRadius: 6,
-      elevation: 8,
+      elevation: 8,*/
     }, style]}>
       <>
         <View style={{borderRadius: 12, overflow: 'hidden', ...StyleSheet.absoluteFillObject}}>
