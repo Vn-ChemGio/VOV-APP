@@ -1,5 +1,5 @@
 import React, {createContext, useCallback, useEffect, useRef, useState,} from 'react';
-import {AudioPlayer, createAudioPlayer} from 'expo-audio';
+import {AudioPlayer, createAudioPlayer, setAudioModeAsync} from 'expo-audio';
 import {MediaContent} from "@/types";
 
 type AudioContextType = {
@@ -11,7 +11,7 @@ type AudioContextType = {
   isPlaying: boolean;
   isLoading: boolean;
   currentContent?: MediaContent;
-  playerRef: React.RefObject<AudioPlayer>;
+  playerRef: React.RefObject<AudioPlayer | null>;
 };
 
 export const AudioContext = createContext<AudioContextType | null>(null);
@@ -19,7 +19,7 @@ export const AudioContext = createContext<AudioContextType | null>(null);
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
                                                                          children,
                                                                        }) => {
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<AudioPlayer>(null);
   
   const [queue, setQueue] = useState<MediaContent[]>([]);
   const [index, setIndex] = useState(0);
@@ -52,6 +52,10 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     );
+    player.setActiveForLockScreen(true, undefined, {
+      showSeekBackward: true,
+      showSeekForward: true,
+    });
     
     return () => {
       sub?.remove?.();
@@ -68,17 +72,19 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(true);
     setIsPlaying(true); // optimistic
     
-    await player.replace({
+     player.replace({
       uri: content.source_url,
-      metadata: {
-        title: content.title,
-        artist: content.artist,
-        albumTitle: content.category,
-        artworkUrl: content.image_url,
-      },
     });
     
-    await player.play();
+    // Set the lock screen metadata
+    player.updateLockScreenMetadata({
+      title: content.title,
+      artist: content.artist,
+      albumTitle: content.category,
+      artworkUrl: content.image_url,
+    });
+    
+    player.play();
   };
   
   // ===== PUBLIC API =====

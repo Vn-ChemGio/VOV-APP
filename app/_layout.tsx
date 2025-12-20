@@ -4,6 +4,12 @@ import {StatusBar} from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AudioProvider } from "@/contexts/audio/AudioProvider";
 import { ThemeProvider } from "@/theme/theme-provider";
+import {setAudioModeAsync} from "expo-audio";
+
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
 
 export const unstable_settings = {
   // Ensure any route can link back to the specified name
@@ -11,8 +17,20 @@ export const unstable_settings = {
 };
 
 
+// This is the default configuration
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
+
 export default function RootLayout() {
   useEffect(() => {
+    setAudioModeAsync({
+      playsInSilentMode: true,
+      shouldPlayInBackground: true,
+      interruptionMode: 'mixWithOthers', // string for expo-audio (see expo docs)
+    }).then();
+    
     SplashScreen.hideAsync()
   },[])
   return (
