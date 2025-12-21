@@ -97,6 +97,7 @@ export const CategoriesScreen = () => {
                       <BlurView
                         intensity={5}
                         tint="dark"
+                        experimentalBlurMethod="dimezisBlurView"
                         style={[
                           StyleSheet.absoluteFill,
                           {

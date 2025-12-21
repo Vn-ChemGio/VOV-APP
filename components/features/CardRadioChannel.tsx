@@ -80,7 +80,10 @@ const CardRadioChannel = (item: RadioChannel & {
               </View>
               {isHovered && (
                 <View style={styles.contentContainerHoveredWrapper}>
-                  <BlurView style={{...StyleSheet.absoluteFillObject, zIndex: 1,}} intensity={25} tint="dark"/>
+                  <BlurView
+                    style={{...StyleSheet.absoluteFillObject, zIndex: 1,}}
+                    intensity={25} tint="dark"
+                  />
                   <View style={styles.contentContainerHovered}>
                     <Pressable
                       onPress={() => item.handleChannelSelect(item)} style={styles.onPress}

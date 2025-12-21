@@ -37,6 +37,7 @@ export const MusicHeader: React.FC<Props> = ({scrollY, title = "Library"}) => {
                   ...StyleSheet.absoluteFillObject,
                   overflow: 'hidden',
                 }}
+                experimentalBlurMethod="dimezisBlurView"
       />
       <Animated.View
         style={[

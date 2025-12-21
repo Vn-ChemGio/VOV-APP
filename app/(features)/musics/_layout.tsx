@@ -43,6 +43,7 @@ const TabsNavigation = () => {
               return (
                 <BlurView
                   tint='systemChromeMaterial'
+                  experimentalBlurMethod="dimezisBlurView"
                   intensity={100}
                   style={{
                     ...StyleSheet.absoluteFillObject,

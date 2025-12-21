@@ -40,6 +40,7 @@ export const AudioFloatingPlayer = ({style}: ViewProps) => {
             tint={theme}
             intensity={80}
             style={{flex: 1}}
+            experimentalBlurMethod="dimezisBlurView"
           />
         </View>
         <Image

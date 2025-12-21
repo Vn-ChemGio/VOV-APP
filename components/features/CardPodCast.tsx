@@ -64,6 +64,7 @@ const CardPodCast = (item: Podcast & {
                         style={{flex: 1}}
                         intensity={5}
                         tint="dark"
+                        experimentalBlurMethod="dimezisBlurView"
                       />
                     </View>
                     <View style={styles.contentContainerHovered}>
