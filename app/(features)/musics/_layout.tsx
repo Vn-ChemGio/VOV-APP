@@ -36,10 +36,12 @@ const TabsNavigation = () => {
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
               borderTopWidth: 0,
+              height: 100,
+              paddingTop: 28,
             },
           }),
           tabBarBackground: () => {
-            if (Platform.OS === 'ios') {
+            // if (Platform.OS === 'ios') {
               return (
                 <BlurView
                   tint='systemChromeMaterial'
@@ -53,10 +55,10 @@ const TabsNavigation = () => {
                   }}
                 />
               );
-            }
-            
-            // On Android & Web: no background
-            return null;
+            // }
+            //
+            // // On Android & Web: no background
+            // return null;
           },
           tabBarButton: (props) => (
             <PlatformPressable
