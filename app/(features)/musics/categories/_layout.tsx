@@ -1,6 +1,5 @@
 import {View} from 'react-native'
 import {Stack} from 'expo-router'
-import {StackScreenWithSearchBar} from '@/constants/layout'
 import {defaultStyles} from '@/styles'
 import {useColor} from "@/hooks/useColor";
 
@@ -17,7 +16,7 @@ const ArtistsScreenLayout = () => {
         <Stack.Screen
           name="index"
           options={{
-            ...StackScreenWithSearchBar,
+            headerLargeTitleEnabled: true,
             headerLargeStyle: {
               backgroundColor: cardBackgroundColor,
             },
@@ -25,6 +24,9 @@ const ArtistsScreenLayout = () => {
               color: textColor,
             },
             headerTintColor: textColor,
+            headerTransparent: true,
+            headerBlurEffect: 'prominent',
+            headerShadowVisible: false,
             headerTitle: 'Danh mục',
           }}
         />

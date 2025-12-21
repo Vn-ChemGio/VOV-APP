@@ -17,6 +17,7 @@ import LoadingScreen from "@/components/features/loading-screen";
 import {categoryNameFilter} from "@/helpers";
 
 import {useCategories} from './hooks'
+import {useHeaderHeight} from "@react-navigation/elements";
 
 
 export const CategoriesScreen = () => {
@@ -29,6 +30,7 @@ export const CategoriesScreen = () => {
   const {categories, isLoading} = useCategories()
   const backgroundColor = useColor('background')
   const textMutedColor = useColor('textMuted')
+  const top = useHeaderHeight();
   
   const filteredCategories = useMemo(() => {
     if (!search) return categories
@@ -37,7 +39,7 @@ export const CategoriesScreen = () => {
   }, [categories, search])
   
   return (
-    <View style={{flex: 1, backgroundColor}}>
+    <View style={{flex: 1, backgroundColor, paddingTop: top}}>
       <ScrollView
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"

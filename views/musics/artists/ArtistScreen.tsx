@@ -13,7 +13,7 @@ import {useColor, useNavigationSearch} from "@/hooks";
 import {artistNameFilter} from "@/helpers";
 import {useArtists} from './hooks'
 import LoadingScreen from "@/components/features/loading-screen";
-import {defaultStyles} from "@/styles";
+import {useHeaderHeight} from "@react-navigation/elements";
 
 export const ArtistsScreen = () => {
   const search = useNavigationSearch({
@@ -24,6 +24,7 @@ export const ArtistsScreen = () => {
   const backgroundColor = useColor('background')
   const textColor = useColor('text')
   const textMutedColor = useColor('textMuted')
+  const top = useHeaderHeight();
   
   const {artists, isLoading} = useArtists()
   
@@ -34,7 +35,7 @@ export const ArtistsScreen = () => {
   }, [artists, search])
   
   return (
-    <View style={{flex: 1, backgroundColor}}>
+    <View style={{flex: 1, backgroundColor, paddingTop: top}}>
       <ScrollView
         style={{paddingHorizontal: 16}}
         contentInsetAdjustmentBehavior="automatic"
