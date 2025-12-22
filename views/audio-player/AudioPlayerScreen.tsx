@@ -1,4 +1,4 @@
-import {ActivityIndicator, Platform, StyleSheet} from 'react-native'
+import {ActivityIndicator, StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {LinearGradient} from 'expo-linear-gradient'
 
@@ -9,14 +9,7 @@ import {Text} from "@/components/ui/text";
 import {View} from "@/components/ui/view";
 
 import {MovingText, PlayerControls, PlayerProgressbar, PlayerVolumeBar, SheetRadioSchedules} from './components';
-import {useHeaderHeight} from "@react-navigation/elements";
-import {
-  ArrowBigDownIcon,
-  ArrowLeftIcon,
-  ChevronDownCircleIcon,
-  ClosedCaptionIcon,
-  PanelBottomCloseIcon
-} from "lucide-react-native";
+import {ChevronDownCircleIcon} from "lucide-react-native";
 import {Button} from "@/components/ui/button";
 import React from "react";
 import {useNavigation} from "expo-router";
@@ -130,22 +123,22 @@ const DismissPlayerSymbol = () => {
       }}
     >
       
-          <Button size='icon' variant='link'
-                  icon={ChevronDownCircleIcon}
-                  onPress={() => {
-                    if (navigation.canGoBack()) {
-                      navigation.goBack();
-                    }
-                  }}
-                  animation={true}
-                  style={{
-                    height: 32,
-                    width: 32,
-                    padding: 8,
-                    flexDirection: 'row-reverse',
-                  }}
-          />
-      
+      <Button size='icon' variant='link'
+              icon={ChevronDownCircleIcon}
+              onPress={() => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                }
+              }}
+              animation={true}
+              style={{
+                height: 32,
+                width: 32,
+                padding: 8,
+                flexDirection: 'row-reverse',
+              }}
+      />
+    
     </View>
   )
 }
