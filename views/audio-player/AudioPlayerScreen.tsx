@@ -1,4 +1,4 @@
-import {ActivityIndicator, StyleSheet} from 'react-native'
+import {ActivityIndicator, Platform, StyleSheet} from 'react-native'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {LinearGradient} from 'expo-linear-gradient'
 
@@ -9,6 +9,17 @@ import {Text} from "@/components/ui/text";
 import {View} from "@/components/ui/view";
 
 import {MovingText, PlayerControls, PlayerProgressbar, PlayerVolumeBar, SheetRadioSchedules} from './components';
+import {useHeaderHeight} from "@react-navigation/elements";
+import {
+  ArrowBigDownIcon,
+  ArrowLeftIcon,
+  ChevronDownCircleIcon,
+  ClosedCaptionIcon,
+  PanelBottomCloseIcon
+} from "lucide-react-native";
+import {Button} from "@/components/ui/button";
+import React from "react";
+import {useNavigation} from "expo-router";
 
 
 export const AudioPlayerScreen = () => {
@@ -17,12 +28,10 @@ export const AudioPlayerScreen = () => {
   const mutedColor = useColor('muted');
   const mutedForegroundColor = useColor('mutedForeground');
   const textColor = useColor('text');
-  
   const {currentContent} = useAudio()
   const {imageColors} = usePlayerBackground(currentContent?.image_url ?? unknownTrackImageUri)
   
   const {top, bottom} = useSafeAreaInsets()
-  
   //const {isFavorite, toggleFavorite} = useTrackPlayerFavorite()
   if (!currentContent) {
     return (
@@ -108,28 +117,35 @@ export const AudioPlayerScreen = () => {
 
 const DismissPlayerSymbol = () => {
   const {top} = useSafeAreaInsets()
-  const textMutedColor = useColor('textMuted');
+  const navigation = useNavigation()
   return (
     <View
       style={{
         position: 'absolute',
         top: top + 8,
-        left: 0,
-        right: 0,
+        left: 12,
+        right: 12,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
       }}
     >
-      <View
-        accessible={false}
-        style={{
-          width: 50,
-          height: 8,
-          borderRadius: 8,
-          backgroundColor: textMutedColor,
-          opacity: 0.7,
-        }}
-      />
+      
+          <Button size='icon' variant='link'
+                  icon={ChevronDownCircleIcon}
+                  onPress={() => {
+                    if (navigation.canGoBack()) {
+                      navigation.goBack();
+                    }
+                  }}
+                  animation={true}
+                  style={{
+                    height: 32,
+                    width: 32,
+                    padding: 8,
+                    flexDirection: 'row-reverse',
+                  }}
+          />
+      
     </View>
   )
 }
